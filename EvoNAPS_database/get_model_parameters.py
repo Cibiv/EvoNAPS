@@ -1,3 +1,4 @@
+
 #! /usr/bin/env python3
 
 """
@@ -46,7 +47,7 @@ def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_
     """
     Function to check the input provided by the user. This function is neccessary to mend any 
     discrepancies between the users's input the nomenclature in the EvoNAPS database and to, 
-    therefore, avoid any syntax errors induced by the query.
+    therefore, avoid any syntax errors induced by the constructed query.
     """
 
     # First, declare which matrices are allowed.
@@ -405,8 +406,8 @@ WHERE b.TREE_TYPE = \'ml\' AND d.MODEL IN "+string_models+""
 
 def main(): 
     """
-    Python script to access EvoNAPS database. The script will take the users input and translate it into a query.
-    The data will be written into a csv file. 
+    Python script to access EvoNAPS database. The script will take the input provided by the user and translate it into a query.
+    The results of the query will be written into a csv file.
 
     USAGE:
     --------
@@ -437,8 +438,8 @@ def main():
         Should you restrict your search with the 'ic' option, you can set a significance level. In this case, only parameters 
         of models with a weight above the chosen limit will be returned. Default is 0.05. 
     --tree or -t : 
-        Should the user search in the DNA_Trees table, they can decide to also output the ML tree in Newick string format as well as its 
-        branch lengths in a seperate file. Options are 'True' or 'False' (default is 'True')
+        Enable this option, if you wish to also return the phylogenetic trees in a Newick string format. If you search in the dna_trees table, 
+        it will return the ML tree and if you search the dna_modelparameters table, it will return the 'initial' (fastML or parsimony) tree. 
     --branch or -b: 
         Enable this option, if you wish to output branch lengths of the ML tree in a seperate file (only applies to search in dna_trees table).   
     --seq_min : int
