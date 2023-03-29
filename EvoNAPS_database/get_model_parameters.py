@@ -425,7 +425,7 @@ def main():
     OPTIONAL INPUT 
     --------
     --table: str
-        Declare in which table(s) of the database you want to search (DNA_Trees (tree) and/or DNA_ModelParameters (test).
+        Declare in which table(s) of the database you want to search (dna_trees (tree) and/or dna_modelparameters (test).
         If no input is provided, a search in both tables 'test,tree' is performed (default is 'tree,test')
         Possible options are: 'tree', 'test', 'test,tree'
     --ic : str
