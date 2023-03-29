@@ -410,11 +410,11 @@ def main():
 
     USAGE:
     --------
-    >>> py_wrapper.py --model [model of interst] --rate [rate of interest] ...
+    >>> get_model_parameters.py -m [model of interst] -r [rate of interest] ...
 
     REQUIRED INPUT:
     --------
-    --model or -m: str
+    --matrix or -m: str
         Declare model of interest. If you want to search for more than one model, seperate the models with a comma, e.g. JC,GTR.
         Accepted models are: JC, F81, K2P, HKY, TN, TNe, TPM2, TPM2u, TIM2, TIM2e, TPM3, TPM3u, TIM3, TIM3e, K3P, K3Pu, TIM, TIMe, TVM, TVMe, SYM, GTR 
     --rate or -r: str
@@ -440,6 +440,7 @@ def main():
         Should the user search in the DNA_Trees table, they can decide to also output the ML tree in Newick string format as well as its 
         branch lengths in a seperate file. Options are 'True' or 'False' (default is 'True')
     --branch or -b: 
+        Enable this option, if you wish to output branch lengths of the ML tree in a seperate file (only applies to search in dna_trees table).   
     --seq_min : int
         Use this option if you want to restrict your search to alignments with a minimum number of sequences (or taxa) (default is None)
     --seq_max : int
@@ -558,7 +559,7 @@ def main():
 
     # Write results into csv file
     query_df.to_csv(prefix+'.csv', index=False, sep=',')
-    print('\nQuery results were exported into file '+prefix+'_parameter_settings.csv')
+    print('\nQuery results were exported into file '+prefix+'.csv')
     if branch_df is not None: 
         branch_df.to_csv(prefix+'_branches.csv', index=False, sep=',')
         print('Branches were exported into file '+prefix+'_branches.csv')
@@ -582,7 +583,7 @@ def main():
         w.write('Maximum number of sites in alignment col_max: '+str(col_max)+'\n')
         w.write('Retrun Newickstring of tree: '+str(tree)+'\n')
         w.write('Retrun branch lengths of tree: '+str(branch)+'\n\n')
-        w.write('Query results were exported into file '+prefix+'_parameter_settings.csv\n')
+        w.write('Query results were exported into file '+prefix+'.csv\n')
         if branch is True: 
             w.write('Branch lengths were exported into file '+prefix+'_branches.csv\n')
         w.write('\nOverview of esults: \n')
