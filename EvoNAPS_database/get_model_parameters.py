@@ -17,37 +17,27 @@ import datetime
 
 def checkInteger(input, string='variable'): 
     """Function to check if variables are integers."""
-
-    if input is None: 
-        return input
-    else: 
-        try: 
+    
+    if input is not None: 
+        try:
             int(input)
         except ValueError: 
-            print('ERROR: '+input+' for '+string+' is invalid, must be integer.')
-            input = None
-
-    return str(int(input))
+            raise ValueError('ERROR: '+input+' for '+string+' is invalid, must be integer.')
 
 def checkFloat(input, string='variable'): 
     """Function to check if variables are floats."""
 
-    if input is None: 
-        return input
-    else: 
+    if input is not None: 
         try: 
             float(input)
         except ValueError: 
-            print('ERROR: '+input+' for '+string+' is invalid, must be float.')
-            input = None
-            
-    return input
+            raise ValueError('ERROR: '+input+' for '+string+' is invalid, must be float.')
 
-def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch): 
+def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch, keep, source): 
     """
     Function to check the input provided by the user. This function is neccessary to mend any 
     discrepancies between the users's input the nomenclature in the EvoNAPS database and to, 
-    therefore, avoid any syntax errors induced by the constructed query.
+    therefore, avoid any syntax errors induced by the query.
     """
 
     # First, declare which matrices are allowed.
@@ -59,7 +49,7 @@ def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_
     for mod in allowed_models: 
         semi_allowed_models.setdefault(mod.upper(), mod)
 
-    # Check if input model is valid (needs to match one of the 22 tested DNA models)
+    # Check if input matrix is valid (needs to match one of the 22 tested sub rate matrices).
     matrix = matrix.split(',')
     for mod in matrix: 
         if mod not in allowed_models: 
@@ -67,13 +57,8 @@ def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_
                 matrix.remove(mod)
                 matrix.append(semi_allowed_models[mod.upper()])
             else: 
-                print('Model '+mod+' is not a valid model. Allowed models: ')
-                print(allowed_models)
-                matrix.remove(mod)
-
-    # If there is no valid model, return None.
-    if len(matrix) < 1: 
-        return None, None, None
+                raise ValueError(mod+' is not a valid substitution rate matrix.')
+    
     # Remove duplicates from list of models
     matrix = list(dict.fromkeys(matrix))
 
@@ -95,9 +80,8 @@ def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_
                 rate.remove(ra)
                 rate.append(semi_allowed_rates[ra])
             else: 
-                print('Invalid input for rate heterogenity: '+ra+'.')
-                return None, None, None
-    
+                raise ValueError('Invalid input for rate heterogenity: '+ra+'.')
+            
     # Remove duplicates from list of rate models           
     rate = list(dict.fromkeys(rate))
 
@@ -107,42 +91,50 @@ def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_
     
     for i in range (len(tables)): 
         if tables[i] not in ['TREE', 'TEST']: 
-            print(tables[i]+' is an invalid input. Tables can be \'tree\' or \'test\' or both (seperated by a comma e.g. \'test,tree\'.)')
-            # If there is no valid input for the tables option, use default 'tree','test'.
-            print('Sampling from both tables \'test,tree\' will be assumed.')
-            tables = ['TREE', 'TEST']
+            raise ValueError(tables[i]+' is an invalid input. Tables can be \'tree\' or \'test\' or both (seperated by a comma, e.g., \'test,tree\'.)')
 
     # Check selection criterion 
     if ic.upper() not in ['BIC', 'AIC', 'AICC', 'ABIC', 'CAIC']: 
-        print('The selection criterion '+ic+' is invalid. BIC as IC will be assumed.')   
-        ic='BIC'
+        raise ValueError('The selection criterion '+ic+' is invalid.')   
     else: 
         ic=ic.upper()
 
     # Check sig level
-    ic_sig = checkFloat(ic_sig, string='ic_sig')
+    checkFloat(ic_sig, string='ic_sig')
     if ic_sig is None: 
         ic_sig = 0.05
 
     # Check if min max limits are integers
-    seq_min = checkInteger(seq_min, 'seq_min')
-    seq_max = checkInteger(seq_max, 'seq_max')
-    col_min = checkInteger(col_min, 'col_min')
-    col_max = checkInteger(col_max, 'col_max')
+    checkInteger(seq_min, 'seq_min')
+    checkInteger(seq_max, 'seq_max')
+    checkInteger(col_min, 'col_min')
+    checkInteger(col_max, 'col_max')
 
     if branch not in [True, False]: 
-        print('Invalid input for branch variable: '+branch+'. Must be either True or False. False will be assumed.')
-        branch=False
+        raise ValueError('Invalid input for branch variable: '+branch+'. Must be either True or False.')
     
     if tree not in [True, False]: 
-        print('Invalid input for tree variable: '+tree+'. Must be either True or False. False will be assumed.')
-        tree=False
+        raise ValueError('Invalid input for tree variable: '+tree+'. Must be either True or False.')
 
-    return matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch
+    if keep not in [True, False]: 
+        raise ValueError('Invalid input for keep variable: '+keep+'. Must be either True or False.')
+
+    # Check source input 
+    if source is not None: 
+        valid_source = {'PANDIT':'PANDIT', 'LANFEAR':'Lanfear', 'ORTHOMAM':'OrthoMaM'}
+        source = source.split(',')
+        for scr in source: 
+            if scr.upper() in valid_source.keys(): 
+                source.remove(scr)
+                source.append(valid_source[scr.upper()])
+            else: 
+                raise ValueError(scr+' is an invalid input for source. Must be Pandit, Lanfear and/or OrthoMaM.')
+
+    return matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch, keep, source
 
 def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = None, col_min: int = None, col_max: int = None, \
     tables: str='TEST,TREE', ic: str='BIC', ic_sig: float=0.05, user='frareden', password='Franzi987', \
-        tree:bool=False, branch:bool=False) -> pd.DataFrame: 
+        tree:bool=False, branch:bool=False, keep:bool=True, source: str=None) -> pd.DataFrame: 
     """
     Description
     --------
@@ -192,6 +184,13 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
     ic_sig : float, optional
         Should you restrict your search with the 'ic' option, you can set a significance level. In this case, only parameters 
         of models with a weight above the chosen limit will be returned. Default is 0.05. 
+    keep: bool
+        If you also want to search the database for results obtained by running IQ-Tree 2 with the '--keep-ident' flag, set this 
+        parameter to True. Default is False (in this case, only inference results conducted on the (potentially) reduced alignments 
+        are shown)
+    source: str, optional
+        Restrict the search to alignments from a specific source. Options: PANIDT, OrthoMaM, Lanfear 
+        Default is 'None' (no search resistrictions).
 
     Returns
     --------
@@ -227,8 +226,8 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
     """
 
     # Check the input. This step is neccessary to avoid any syntax errors in the query. 
-    matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch = \
-        CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch)
+    matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch, keep, source \
+         = CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch, keep, source)
     
     # Declare list of models to be evaluated (combination of rate matrices and models of rate heterogeneiity)
     models=[]
@@ -246,6 +245,15 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
             string_models+='\''+models[i]+'\','
         else: 
             string_models+='\''+models[i]+'\')'
+
+    # Create string for source: 
+    if source is not None: 
+        source_string='('
+        for i in range (len(source)): 
+            if i < len(source)-1:
+                source_string+='\''+source[i]+'\','
+            else: 
+                source_string+='\''+source[i]+'\')'
 
     # Declare the column names of the DataFrame to be filled with the query results.
     query_df = pd.DataFrame(columns = ['TABLE', 'ALI_KEY', 'MODELTEST_KEY', 'TREE_KEY','ALI_ID', 'KEEP_IDENT', \
@@ -265,13 +273,13 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
 
     hit_table = pd.DataFrame(columns = ['TABLE', 'MODEL', 'HITS'])
 
-    # Connect to the Database
+    #Connect to the Database
     mydb = mariadb.connect(
     host="crick",
     user=user,
     password=password, 
-    database="fra_db"
-    )
+    database="fra_db")
+
     # Create cursor
     mycursor = mydb.cursor()
 
@@ -298,7 +306,11 @@ INNER JOIN dna_alignments a USING (ALI_ID) "
         query += "INNER JOIN dna_trees c USING (ALI_ID,TIME_STAMP) "
         query += "WHERE b.MODEL IN "+string_models+" "  
         if ic is not None: 
-            query += "AND WEIGHTED_"+ic+">"+str(ic_sig)+" "
+            query += "AND b.WEIGHTED_"+ic+">"+str(ic_sig)+" "
+        if source is not None: 
+            query += "AND a.FROM_DATABASE IN "+source_string+" "
+        if keep is False: 
+            query += "AND b.KEEP_IDENT=0 "
         if seq_min is not None:
             query += "AND a.SEQUENCES >= "+seq_min+" "
         if seq_max is not None:
@@ -320,6 +332,9 @@ INNER JOIN dna_alignments a USING (ALI_ID) "
 
         # Overview of results are written into hit_table
         hits_test = test_df['MODEL'].value_counts().to_frame().reset_index().rename(columns={'index':'MODEL', 'MODEL':'HITS'})
+        for mo in models: 
+            if mo not in hits_test['MODEL'].to_list(): 
+                hits_test = hits_test.append({'MODEL':mo, 'HITS':0}, ignore_index=True)
         hits_test.insert(0,'TABLE','dna_modelparameters')
         hit_table = pd.concat([hit_table, hits_test], axis=0)
 
@@ -344,6 +359,10 @@ b.REL_RATE_CAT_9, b.PROP_CAT_9, b.REL_RATE_CAT_10, b.PROP_CAT_10 "
         query += "FROM dna_trees b \
 INNER JOIN dna_alignments a USING (ALI_ID) "
         query += "WHERE b.MODEL IN "+string_models+" " 
+        if source is not None: 
+            query += "AND a.FROM_DATABASE IN "+source_string+" "
+        if keep is False: 
+            query += "AND b.KEEP_IDENT=0 "
         if seq_min is not None:
             query += "AND a.SEQUENCES >= "+seq_min+" "
         if seq_max is not None:
@@ -365,6 +384,9 @@ INNER JOIN dna_alignments a USING (ALI_ID) "
 
         # Overview of results are written into hit_table
         hits_tree = tree_df['MODEL'].value_counts().to_frame().reset_index().rename(columns={'index':'MODEL', 'MODEL':'HITS'})
+        for mo in models: 
+            if mo not in hits_tree['MODEL'].to_list(): 
+                hits_tree = hits_tree.append({'MODEL':mo, 'HITS':0}, ignore_index=True)
         hits_tree.insert(0,'TABLE','dna_trees')
         hit_table = pd.concat([hit_table, hits_tree], axis=0)
 
@@ -406,8 +428,8 @@ WHERE b.TREE_TYPE = \'ml\' AND d.MODEL IN "+string_models+""
 
 def main(): 
     """
-    Python script to access EvoNAPS database. The script will take the input provided by the user and translate it into a query.
-    The results of the query will be written into a csv file.
+    Python script to access EvoNAPS database. The script will take the users input and translate it into a query.
+    The data will be written into a csv file. 
 
     USAGE:
     --------
@@ -452,8 +474,14 @@ def main():
         Use this option if you want to restrict your search to alignments with a maximum number of columns (or sites) in your alignment (default is None)
     --output or -o : str
         Declare the prefix of the output csv file that will be generated (default is 'evonaps_query')
-    --plot or -p: 
-        If this option is enabled, then the distribution of the obtained model parameter settings will be plotted to give a visual overview of the results. 
+    --keep : 
+        If you also want to search the database for results obtained by running IQ-Tree 2 with the '--keep-ident' flag, set this 
+        parameter to True. Default is True (in this case, only inference results conducted on the (potentially) reduced alignments 
+        are shown)
+    --source : str
+        Restrict the search to alignments from a specific source. Options: PANIDT, OrthoMaM, Lanfear 
+        Default is 'None' (no search resistrictions).
+
 
     Example
     --------
@@ -479,10 +507,12 @@ def main():
     prefix = 'evonaps_query'
     tree = False
     branch = False
+    keep = True
+    source = None
 
     # List of valid system arguments
     valid_arguments=['--help', '-h', '--matrix', '-m', '--rate', '-r', '--seq_min', '--seq_max', '--col_min','--col_max', '--table', \
-        '--ic', '--output', '-o', '--ic_sig', '--tree', '-t', '--branch', '-b']
+        '--ic', '--output', '-o', '--ic_sig', '--tree', '-t', '--branch', '-b', '--source', '--keep']
     
     # Read in the input provided by the user
     for i in range (len(sys.argv)): 
@@ -496,24 +526,12 @@ def main():
             rate = sys.argv[i+1]
         if sys.argv[i] == '--seq_min': 
             seq_min = sys.argv[i+1]
-            if not seq_min.isdigit(): 
-                print('Input '+sys.argv[i+1]+' for '+sys.argv[i]+' is invalid. Must be integer.')
-                seq_min = None
         if sys.argv[i] == '--seq_max': 
             seq_max = sys.argv[i+1]
-            if not seq_max.isdigit(): 
-                print('Input '+sys.argv[i+1]+' for '+sys.argv[i]+' is invalid. Must be integer.')
-                seq_max = None
         if sys.argv[i] == '--col_min': 
             col_min = sys.argv[i+1]
-            if not col_min.isdigit(): 
-                print('Input '+sys.argv[i+1]+' for '+sys.argv[i]+' is invalid. Must be integer.')
-                col_min = None
         if sys.argv[i] == '--col_max': 
             col_max = sys.argv[i+1]
-            if not col_max.isdigit(): 
-                print('Input '+sys.argv[i+1]+' for '+sys.argv[i]+' is invalid. Must be integer.')
-                col_max = None
         if sys.argv[i] == '--table': 
             tables = sys.argv[i+1]
         if sys.argv[i] == '--ic': 
@@ -526,14 +544,14 @@ def main():
             tree = True
         if sys.argv[i] in ['--branch', '-b']: 
             branch = True
+        if sys.argv[i] in ['--keep']: 
+            keep = False       
+        if sys.argv[i] in ['--source']: 
+            source =  sys.argv[i+1]  
         if sys.argv[i][0] == '-' and sys.argv[i] not in valid_arguments: 
             print('Unknown argument: '+sys.argv[i]+'. Type '+sys.argv[0]+' --help for help.')
             sys.exit(2)
-        if sys.argv[i]=='--figsize': 
-            figsize=sys.argv[i+1]
-            figsize=figsize.split(',')
-            for k in range (len(figsize)):  
-                figsize[k]=int(figsize[k])
+
     
     # Print user input into terminal
     print('***Script to parse model parameters from the EvoNAPS database***\n')
@@ -547,7 +565,7 @@ def main():
 
     # Create query
     query_df, branch_df, hit_table = fetchParameters(matrix, rate=rate, seq_min=seq_min, seq_max=seq_max, col_min=col_min, col_max=col_max, \
-        tables=tables, ic=ic, ic_sig=ic_sig, tree=tree, branch=branch)
+        tables=tables, ic=ic, ic_sig=ic_sig, tree=tree, branch=branch, keep=keep, source=source)
     # Check results
     if query_df is None: 
         sys.exit(5)
@@ -567,8 +585,8 @@ def main():
 
     # Check the input of the user (actually done within the fetchParameters function) 
     # However, in order to write the actual used input into the log file, the input is checked again.
-    matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch = \
-        CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch)
+    matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch, keep, source \
+         = CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch, keep, source)
     
     # Write a log file
     with open (prefix+'.log', 'w') as w: 

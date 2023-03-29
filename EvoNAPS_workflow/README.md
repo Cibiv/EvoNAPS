@@ -33,7 +33,7 @@ Additionally, the workflow requires a modified version of the phylogenetic infer
 
 * [iqtree2mod](iqtree2mod)
 
-Download (or copy) all of the mentioned scripts and software into your bin. Alternativly, simply download the entire [EvoNAPS_workflow](../EvoNAPS_workflow/) folder and add it to your PATH environment variable. 
+Download (or copy) all of the mentioned scripts and software into your bin. Alternatively, simply download the entire [EvoNAPS_workflow](../EvoNAPS_workflow/) folder and add it to your PATH environment variable. 
 
 Once completed, the scripts need to be made into executables. Do this by typing: 
 
@@ -113,7 +113,7 @@ to get some help on how to run the script.
 
 ### **Workflow**
 
-The example bash files [example_workflow_aa.sh](example_workflow_aa.sh) and [example_workflow_dna.sh](example_workflow_dna.sh) are short scripts that can be used to apply the Snakemake worflow on all alignemnts found in a folder. A folder *FOLDER* is hereby required as input. 
+The example bash files [example_workflow_aa.sh](example_workflow_aa.sh) and [example_workflow_dna.sh](example_workflow_dna.sh) are short scripts that can be used to apply the Snakemake workflow on all alignments found in a folder. A folder *FOLDER* is hereby required as input. 
 
 ```console
 (snakemake) name@server:~> bash example_workflow_dna.sh [FOLDER]
@@ -159,4 +159,3 @@ Minh, B. Q., Schmidt, H. A., Chernomor, O., Schrempf, D., Woodhams, M. D., von H
 Peter J. A. Cock, Tiago Antao, Jeffrey T. Chang, Brad A. Chapman, Cymon J. Cox, Andrew Dalke, Iddo Friedberg, Thomas Hamelryck, Frank Kauff, Bartek Wilczynski, Michiel J. L. de Hoon, Biopython: freely available Python tools for computational molecular biology and bioinformatics, Bioinformatics, Volume 25, Issue 11, June 2009, Pages 1422–1423, https://doi.org/10.1093/bioinformatics/btp163
 
 Whelan, S., Bakker, P., Quevillon, E., Rodriguez, N., & Goldman, N. (2006). PANDIT: an evolution-centric database of protein and associated nucleotide domains with inferred trees. Nucleic acids research, 34, D327-331. https://doi.org/10.1093/nar/gkj087 
-

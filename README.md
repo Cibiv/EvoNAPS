@@ -5,7 +5,7 @@
 
 The EvoNAPS database provides a large variety of phylogenetic trees as well as empirical parameter estimates of a diverse set of sequence evolution (SE) models. The main purpose of the database is to provide meaningful input for sequence simulations as phylogenetic studies have come to heavily rely on simulated data. The database offers various filter options to enable the user to find alignments, SE models or trees that fit their requirements. 
 
-The parameter estimates stored in EvoNAPS were gathered using the phylogenetic inference software IQ-Tree (v.2.2.0.5) (1) and are based on biological alignments. The alignments were gathered from existing published sources, namely the online respiratory provided by Rob Lanfear (2) as well as the *PANDIT* (3) and *OrthoMaM* (4) database.
+The parameter estimates stored in EvoNAPS were gathered using the phylogenetic inference software IQ-Tree (v.2.2.0.5) (Minh, 2022) and are based on biological alignments. The alignments were gathered from existing published sources, namely the online respiratory provided by Rob Lanfear (Lanfear, 2019) as well as the *PANDIT* (Whelan, 2006) and the *OrthoMaM* (Douzery, 2014) databases.
 
 So-far, the EvoNAPS database holds: 
 
@@ -25,10 +25,10 @@ Additionally, all scripts used to create the data in the EvoNAPS database can be
 
 ## **References**
 
-(1) Minh, B. Q., Schmidt, H. A., Chernomor, O., Schrempf, D., Woodhams, M. D., von Haeseler, A., & Lanfear, R. (2020). IQ-TREE 2: New Models and Efficient Methods for Phylogenetic Inference in the Genomic Era. Mol Biol Evol, 37(5), 1530-1534. https://doi.org/10.1093/molbev/msaa015 
+Douzery, E. J. P., Scornavacca, C., Romiguier, J., Belkhir, K., Galtier, N., Delsuc, F., & Ranwez, V. (2014). OrthoMaM v8: A Database of Orthologous Exons and Coding Sequences for Comparative Genomics in Mammals. Molecular Biology and Evolution, 31(7), 1923-1928. https://doi.org/10.1093/molbev/msu132
 
-(2) Lanfear, R. (2019). BenchmarkAlignments. https://github.com/roblanf/BenchmarkAlignments/
+Lanfear, R. (2019). BenchmarkAlignments. https://github.com/roblanf/BenchmarkAlignments/
 
-(3) Whelan, S., Bakker, P., Quevillon, E., Rodriguez, N., & Goldman, N. (2006). PANDIT: an evolution-centric database of protein and associated nucleotide domains with inferred trees. Nucleic acids research, 34, D327-331. https://doi.org/10.1093/nar/gkj087 
+Minh, B. Q., Schmidt, H. A., Chernomor, O., Schrempf, D., Woodhams, M. D., von Haeseler, A., & Lanfear, R. (2020). IQ-TREE 2: New Models and Efficient Methods for Phylogenetic Inference in the Genomic Era. Mol Biol Evol, 37(5), 1530-1534. https://doi.org/10.1093/molbev/msaa015 
 
-(4) Douzery, E. J. P., Scornavacca, C., Romiguier, J., Belkhir, K., Galtier, N., Delsuc, F., & Ranwez, V. (2014). OrthoMaM v8: A Database of Orthologous Exons and Coding Sequences for Comparative Genomics in Mammals. Molecular Biology and Evolution, 31(7), 1923-1928. https://doi.org/10.1093/molbev/msu132
+Whelan, S., Bakker, P., Quevillon, E., Rodriguez, N., & Goldman, N. (2006). PANDIT: an evolution-centric database of protein and associated nucleotide domains with inferred trees. Nucleic acids research, 34, D327-331. https://doi.org/10.1093/nar/gkj087 

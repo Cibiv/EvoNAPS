@@ -13,13 +13,13 @@
 
 The EvoNAPS database was built using the open-source MariaDB Server (v.10.0.13) and holds 13 different tables. An overview of the architecture of the database is given in the figure below. The figure shows an enhanced Entity-relationship-diagram (EER) of the EvoNAPS database using Crow’s feet notation. For simplicity only primary and foreign keys as well as columns involved in constraints are depicted. The figure was created using the reverse engineering tools of the MySQL Workbench software available at https://www.mysql.com/products/workbench/.
 
-More detailed information reagrding each table and its columns can be found in the [EvoNAPS_tables.md](EvoNAPS_tables.md) file.
+More detailed information regarding each table and its columns can be found in the [EvoNAPS_tables.md](EvoNAPS_tables.md) file.
 
 ![The EvoNAPS database](reduced_evonaps_architecture.svg)
 
 ## **Database access**
 
-This section will explain how to manually acess the EvoNAPS database on the CIBIV server. The database lies on the Crick server and can be accessed by simply typing the following command:
+This section will explain how to manually access the EvoNAPS database on the CIBIV server. The database lies on the Crick server and can be accessed by simply typing the following command:
 
 ```console
 $ mysql -h crick -u [user] -p fra_db
@@ -31,9 +31,9 @@ Once you have entered the command as stated above, you can simply enter the quer
 
 ## **Example queries**
 
-If you are interested in typical parameter settings of specific model of sequence evolution, then you can simply employ the provided [get_model_parameters.py](get_model_parameters.py) python script. Note, that the script must be executed on the CIBIV server to work. The script takes the input of the user and incooperates it into a query. After accessing the EvoNAPS database on the Crick server, the query will be executed and the results will be written int a csv file. 
+If you are interested in typical parameter settings of specific model of sequence evolution, then you can simply employ the provided [get_model_parameters.py](get_model_parameters.py) python script. Note, that the script must be executed on the CIBIV server to work. The script takes the input of the user and incorporates it into a query. After accessing the EvoNAPS database on the Crick server, the query will be executed and the results will be written int a csv file. 
 
-In order to execute the script, first, load the python3 module. The python3 module already includes all neccessary libraries, namely Pandas (v.1.1.3) and mysql.connect (v.8.0.5b1). Once the python3 module has loaded, the script can be executed, e.g.: 
+In order to execute the script, first, load the python3 module. The python3 module already includes all necessary libraries, namely Pandas (v.1.1.3) and mysql.connect (v.8.0.5b1). Once the python3 module has loaded, the script can be executed, e.g.: 
 
 ```console
 $ module load python3
@@ -46,7 +46,7 @@ For further information on how to use the script and to get to know all the avai
 $ python3 get_model_parameters.py --help
 ```
 
-The [get_model_parameters.py](get_model_parameters.py) script is essentially centered around a single function that creates and executes the query, namely the *fetchParameters()* function. The function can be easily imported to be used in other python scripts, whould you wish to do so.
+The [get_model_parameters.py](get_model_parameters.py) script is essentially centred around a single function that creates and executes the query, namely the *fetchParameters()* function. The function can be easily imported to be used in other python scripts, should you wish to do so.
 
 ## **Create statements** 
 

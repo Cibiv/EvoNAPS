@@ -27,7 +27,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 * **UQ**: unique key
 * **AI**: auto-incremented
 * **+**: applies to
-* **\***: is involed in
+* **\***: is involved in
 
 ## **1. dataorigin**
 
@@ -56,9 +56,9 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **REGION** | varchar\(50\) |  |  |  |  | NULL | States the region of the cell where the proteins from which the substitution rate matrix was derived from are abundant\. Optional, default is NULL\. 
 **EXPLANATION** | varchar\(100\) |  |  |  |  | NULL | This field contains a short description of the model\. 
 **STAT\_DIS\_TYPE** | varchar\(50\) |  |  |  |  |  | This field states whether the state frequencies of the stationary distribution assumed in the model are empirical \(counted frequencies from the alignment\) or if they are predefined by the model\. 
-**FREQ\_A** | decimal\(10,9\) |  |  |  |  | NULL | Either NULL if STAT\_DIS\_TYPE='empirical'\. Else, the freqeuncy of the amino acid alanine \(A\) assumed by the model\. 
+**FREQ\_A** | decimal\(10,9\) |  |  |  |  | NULL | Either NULL if STAT\_DIS\_TYPE='empirical'\. Else, the frequency of the amino acid alanine \(A\) assumed by the model\. 
 **…** |  |  |  |  |  |  | … 
-**FREQ\_V** | decimal\(10,9\) |  |  |  |  | NULL | Either NULL if STAT\_DIS\_TYPE='empirical'\. Else, the freqeuncy of the amino acid tyrosine \(Y\) assumed by the model\. 
+**FREQ\_V** | decimal\(10,9\) |  |  |  |  | NULL | Either NULL if STAT\_DIS\_TYPE='empirical'\. Else, the frequency of the amino acid tyrosine \(Y\) assumed by the model\. 
 **RATE\_AR** | DECIMAL\(15,9\) |  | \+ |  |  |  | The substitution rate from aa A to aa R assumed by the model\. 
 **…** |  |  |  |  |  |  | … 
 **RATE\_YV** | DECIMAL\(15,9\) |  | \+ |  |  |  | The substitution rate from aa Y to aa V assumed by the model\. 
@@ -145,7 +145,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **FRAC\_WILDCARDS\_GAPS** | decimal\(10,9\) |  |  |  |  | NULL | States the fraction of wildcards and gaps in the sequence\. 
 **CHI2\_P\_VALUE** | decimal\(7,2\) |  |  |  |  | NULL | States the p\-value of the Chi-Square test for the sequence\. The Chi-Square test tests whether the amino acid composition of the sequence fits the mean aa frequencies across all sequences in the alignment\. 
 **CHI2\_PASSED** | tinyint\(1\) |  |  |  |  | NULL | States whether the sequence passed \(1\) or failed \(0\) the Chi-Square test\.  
-**EXCLUDED** | int\(11\) |  |  |  |  | NULL | States whether the sequence has been excluded from IQ\-Tree calculations \(without the flag \*\-\-keep\-ident\*\)\. IQ\-Tree excludes a sequence from ist computations if there already exist at least two identical sequences in the alignment\. 
+**EXCLUDED** | int\(11\) |  |  |  |  | NULL | States whether the sequence has been excluded from IQ\-Tree calculations \(without the flag \*\-\-keep\-ident\*\)\. IQ\-Tree excludes a sequence from its computations if there already exist at least two identical sequences in the alignment\. 
 **IDENTICAL\_TO** | varchar\(10000\) |  |  |  |  | NULL | States to which sequence\(s\) the sequence is identical to, if such \(a\) sequence\(s\) exist\(s\)\. 
 **FREQ\_A** | decimal\(10,9\) |  | \+ |  |  |  | The frequency of the amino acid alanine \(A\) in the sequence\. 
 **…** |  |  |  |  |  |  | … 
@@ -170,7 +170,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **FRAC\_WILDCARDS\_GAPS** | decimal\(10,9\) |  |  |  |  | NULL | States the fraction of wildcards and gaps in the sequence\. 
 **CHI2\_P\_VALUE** | decimal\(7,2\) |  |  |  |  | NULL | States the p\-value of the Chi-Square test for the sequence\. The Chi-Square test tests whether the nucleotide composition of the sequence fits the mean dna frequencies across all sequences in the alignment\. 
 **CHI2\_PASSED** | tinyint\(1\) |  |  |  |  | NULL | States whether the sequence passed \(1\) or failed \(0\) the Chi-Square test\.  
-**EXCLUDED** | int\(11\) |  |  |  |  | NULL | States whether the sequence has been excluded from IQ\-Tree calculations \(without the flag \*\-\-keep\-ident\*\)\. IQ\-Tree excludes a sequence from ist computations if there already exist at least two identical sequences in the alignment\. 
+**EXCLUDED** | int\(11\) |  |  |  |  | NULL | States whether the sequence has been excluded from IQ\-Tree calculations \(without the flag \*\-\-keep\-ident\*\)\. IQ\-Tree excludes a sequence from its computations if there already exist at least two identical sequences in the alignment\. 
 **IDENTICAL\_TO** | varchar\(10000\) |  |  |  |  | NULL | States to which sequence\(s\) the sequence is identical to, if such \(a\) sequence\(s\) exist\(s\)\. 
 **FREQ\_A** | decimal\(10,9\) |  | \+ |  |  |  | The frequency of the base adenine \(A\) in the sequence\. 
 **FREQ\_C** | decimal\(10,9\) |  | \+ |  |  |  | The frequency of the base cytosine \(C\) in the sequence\. 
@@ -180,7 +180,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 
 ## **8. aa_modelparameters** 
 
-**Comment**: The aa_modelparameters table holds the results of model selection. The performance of each evaluated model (LogL, AIC, BIC,...) is clearly documented as well as the parameters of the model (state frequencies, rates, shape paramater alpha,...).
+**Comment**: The aa_modelparameters table holds the results of model selection. The performance of each evaluated model (LogL, AIC, BIC,...) is clearly documented as well as the parameters of the model (state frequencies, rates, shape parameter alpha,...).
 
 **Constraints:**
 
@@ -196,7 +196,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **IQTREE_VERSION** | varchar(100) |  | + |  |  |  |  
 **RANDOM_SEED** | int(11) |  | + |  |  |  | The random number seed used by IQ-Tree.  
 **TIME_STAMP** | datetime |  | + | * |  |  | The timestamp as it appears in the *.iqtree* output file. The timestamp enables mapping of the tested model to one IQ-Tree run. 
-**MODEL_TYPE** | varchar(100) |  | + |  |  |  | The type of model testing or the type of models that were tested in the IQ-Tree run. Will mostly be MF (the models included in the default ModeFinder algorithm).  
+**MODEL_TYPE** | varchar(100) |  | + |  |  |  | The type of model testing or the type of models that were tested in the IQ-Tree run. Will mostly be MF (the models included in the default ModelFinder algorithm).  
 **KEEP_IDENT** | tinyint(1) |  |  |  |  | NULL | Boolean stating whether the *--keep-ident* flag has been enabled (1) or disabled (0) in the IQ-Tree run.  
 **MODEL** | varchar(100) |  | + | * |  |  | Name of the tested model 
 **BASE_MODEL** | varchar(100) |  | + |  |  |  | Name of the substitution rate matrix used in the model.  
@@ -221,22 +221,22 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **NUM_FREE_PARAMETERS** | int(11) |  | + |  |  |  | Number of free parameters (=NUM_MODEL_PARAMETERS+NUM_BRANCHES). 
 **NUM_MODEL_PARAMETERS** | int(11) |  | + |  |  |  | Number of free parameters of the model of sequence evolution 
 **NUM_BRANCHES** | int(11) |  | + |  |  |  | Number of branches in the phylogenetic tree. In a fully resolved tree: 2n-3 (with n taxa). 
-**TREE_LENGTH** | decimal(15,9) |  | + |  |  |  | Length of the tree (might differ for the different models as the branch lengths are being re-estimated during model evalulation). 
+**TREE_LENGTH** | decimal(15,9) |  | + |  |  |  | Length of the tree (might differ for the different models as the branch lengths are being re-estimated during model evaluation). 
 **PROP_INVAR** | decimal(10,9) |  |  |  |  | NULL | Proportion of invariable sites in case the *+I* model of rate heterogeneity was employed. Else, NULL. 
 **ALPHA** | decimal(15,9) |  |  |  |  | NULL | Shape parameter alpha should an Gamma *+G4* model have been employed. Else, NULL. 
 **STAT_FREQ_TYPE** | varchar(100) |  | + |  |  |  | This field states whether the state frequencies of the stationary distribution assumed in the model are *empirical* (counted frequencies from the alignment) or if they are predefined by the model (*model*).  
-**STAT_FREQ_A** | decimal(10,9) |  | + |  |  |  | The stationary freqeuncy of the amino acid alanine (A) assumed by the model. 
+**STAT_FREQ_A** | decimal(10,9) |  | + |  |  |  | The stationary frequency of the amino acid alanine (A) assumed by the model. 
 **…** |  |  |  |  |  |  | … 
-**STAT_FREQ_V** | decimal(10,9) |  | + |  |  |  | The stationary freqeuncy of the amino acid tyrosine (V) assumed by the model. 
-**PROP_CAT_1** | decimal(10,9) |  |  |  |  | NULL | The porportion of the first rate category (should the model assume different rates across sites). 
+**STAT_FREQ_V** | decimal(10,9) |  | + |  |  |  | The stationary frequency of the amino acid tyrosine (V) assumed by the model. 
+**PROP_CAT_1** | decimal(10,9) |  |  |  |  | NULL | The proportion of the first rate category (should the model assume different rates across sites). 
 **REL_RATE_CAT_1** | decimal(15,9) |  |  |  |  | NULL | The rate of the first rate category (should the model assume different rates across sites). 
 **…** |  |  |  |  |  |  | … 
-**PROP_CAT_10** | decimal(10,9) |  |  |  |  | NULL | The porportion of the tenth rate category (should there exist one). 
+**PROP_CAT_10** | decimal(10,9) |  |  |  |  | NULL | The proportion of the tenth rate category (should there exist one). 
 **REL_RATE_CAT_10** | decimal(15,9) |  |  |  |  | NULL | The rate of the tenth rate category (should there exist one). 
 
 ## **9. dna_modelparameters** 
 
-**Comment**: The dna_modelparameters table holds the results of model selection. The performance of each evaluated model (LogL, AIC, BIC,...) is clearly documented as well as the parameters of the model (state frequencies, rates, shape paramater alpha,...).
+**Comment**: The dna_modelparameters table holds the results of model selection. The performance of each evaluated model (LogL, AIC, BIC,...) is clearly documented as well as the parameters of the model (state frequencies, rates, shape parameter alpha,...).
 
 **Constraints:**
 
@@ -252,7 +252,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **IQTREE_VERSION** | varchar(100) |  | + |  |  |  |  
 **RANDOM_SEED** | int(11) |  | + |  |  |  | The random number seed used by IQ-Tree.  
 **TIME_STAMP** | datetime |  | + | * |  |  | The timestamp as it appears in the *.iqtree* output file. The timestamp enables mapping of the tested model to one IQ-Tree run. 
-**MODEL_TYPE** | varchar(100) |  | + |  |  |  | The type of model testing or the type of models that were tested in the IQ-Tree run. Will mostly be MF (the models included in the default ModeFinder algorithm).  
+**MODEL_TYPE** | varchar(100) |  | + |  |  |  | The type of model testing or the type of models that were tested in the IQ-Tree run. Will mostly be MF (the models included in the default ModelFinder algorithm).  
 **KEEP_IDENT** | tinyint(1) |  |  |  |  | NULL | Boolean stating whether the *--keep-ident* flag has been enabled (1) or disabled (0) in the IQ-Tree run.  
 **MODEL** | varchar(100) |  | + | * |  |  | Name of the tested model 
 **BASE_MODEL** | varchar(100) |  | + |  |  |  | Name of the substitution rate matrix used in the model.  
@@ -277,7 +277,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **NUM_FREE_PARAMETERS** | int(11) |  | + |  |  |  | Number of free parameters (=NUM_MODEL_PARAMETERS+NUM_BRANCHES). 
 **NUM_MODEL_PARAMETERS** | int(11) |  | + |  |  |  | Number of free parameters of the model of sequence evolution 
 **NUM_BRANCHES** | int(11) |  | + |  |  |  | Number of branches in the phylogenetic tree. In a fully resolved tree: 2n-3 (with n taxa). 
-**TREE_LENGTH** | decimal(15,9) |  | + |  |  |  | Length of the tree (might differ for the different models as the branch lengths are being re-estimated during model evalulation). 
+**TREE_LENGTH** | decimal(15,9) |  | + |  |  |  | Length of the tree (might differ for the different models as the branch lengths are being re-estimated during model evaluation). 
 **PROP_INVAR** | decimal(10,9) |  |  |  |  | NULL | Proportion of invariable sites in case the *+I* model of rate heterogeneity was employed. Else, NULL. 
 **ALPHA** | decimal(15,9) |  |  |  |  | NULL | Shape parameter alpha should an Gamma *+G4* model have been employed. Else, NULL. 
 **STAT_FREQ_TYPE** | varchar(100) |  | + |  |  |  | This field states whether the state frequencies of the stationary distribution assumed in the model are *empirical* (counted frequencies from the alignment) or if they are predefined by the model (*model*).  
@@ -290,15 +290,15 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **…** |  |  |  |  |  |  | … 
 **RATE_GT** | decimal(15,9) |  | + |  |  |  | Assumed relative substitution rate from G to T. 
 **RATE_TG** | decimal(15,9) |  | + |  |  |  | Assumed relative substitution rate from T to G. 
-**PROP_CAT_1** | decimal(10,9) |  |  |  |  | NULL | The porportion of the first rate category (should the model assume different rates across sites). 
+**PROP_CAT_1** | decimal(10,9) |  |  |  |  | NULL | The proportion of the first rate category (should the model assume different rates across sites). 
 **REL_RATE_CAT_1** | decimal(15,9) |  |  |  |  | NULL | The rate of the first rate category (should the model assume different rates across sites). 
 **…** |  |  |  |  |  |  | … 
-**PROP_CAT_10** | decimal(10,9) |  |  |  |  | NULL | The porportion of the tenth rate category (should there exist one). 
+**PROP_CAT_10** | decimal(10,9) |  |  |  |  | NULL | The proportion of the tenth rate category (should there exist one). 
 **REL_RATE_CAT_10** | decimal(15,9) |  |  |  |  | NULL | The rate of the tenth rate category (should there exist one). 
 
 ## **10. aa_trees** 
 
-**Comment**: The aa_trees table contains a set of phylogentic trees as well as the  parameters of the assumed model of sequence evolution. The trees are either a fast-ML tree used in the model evaluation or a maximum likelihood (ML) tree inferred using the best-fit model.
+**Comment**: The aa_trees table contains a set of phylogenetic trees as well as the  parameters of the assumed model of sequence evolution. The trees are either a fast-ML tree used in the model evaluation or a maximum likelihood (ML) tree inferred using the best-fit model.
 
 **Constraints:**
 
@@ -314,7 +314,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **IQTREE_VERSION** | varchar(100) |  | + |  |  |  |  
 **RANDOM_SEED** | int(11) |  | + |  |  |  | The random number seed used by IQ-Tree.  
 **TIME_STAMP** | datetime |  | + | * |  |  | The timestamp as it appears in the *.iqtree* output file. The timestamp enables mapping of the tested model to one IQ-Tree run. 
-**MODEL_TYPE** | varchar(100) |  | + |  |  |  | The type of model testing or the type of models that were tested in the IQ-Tree run. Will mostly be MF (the models included in the default ModeFinder algorithm).  
+**MODEL_TYPE** | varchar(100) |  | + |  |  |  | The type of model testing or the type of models that were tested in the IQ-Tree run. Will mostly be MF (the models included in the default ModelFinder algorithm).  
 **TREE_TYPE** | varchar(100) |  | + | * |  |  | States the type of the tree. It is either *initial* (fast ML tree used for model evaluation) or *ML* (maximum likelihood tree). 
 **CHOICE_CRITERIUM** | varchar(100) |  |  |  |  | NULL | States the choice criterium used to select the model for the ML tree search. In case of an *initial* tree, this field is left empty (NULL). 
 **KEEP_IDENT** | tinyint(1) |  |  |  |  | NULL | Boolean stating whether the *--keep-ident* flag has been enabled (1) or disabled (0) in the IQ-Tree run.  
@@ -335,13 +335,13 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **PROP_INVAR** | decimal(10,9) |  |  |  |  | NULL | Proportion of invariable sites in case the *+I* model of rate heterogeneity was employed. Else, NULL. 
 **ALPHA** | decimal(15,9) |  |  |  |  | NULL | Shape parameter alpha should an Gamma *+G4* model have been employed. Else, NULL. 
 **STAT_FREQ_TYPE** | varchar(100) |  | + |  |  |  | This field states whether the state frequencies of the stationary distribution assumed in the model are *empirical* (counted frequencies from the alignment) or if they are predefined by the model (*model*).  
-**STAT_FREQ_A** | decimal(10,9) |  | + |  |  |  | The freqeuncy of the amino acid alanine (A) assumed by the model. 
+**STAT_FREQ_A** | decimal(10,9) |  | + |  |  |  | The frequency of the amino acid alanine (A) assumed by the model. 
 **…** |  |  |  |  |  |  | … 
-**STAT_FREQ_V** | decimal(10,9) |  | + |  |  |  | The freqeuncy of the amino acid tyrosine (V) assumed by the model. 
-**PROP_CAT_1** | decimal(10,9) |  |  |  |  | NULL | The porportion of the first rate category (should the model assume different rates across sites). 
+**STAT_FREQ_V** | decimal(10,9) |  | + |  |  |  | The frequency of the amino acid tyrosine (V) assumed by the model. 
+**PROP_CAT_1** | decimal(10,9) |  |  |  |  | NULL | The proportion of the first rate category (should the model assume different rates across sites). 
 **REL_RATE_CAT_1** | decimal(15,9) |  |  |  |  | NULL | The rate of the first rate category (should the model assume different rates across sites). 
 **…** |  |  |  |  |  |  | … 
-**PROP_CAT_10** | decimal(10,9) |  |  |  |  | NULL | The porportion of the tenth rate category (should there exist one). 
+**PROP_CAT_10** | decimal(10,9) |  |  |  |  | NULL | The proportion of the tenth rate category (should there exist one). 
 **REL_RATE_CAT_10** | decimal(15,9) |  |  |  |  | NULL | The rate of the tenth rate category (should there exist one). 
 **TREE_LENGTH** | decimal(15,9) |  | + |  |  |  | Total length of the tree (sum of all branch lengths). 
 **SUM_IBL** | decimal(15,9) |  | + |  |  |  | Sum of internal branch lengths 
@@ -349,7 +349,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **DIST_MIN** | decimal(15,9) |  |  |  |  | NULL | Minimal distance between two sequences in the alignment caculated using the best-fit model. In case of *initial* tree, this field will be NULL. 
 **DIST_MAX** | decimal(15,9) |  |  |  |  | NULL | Maximum distance between two sequences in the alignment calculated using the best-fit model. In case of *initial* tree, this field will be NULL. 
 **DIST_MEAN** | decimal(15,9) |  |  |  |  | NULL | Mean distance between two sequences in the alignment calculated using the best-fit model. In case of *initial* tree, this field will be NULL. 
-**DIST_MEDIAN** | decimal(15,9) |  |  |  |  | NULL | Meadian distance between two sequences in the alignment calculated using the best-fit model. In case of *initial* tree, this field will be NULL. 
+**DIST_MEDIAN** | decimal(15,9) |  |  |  |  | NULL | Median distance between two sequences in the alignment calculated using the best-fit model. In case of *initial* tree, this field will be NULL. 
 **DIST_VAR** | decimal(15,9) |  |  |  |  | NULL | Variation in distances between any two sequences in the alignment calculated using the best-fit model. In case of *initial* tree, this field will be NULL. 
 **BL_MIN** | decimal(15,9) |  |  |  |  | NULL | Shortest branch in the tree 
 **BL_MAX** | decimal(15,9) |  |  |  |  | NULL | Longest branch in the tree. 
@@ -370,11 +370,11 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **POT_LBA_8** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 8 times larger than the short and internal branch. 
 **POT_LBA_9** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 9 times larger than the short and internal branch. 
 **POT_LBA_10** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 10 times larger than the short and internal branch. 
-**NEWICK_STRING** | mediumtext |  | + |  |  |  | This field contains the Newick string of the phylogentic tree. 
+**NEWICK_STRING** | mediumtext |  | + |  |  |  | This field contains the Newick string of the phylogenetic tree. 
 
 ## **11. dna_trees** 
 
-**Comment**: The dna_trees table contains a set of phylogentic trees as well as the  parameters of the assumed model of sequence evolution. The trees are either a fast-ML tree used in the model evaluation or a maximum likelihood (ML) tree inferred using the best-fit model.
+**Comment**: The dna_trees table contains a set of phylogenetic trees as well as the  parameters of the assumed model of sequence evolution. The trees are either a fast-ML tree used in the model evaluation or a maximum likelihood (ML) tree inferred using the best-fit model.
 
 **Constraints:**
 
@@ -390,7 +390,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **IQTREE_VERSION** | varchar(100) |  | + |  |  |  |  
 **RANDOM_SEED** | int(11) |  | + |  |  |  | The random number seed used by IQ-Tree.  
 **TIME_STAMP** | datetime |  | + | * |  |  | The timestamp as it appears in the *.iqtree* output file. The timestamp enables mapping of the tested model to one IQ-Tree run. 
-**MODEL_TYPE** | varchar(100) |  | + |  |  |  | The type of model testing or the type of models that were tested in the IQ-Tree run. Will mostly be MF (the models included in the default ModeFinder algorithm).  
+**MODEL_TYPE** | varchar(100) |  | + |  |  |  | The type of model testing or the type of models that were tested in the IQ-Tree run. Will mostly be MF (the models included in the default ModelFinder algorithm).  
 **TREE_TYPE** | varchar(100) |  | + | * |  |  | States the type of the tree. It is either *initial* (fast ML tree used for model evaluation) or *ML* (maximum likelihood tree). 
 **CHOICE_CRITERIUM** | varchar(100) |  |  |  |  | NULL | States the choice criterium used to select the model for the ML tree search. In case of an *initial* tree, this field is left empty (NULL). 
 **KEEP_IDENT** | tinyint(1) |  |  |  |  | NULL | Boolean stating whether the *--keep-ident* flag has been enabled (1) or disabled (0) in the IQ-Tree run.  
@@ -420,10 +420,10 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **…** |  |  |  |  |  |  | … 
 **RATE_GT** | decimal(15,9) |  | + |  |  |  | Assumed relative substitution rate from G to T. 
 **RATE_TG** | decimal(15,9) |  | + |  |  |  | Assumed relative substitution rate from T to G. 
-**PROP_CAT_1** | decimal(10,9) |  |  |  |  | NULL | The porportion of the first rate category (should the model assume different rates across sites). 
+**PROP_CAT_1** | decimal(10,9) |  |  |  |  | NULL | The proportion of the first rate category (should the model assume different rates across sites). 
 **REL_RATE_CAT_1** | decimal(15,9) |  |  |  |  | NULL | The rate of the first rate category (should the model assume different rates across sites). 
 **…** |  |  |  |  |  |  | … 
-**PROP_CAT_10** | decimal(10,9) |  |  |  |  | NULL | The porportion of the tenth rate category (should there exist one). 
+**PROP_CAT_10** | decimal(10,9) |  |  |  |  | NULL | The proportion of the tenth rate category (should there exist one). 
 **REL_RATE_CAT_10** | decimal(15,9) |  |  |  |  | NULL | The rate of the tenth rate category (should there exist one). 
 **TREE_LENGTH** | decimal(15,9) |  | + |  |  |  | Total length of the tree (sum of all branch lengths). 
 **SUM_IBL** | decimal(15,9) |  | + |  |  |  | Sum of internal branch lengths 
@@ -448,17 +448,16 @@ Note that, sometimes the tables containing information regarding DNA and protein
 **EBL_MEAN** | decimal(15,9) |  |  |  |  | NULL | Mean external branch length in the tree. 
 **EBL_MEDIAN** | decimal(15,9) |  |  |  |  | NULL | Median external branch length in the tree. 
 **EBL_VAR** | decimal(15,9) |  |  |  |  | NULL | Variation in external branch lengths in the tree. 
-**POT_LBA_7** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 7 times larger than the short an internal branch. 
-**POT_LBA_8** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 8 times larger than the short an internal branch. 
-**POT_LBA_9** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 9 times larger than the short an internal branch. 
-**POT_LBA_10** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 10 times larger than the short an internal branch. 
-**NEWICK_STRING** | mediumtext |  | + |  |  |  | This field contains the Newick string of the phylogentic tree. 
-
+**POT_LBA_7** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 7 times larger than the short and internal branch. 
+**POT_LBA_8** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 8 times larger than the short and internal branch. 
+**POT_LBA_9** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 9 times larger than the short and internal branch. 
+**POT_LBA_10** | int(11) |  |  |  |  | NULL | States if there exists a potential long branch attraction (LBA) problem in the tree. Assuming that the long branches need to be at least 10 times larger than the short and internal branch. 
+**NEWICK_STRING** | mediumtext |  | + |  |  |  | This field contains the Newick string of the phylogenetic tree. 
 
 
 ## **12. aa_branches** 
 
-**Comment**: The aa_branches table contains information regarding the branches of the phylogenetic trees stored in the aa_trees table. Each line contains a infromation rearding one branch such as the branch type, the branch length, the splitsize, etc.
+**Comment**: The aa_branches table contains information regarding the branches of the phylogenetic trees stored in the aa_trees table. Each line contains information regarding one branch such as the branch type, the branch length, the splitsize, etc.
 
 **Constraints:**
 
@@ -486,7 +485,7 @@ Note that, sometimes the tables containing information regarding DNA and protein
 
 ## **13. dna_branches** 
 
-**Comment**: The dna_branches table contains information regarding the branches of the phylogenetic trees stored in the dna_trees table. Each line contains a infromation rearding one branch such as the branch type, the branch length, the splitsize, etc.
+**Comment**: The dna_branches table contains information regarding the branches of the phylogenetic trees stored in the dna_trees table. Each line contains information regarding one branch such as the branch type, the branch length, the splitsize, etc.
 
 **Constraints:**
 
