@@ -463,7 +463,7 @@ def main():
     limit of 0.1 for the weighted BIC values. Furthermore, the tree used for model evalutation (initial tree)
     will be returned in Newickstring (-t option). 
 
-    >>> get_model_parameters.py -m GTR -r E,I,G4 --table test --seq_min 50 --ic BIC --ic_sig 0.1 -t
+    >>> get_model_parameters.py -m GTR -r E,I,G4 --table,test --seq_min 50 --ic BIC --ic_sig 0.1 -t
     """
 
     # Default settings
