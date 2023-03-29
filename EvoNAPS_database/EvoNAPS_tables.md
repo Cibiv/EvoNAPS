@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-You can find a detailed description of the tables of the EvoNAPS database in the following tables: 
+You can find a detailed description of the tables of the EvoNAPS database in the following chapters: 
 
 1. [dataorigin](#dataorigin)
 2. [aa_models](#2-aa_models)
