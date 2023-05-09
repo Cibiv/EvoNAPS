@@ -134,7 +134,7 @@ def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_
 
 def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = None, col_min: int = None, col_max: int = None, \
     tables: str='TEST,TREE', ic: str='BIC', ic_sig: float=0.05, user='frareden', password='Franzi987', \
-        tree:bool=False, branch:bool=False, keep:bool=True, source: str=None) -> pd.DataFrame: 
+        tree:bool=False, branch:bool=False, keep:bool=False, source: str=None, pquery=False) -> pd.DataFrame: 
     """
     Description
     --------
@@ -187,10 +187,13 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
     keep: bool
         If you also want to search the database for results obtained by running IQ-Tree 2 with the '--keep-ident' flag, set this 
         parameter to True. Default is False (in this case, only inference results conducted on the (potentially) reduced alignments 
-        are shown)
+        are shown).
     source: str, optional
         Restrict the search to alignments from a specific source. Options: PANIDT, OrthoMaM, Lanfear 
         Default is 'None' (no search resistrictions).
+    pquery : bool, optional
+        Set this option to True, if you want the queries that have been used to fetch the model parameters to be returned as a list. 
+        This option is primarily for debugging. Default is False.
 
     Returns
     --------
@@ -208,12 +211,15 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
         'REL_RATE_CAT_10','PROP_CAT_10']
         Optionally: 'NEWICK_STRING' in last column.
     branch_df : pd.DataFrame | None
-        A pandas DataFrame holding the branch parameters of the ML tree or None if the option 'branch' is set to False.
+        A pandas DataFrame holding the branch parameters of the ML tree (or None if the option 'branch' is set to False).
         The column names are: 
         ['ALI_KEY', 'TREE_KEY', 'BRANCH_KEY', 'ALI_ID', 'TREE_TYPE', 'BRANCH_INDEX', 'BRANCH_TYPE', 'SEQ_NAME', 'BL', 'SPLIT_SIZE']
         in the parameters_df DataFrame.
     hit_table : pd.DataFrame
         The hit table includes the number of hits for each model and table.
+    pquery_list : list | None
+        This list holds all the queries that have been used to fetch the model parameters (or is None if the pquery option is set to False). 
+        Each entry itself is a list with length 2, whereas position 0 holds the timestamp and position 1 holds the query (as string). 
 
     Example
     --------
@@ -267,9 +273,12 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
                                     'REL_RATE_CAT_10','PROP_CAT_10'])
 
     branch_df = None
+    query_list = None
 
     if tree is True:
         query_df.insert(len(query_df.columns), 'NEWICK_STRING', [])
+    if pquery is True: 
+        query_list = []
 
     hit_table = pd.DataFrame(columns = ['TABLE', 'MODEL', 'HITS'])
 
@@ -321,6 +330,10 @@ INNER JOIN dna_alignments a USING (ALI_ID) "
             query += "AND a.COLUMNS <= "+col_max+""
         query += " AND c.TREE_TYPE = \'initial\';" 
         
+        # If pquery option is enabled (set to True) append query to query_list.
+        if pquery is True: 
+            query_list.append([datetime.datetime.now(), query])
+
         # Execute query and fetch results 
         mycursor.execute(query)
         myresult = mycursor.fetchall()
@@ -336,7 +349,7 @@ INNER JOIN dna_alignments a USING (ALI_ID) "
             if mo not in hits_test['MODEL'].to_list(): 
                 hits_test = hits_test.append({'MODEL':mo, 'HITS':0}, ignore_index=True)
         hits_test.insert(0,'TABLE','dna_modelparameters')
-        hit_table = pd.concat([hit_table, hits_test], axis=0)
+        hit_table = pd.concat([hit_table, hits_test], axis=0, ignore_index=True)
 
     # Check if search will be conducted in dna_trees table
     if 'TREE' in tables: 
@@ -372,7 +385,11 @@ INNER JOIN dna_alignments a USING (ALI_ID) "
         if col_max is not None: 
             query += "AND a.COLUMNS <= "+col_max+""
         query += " AND b.TREE_TYPE = \'ml\';" 
-        
+
+        # If pquery option is enabled (set to True) append query to query_list.
+        if pquery is True: 
+            query_list.append([datetime.datetime.now(), query])
+            
         # Execute query and fetch the results
         mycursor.execute(query)
         myresult = mycursor.fetchall()
@@ -388,7 +405,7 @@ INNER JOIN dna_alignments a USING (ALI_ID) "
             if mo not in hits_tree['MODEL'].to_list(): 
                 hits_tree = hits_tree.append({'MODEL':mo, 'HITS':0}, ignore_index=True)
         hits_tree.insert(0,'TABLE','dna_trees')
-        hit_table = pd.concat([hit_table, hits_tree], axis=0)
+        hit_table = pd.concat([hit_table, hits_tree], axis=0, ignore_index=True)
 
         # If branch option is true, also filter for BLs.
         if branch is True: 
@@ -424,7 +441,7 @@ WHERE b.TREE_TYPE = \'ml\' AND d.MODEL IN "+string_models+""
             branch_df = pd.concat([branch_df, new_branch_df], ignore_index=True)
     
     # Return results
-    return query_df, branch_df, hit_table
+    return query_df, branch_df, hit_table, query_list
 
 def main(): 
     """
@@ -437,16 +454,16 @@ def main():
 
     REQUIRED INPUT:
     --------
-    --matrix or -m: str
+    --matrix or -m : str
         Declare model of interest. If you want to search for more than one model, seperate the models with a comma, e.g. JC,GTR.
         Accepted models are: JC, F81, K2P, HKY, TN, TNe, TPM2, TPM2u, TIM2, TIM2e, TPM3, TPM3u, TIM3, TIM3e, K3P, K3Pu, TIM, TIMe, TVM, TVMe, SYM, GTR 
-    --rate or -r: str
+    --rate or -r : str
         Declare model(s) of rate heterogenity. If there is more than one model seperate them with a comma, e.g. G4,I (default is 'E')
         Accepted models of rate heterogenity are: E, I, I+G4, G4, R2, R3, R4, R5, R6, R7, R8, R9, R10
 
     OPTIONAL INPUT 
     --------
-    --table: str
+    --table : str
         Declare in which table(s) of the database you want to search (dna_trees (tree) and/or dna_modelparameters (test).
         If no input is provided, a search in both tables 'test,tree' is performed (default is 'tree,test')
         Possible options are: 'tree', 'test', 'test,tree'
@@ -475,12 +492,15 @@ def main():
     --output or -o : str
         Declare the prefix of the output csv file that will be generated (default is 'evonaps_query')
     --keep : 
-        If you also want to search the database for results obtained by running IQ-Tree 2 with the '--keep-ident' flag, set this 
-        parameter to True. Default is True (in this case, only inference results conducted on the (potentially) reduced alignments 
-        are shown)
+        Use this option if you also want to search the database for results obtained by running IQ-Tree 2 with the '--keep-ident' flag. 
+        Default is False (in this case, only inference results conducted on the (potentially) reduced alignments 
+        are shown).
     --source : str
         Restrict the search to alignments from a specific source. Options: PANIDT, OrthoMaM, Lanfear 
         Default is 'None' (no search resistrictions).
+    --pquery : 
+        Use this option, if you want the query or queries that has been used to fetch the model parameters to be written into a seperate logfile (.query.log). 
+        This option was addeed for debugging purposes. 
 
 
     Example
@@ -507,12 +527,13 @@ def main():
     prefix = 'evonaps_query'
     tree = False
     branch = False
-    keep = True
+    keep = False
     source = None
+    pquery = False
 
     # List of valid system arguments
     valid_arguments=['--help', '-h', '--matrix', '-m', '--rate', '-r', '--seq_min', '--seq_max', '--col_min','--col_max', '--table', \
-        '--ic', '--output', '-o', '--ic_sig', '--tree', '-t', '--branch', '-b', '--source', '--keep']
+        '--ic', '--output', '-o', '--ic_sig', '--tree', '-t', '--branch', '-b', '--source', '--keep', '--pquery']
     
     # Read in the input provided by the user
     for i in range (len(sys.argv)): 
@@ -548,6 +569,8 @@ def main():
             keep = False       
         if sys.argv[i] in ['--source']: 
             source =  sys.argv[i+1]  
+        if sys.argv[i] in ['--pquery']: 
+            pquery =  True 
         if sys.argv[i][0] == '-' and sys.argv[i] not in valid_arguments: 
             print('Unknown argument: '+sys.argv[i]+'. Type '+sys.argv[0]+' --help for help.')
             sys.exit(2)
@@ -564,8 +587,8 @@ def main():
     start=time.time()
 
     # Create query
-    query_df, branch_df, hit_table = fetchParameters(matrix, rate=rate, seq_min=seq_min, seq_max=seq_max, col_min=col_min, col_max=col_max, \
-        tables=tables, ic=ic, ic_sig=ic_sig, tree=tree, branch=branch, keep=keep, source=source)
+    query_df, branch_df, hit_table, query_list = fetchParameters(matrix, rate=rate, seq_min=seq_min, seq_max=seq_max, col_min=col_min, col_max=col_max, \
+        tables=tables, ic=ic, ic_sig=ic_sig, tree=tree, branch=branch, keep=keep, source=source, pquery=pquery)
     # Check results
     if query_df is None: 
         sys.exit(5)
@@ -610,6 +633,15 @@ def main():
     # Write hit table into log file
     hit_table.to_csv(prefix+'.log', index=False, sep=' ', mode='a')
     print('Log file: '+prefix+'.log')
+
+    if pquery is True: 
+        with open (prefix+'.query.log', 'w') as w:
+            w.write('***Script to parse model parameters from the EvoNAPS database***\n')
+            w.write('Author: Franziska Reden\nCreated: March 2023\n')
+            w.write('The query log file includes all the queries that have been used to fetch the model parameters\n from the EvoNAPS database:\n')
+            for q in query_list: 
+                w.write('\n'+str(q[0])+':\n'+str(q[1]))
+        print('Queries were written into '+prefix+'.query.log')
 
 if __name__ == '__main__': 
     main()

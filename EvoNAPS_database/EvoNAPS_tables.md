@@ -461,8 +461,8 @@ Note that, sometimes the tables containing information regarding DNA and protein
 
 **Constraints:**
 
-* **UNIQUE KEY** (*ALI_ID*,*TIME_STAMP*,*TREE_TYPE*)
-* **FOREIGN KEY** (*ALI_ID*) REFERENCES **dna_alignments** (*ALI_ID*)
+* **UNIQUE KEY** (*ALI_ID*,*BRANCH_INDEX*,*TIME_STAMP*,*TREE_TYPE*)
+* **FOREIGN KEY** (*ALI_ID*, *TIME_STAMP*, *TREE_TYPE*) REFERENCES **aa_trees** (*ALI_ID*, *TIME_STAMP*, *TREE_TYPE*)
 
 **Column Name** | **Datatype** | **PK** | **NN** | **UQ** | **AI** | **Default** | **Comment** 
 ---|---|:---:|:---:|:---:|:---:|:---:|---
@@ -489,8 +489,8 @@ Note that, sometimes the tables containing information regarding DNA and protein
 
 **Constraints:**
 
-* **UNIQUE KEY** (*ALI_ID*,*TIME_STAMP*,*TREE_TYPE*)
-* **FOREIGN KEY** (*ALI_ID*) REFERENCES **dna_alignments** (*ALI_ID*)
+* **UNIQUE KEY** (*ALI_ID*,*BRANCH_INDEX*,*TIME_STAMP*,*TREE_TYPE*)
+* **FOREIGN KEY** (*ALI_ID*, *TIME_STAMP*, *TREE_TYPE*) REFERENCES **dna_trees** (*ALI_ID*, *TIME_STAMP*, *TREE_TYPE*)
 
 **Column Name** | **Datatype** | **PK** | **NN** | **UQ** | **AI** | **Default** | **Comment** 
 ---|---|:---:|:---:|:---:|:---:|:---:|---
