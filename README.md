@@ -15,7 +15,7 @@ So-far, the EvoNAPS database holds:
 
 ## **Overview**
 
-This respiratory includes scripts regarding the MySQL database itself (such as the create statements and example import commands): 
+This repository includes scripts regarding the MySQL database itself (such as the create statements and example import commands): 
 
 * [EvoNAPS database](EvoNAPS_database/)
 
