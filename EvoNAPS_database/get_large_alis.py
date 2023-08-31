@@ -1,19 +1,19 @@
 #! /usr/bin/env python3
 
 import pandas as pd
-import mysql.connector
+import mariadb
 import sys
 
-def fetch_sixmodels(user='frareden', password='Franzi987', file_name='six_models_bic.csv'): 
+def fetch_sixmodels(user, password, host, database='EvoNAPS', file_name='six_models_bic.csv'): 
 
     columns = ['ALI_ID', 'FROM_DATABASE', 'SEQUENCES', 'COLUMNS']
 
     # Connect to the Database
-    mydb = mysql.connector.connect(
-    host="crick",
+    mydb = mariadb.connector.connect(
+    host=host,
     user=user,
     password=password, 
-    database="fra_db"
+    database=database
     )
 
     mycursor = mydb.cursor()
@@ -45,11 +45,28 @@ def main():
 
     file_name='large_alis.csv'
 
+    db_name = 'EvoNAPS'
+    user = None
+    password = None
+    host = None
+
     for i in range (len(sys.argv)): 
         if sys.argv[i] in [ '--output', '-o']: 
             file_name = sys.argv[i+1] 
+        if sys.argv[i] in ['--user', '-u']:
+            user = sys.argv[i+1]
+        if sys.argv[i] in ['--host']:
+            host = sys.argv[i+1]
+        if sys.argv[i] in ['--password', '-p']:
+            password = sys.argv[i+1]
+        if sys.argv[i] in ['--database', '--db']: 
+            db_name = sys.ragv[i+1]
 
-    fetch_sixmodels('frareden', 'Franzi987', file_name=file_name)
+    if not user or not password or not host: 
+        print('Missing input: name of the user [-u], password [-p] or name of the host server [--host]!')
+        sys.exit(2)
+
+    fetch_sixmodels(user, password, host, database=db_name, file_name=file_name)
 
 if __name__ == '__main__': 
     main()

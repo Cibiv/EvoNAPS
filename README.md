@@ -3,11 +3,11 @@
 
 ## **Introduction**
 
-The EvoNAPS database provides a large variety of phylogenetic trees as well as empirical parameter estimates of a diverse set of sequence evolution (SE) models. The main purpose of the database is to provide meaningful input for sequence simulations as phylogenetic studies have come to heavily rely on simulated data. The database offers various filter options to enable the user to find alignments, SE models or trees that fit their requirements. 
+The EvoNAPS database provides a large variety of phylogenetic trees as well as empirical parameter estimates of various models of sequence evolution. The main purpose of the database is to provide meaningful input for sequence simulations as phylogenetic studies have come to heavily rely on simulated data. The database offers various filter options to enable the user to find alignments, parameter settings of different evolutionary models or trees that fit their requirements. 
 
-The parameter estimates stored in EvoNAPS were gathered using the phylogenetic inference software IQ-Tree (v.2.2.0.5) (Minh, 2022) and are based on biological alignments. The alignments were gathered from existing published sources, namely the online respiratory provided by Rob Lanfear (Lanfear, 2019) as well as the *PANDIT* (Whelan, 2006) and the *OrthoMaM* (Douzery, 2014) databases.
+The parameter estimates stored in EvoNAPS were gathered using the phylogenetic inference software IQ-Tree (v.2.2.0.5) (Minh, 2022) and were estimated based on biological alignments. The alignments were gathered from existing published sources, namely the online respiratory provided by Rob Lanfear (Lanfear, 2019) as well as the *PANDIT* (Whelan, 2006) and the *OrthoMaM* (Douzery, 2014) databases.
 
-So-far, the EvoNAPS database holds: 
+The EvoNAPS database holds: 
 
 * around 22,600 DNA alignments  
 * around 6,600 protein alignments and
@@ -15,11 +15,11 @@ So-far, the EvoNAPS database holds:
 
 ## **Overview**
 
-This repository includes scripts regarding the MySQL database itself (such as the create statements and example import commands): 
+This folder provides scripts concerning the MySQL database itself (such as the create statements and example import commands): 
 
 * [EvoNAPS database](EvoNAPS_database/)
 
-Additionally, all scripts used to create the data in the EvoNAPS database can be found here: 
+Additionally, the scripts that were used to create the data in the EvoNAPS database can be found here: 
 
 * [EvoNAPS workflow](EvoNAPS_workflow/)
 

@@ -4,10 +4,10 @@
 ## **Overview** 
 
 * [Introduction](#introduction)
-* [Database access](#database-access)
-* [Example queries](#example-queries)
+* [Installation guide](#installation-guide)
 * [Create statements](#create-statements)
 * [Example import commands](#example-import-commands)
+* [Example queries](#example-queries)
 
 ## **Introduction**
 
@@ -17,36 +17,11 @@ More detailed information regarding each table and its columns can be found in t
 
 ![The EvoNAPS database](reduced_evonaps_architecture.svg)
 
-## **Database access**
+## **Installation guide**
 
-This section will explain how to manually access the EvoNAPS database on the CIBIV server. The database lies on the Crick server and can be accessed by simply typing the following command:
+To get the EvoNAPS database running on your local computer, a MySQL (or MariaDB version >10.0.13) instance is required. The source code of MariaDB as well as links to an installation guide can be found here: [MariaDB GitHub](https://github.com/MariaDB/server). An installation guide for MySQL can be found here: [MySQL Instalation Guide](https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/).
 
-```console
-$ mysql -h crick -u [user] -p fra_db
-```
-
-The **-h** option states the name of the host server (which is crick). After the **-u** option you must type your personal user name [user]. The **-p** flag will promt you to type in your personal password. The name of the database on the crick server is *fra_db*. 
-
-Once you have entered the command as stated above, you can simply enter the query of your choice. The next section will give you some examples on useful queries. 
-
-## **Example queries**
-
-If you are interested in typical parameter settings of specific model of sequence evolution, then you can simply employ the provided [get_model_parameters.py](get_model_parameters.py) python script. Note, that the script must be executed on the CIBIV server to work. The script takes the input of the user and incorporates it into a query. After accessing the EvoNAPS database on the Crick server, the query will be executed and the results will be written int a csv file. 
-
-In order to execute the script, first, load the python3 module. The python3 module already includes all necessary libraries, namely Pandas (v.1.1.3) and mysql.connect (v.8.0.5b1). Once the python3 module has loaded, the script can be executed, e.g.: 
-
-```console
-$ module load python3
-$ python3 get_model_parameters.py -m GTR -r I,G4,R4 --tables tree
-```
-
-For further information on how to use the script and to get to know all the available options, simply type:
-
-```console
-$ python3 get_model_parameters.py --help
-```
-
-The [get_model_parameters.py](get_model_parameters.py) script is essentially centred around a single function that creates and executes the query, namely the *fetchParameters()* function. The function can be easily imported to be used in other python scripts, should you wish to do so.
+Once, a MaraDB (or MySQL) server is running on your computer, you can create the EvoNAPS database on your computer using the create statements as described below.
 
 ## **Create statements** 
 
@@ -54,19 +29,16 @@ The create statemenets for the EvoNAPS database can be found here:
 
 * [EvoNAPS_create_statements.sql](EvoNAPS_create_statements.sql)
 
-The scripts includes all create statements for the MariaDB database. 
-Overall, there are 13 tables. A short description of each table and of the columns are added as comments. More detailed comments can be viewed in the [EvoNAPS_tables.md](EvoNAPS_tables.md) file. Note, that the create statements need to be executed in the precise order in which they appear in the script. Otherwise, the constraints introduced in some tables will give you an error. 
+The script states all create statements for the EvoNAPS database. Overall, there are 13 tables. A short description of each table and of the columns are added as comments. More detailed comments can be viewed in the [EvoNAPS_tables.md](EvoNAPS_tables.md) file. Note, that the create statements need to be executed in the precise order in which they appear in the script. Otherwise, the constraints introduced in some tables will give you an error. 
 
-The create statements serve as clarification to better understand the archtiecture of the EvoNAPS database, namely which constraints apply to which table and wich columns are involved in foreign keys. The [EvoNAPS_create_statements.sql](EvoNAPS_create_statements.sql) file does not include any data that has been imported into the database on the crick server. Accordingly, should you execute the file, you will have an empty database. 
-
-Therefore, should you wish to setup the EvoNAPS database on your local computer, I recommend you download the mysqldump file stored on the CIBIV server, instead: 
-
-```console
-/project/EvoNAPS/database/EvoNAPS_backup.sql
-```
+The create statements serve as clarification to better understand the archtiecture of the EvoNAPS database, namely which constraints apply to which table and wich columns are involved in foreign keys. The [EvoNAPS_create_statements.sql](EvoNAPS_create_statements.sql) file does not include any data. Accordingly, should you execute the file, you will have an empty database. 
 
 ## **Example import commands**
 
-Should you wish to expand the EvoNAPS database by adding additional data, you might need the example import commands stored in the file [EvoNAPS_import_statements.sql](EvoNAPS_import_statements.sql). The file includes example import commands for the files generated by the [EvoNAPS workflow](../EvoNAPS_workflow/README.md). 
+Example import commands can be found in the file [EvoNAPS_import_statements.sql](EvoNAPS_import_statements.sql). The file includes example import commands for the files generated by the worfklow as described [here](../EvoNAPS_workflow/README.md). 
 
-Note, that the import statements need to be executed in the precise order in which they appear in the script. Otherwise, there might be errors due to the constraints imposed on some tables. Also note, that there are different import commands for importing data into the DNA or protein tables! 
+Note, that the import statements need to be executed in the precise order in which they appear in the script. Otherwise, there might be errors due to the constraints imposed on some tables. Also note, that there are different import commands for importing data into the DNA and protein tables! 
+
+## **Example Queries**
+
+The scripts get_large_alis.py, get_model_parameters.py and get_six_models.py are examplatory Python scripts that run some queries on the EvoNAPS database. Note that the scripts use the MariaDB connector 

@@ -10,7 +10,7 @@ Created: 28.03.2023
 """
 
 import pandas as pd
-import mysql.connector as mariadb
+import mariadb
 import sys
 import time
 import datetime
@@ -132,8 +132,8 @@ def CheckInput(matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_
 
     return matrix, rate, seq_min, seq_max, col_min, col_max, tables, ic, ic_sig, tree, branch, keep, source
 
-def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = None, col_min: int = None, col_max: int = None, \
-    tables: str='TEST,TREE', ic: str='BIC', ic_sig: float=0.05, user='frareden', password='Franzi987', \
+def fetchParameters(matrix, rate, host, user, password, db:str='EvoNAPS', seq_min: int = None, seq_max: int = None, col_min: int = None, col_max: int = None, \
+    tables: str='TEST,TREE', ic: str='BIC', ic_sig: float=0.05, \
         tree:bool=False, branch:bool=False, keep:bool=False, source: str=None, pquery=False) -> pd.DataFrame: 
     """
     Description
@@ -150,6 +150,12 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
     rate : str, optional
         Name of the model of rate heterogenity for which to filter. Ddefault is 'E'.
         Valid models of rate heterogenity: E, I, I+G4, G4, R2, R3, R4, R5, R6, R7, R8, R9, R10
+    host: str 
+        Name of the host server hosting the EvoNAPS database
+    user: str
+        Name of the user that wants to access the database.
+    password: str
+        The password of the user to access the EvoNAPS database on the host server.
 
     Other Parameter(s)
     --------
@@ -183,7 +189,7 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
         Options: 'BIC', 'AIC', 'AICc', 'CAIC', 'ABIC', 'None'
     ic_sig : float, optional
         Should you restrict your search with the 'ic' option, you can set a significance level. In this case, only parameters 
-        of models with a weight above the chosen limit will be returned. Default is 0.05. 
+        of models with a weight of at least the chosen limit will be returned. Default is 0.05. 
     keep: bool
         If you also want to search the database for results obtained by running IQ-Tree 2 with the '--keep-ident' flag, set this 
         parameter to True. Default is False (in this case, only inference results conducted on the (potentially) reduced alignments 
@@ -194,6 +200,8 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
     pquery : bool, optional
         Set this option to True, if you want the queries that have been used to fetch the model parameters to be returned as a list. 
         This option is primarily for debugging. Default is False.
+    db: str
+        nNme of the database. Default is EvoNAPS.
 
     Returns
     --------
@@ -282,12 +290,11 @@ def fetchParameters(matrix, rate: str='E', seq_min: int = None, seq_max: int = N
 
     hit_table = pd.DataFrame(columns = ['TABLE', 'MODEL', 'HITS'])
 
-    #Connect to the Database
     mydb = mariadb.connect(
-    host="crick",
+    host=host,
     user=user,
     password=password, 
-    database="fra_db")
+    database=db)
 
     # Create cursor
     mycursor = mydb.cursor()
@@ -315,7 +322,7 @@ INNER JOIN dna_alignments a USING (ALI_ID) "
         query += "INNER JOIN dna_trees c USING (ALI_ID,TIME_STAMP) "
         query += "WHERE b.MODEL IN "+string_models+" "  
         if ic is not None: 
-            query += "AND b.WEIGHTED_"+ic+">"+str(ic_sig)+" "
+            query += "AND b.WEIGHTED_"+ic+">="+str(ic_sig)+" "
         if source is not None: 
             query += "AND a.FROM_DATABASE IN "+source_string+" "
         if keep is False: 
@@ -445,8 +452,8 @@ WHERE b.TREE_TYPE = \'ml\' AND d.MODEL IN "+string_models+""
 
 def main(): 
     """
-    Python script to access EvoNAPS database. The script will take the users input and translate it into a query.
-    The data will be written into a csv file. 
+    Python script to access EvoNAPS database to get model parameters and phylogenetic trees. The script will take the users input and translate it into a query.
+    The collected data is then written into a csv file. 
 
     USAGE:
     --------
@@ -460,6 +467,12 @@ def main():
     --rate or -r : str
         Declare model(s) of rate heterogenity. If there is more than one model seperate them with a comma, e.g. G4,I (default is 'E')
         Accepted models of rate heterogenity are: E, I, I+G4, G4, R2, R3, R4, R5, R6, R7, R8, R9, R10
+    --host: str 
+        Name of the host server hosting the EvoNAPS database
+    --user or -u: str
+        Name of the user that wants to access the database.
+    --password or --pwd or -p: str
+        The password of the user to access the EvoNAPS database on the host server.
 
     OPTIONAL INPUT 
     --------
@@ -475,7 +488,7 @@ def main():
         Options: 'BIC', 'AIC', 'AICc', 'CAIC', 'ABIC', 'None'
     --ic_sig : float
         Should you restrict your search with the 'ic' option, you can set a significance level. In this case, only parameters 
-        of models with a weight above the chosen limit will be returned. Default is 0.05. 
+        of models with a weight wth at least the chosen limit will be returned. Default is 0.05. 
     --tree or -t : 
         Enable this option, if you wish to also return the phylogenetic trees in a Newick string format. If you search in the dna_trees table, 
         it will return the ML tree and if you search the dna_modelparameters table, it will return the 'initial' (fastML or parsimony) tree. 
@@ -501,6 +514,8 @@ def main():
     --pquery : 
         Use this option, if you want the query or queries that has been used to fetch the model parameters to be written into a seperate logfile (.query.log). 
         This option was addeed for debugging purposes. 
+    --db: str
+        name of the database (default is EvoNAPS)
 
 
     Example
@@ -515,8 +530,8 @@ def main():
     """
 
     # Default settings
-    matrix = 'GTR'
-    rate = 'E'
+    matrix = None
+    rate = None
     seq_min = None
     seq_max = None
     col_min = None
@@ -530,10 +545,15 @@ def main():
     keep = False
     source = None
     pquery = False
+    password = None
+    host = None
+    user = None
+    db = 'EvoNAPS'
 
     # List of valid system arguments
     valid_arguments=['--help', '-h', '--matrix', '-m', '--rate', '-r', '--seq_min', '--seq_max', '--col_min','--col_max', '--table', \
-        '--ic', '--output', '-o', '--ic_sig', '--tree', '-t', '--branch', '-b', '--source', '--keep', '--pquery']
+        '--ic', '--output', '-o', '--ic_sig', '--tree', '-t', '--branch', '-b', '--source', '--keep', '--pquery', \
+            '--password', '--pwd', '-p', '--host', '--db', '--user', '-u']
     
     # Read in the input provided by the user
     for i in range (len(sys.argv)): 
@@ -571,13 +591,31 @@ def main():
             source =  sys.argv[i+1]  
         if sys.argv[i] in ['--pquery']: 
             pquery =  True 
+        if sys.argv[i] in ['--password', '--pwd', '-p']: 
+            password = sys.argv[i+1]
+        if sys.argv[i] in ['--user', '-u']: 
+            user = sys.argv[i+1]
+        if sys.argv[i] in ['--host']: 
+            host = sys.argv[i+1]
+        if sys.argv[i] in ['--db']: 
+            db = sys.argv[i+1]
         if sys.argv[i][0] == '-' and sys.argv[i] not in valid_arguments: 
-            print('Unknown argument: '+sys.argv[i]+'. Type '+sys.argv[0]+' --help for help.')
+            print('ERROR! Unknown argument: '+sys.argv[i]+'. Type '+sys.argv[0]+' --help for help.')
             sys.exit(2)
 
     
     # Print user input into terminal
     print('***Script to parse model parameters from the EvoNAPS database***\n')
+
+    if not matrix or not rate: 
+        print('ERROR! Missing input for --matrix. Type '+sys.argv[0]+' --help for help.')
+        sys.exit(2)
+    if not password or not user or not host: 
+        print('ERROR! Missing input for database access specifications. Required parameters to \
+access the EvoNAPS database are: the name of the host hosting the database, the name of \
+the user accessing the database as well as their password. Type '+sys.argv[0]+' --help for help.')
+        sys.exit(2)
+
     print('Input substitution rate matrix or matrices: ', matrix)
     print('Input model(s) of rate heterogeneity: ', rate)
     print('Search in tables:', tables)
@@ -587,7 +625,7 @@ def main():
     start=time.time()
 
     # Create query
-    query_df, branch_df, hit_table, query_list = fetchParameters(matrix, rate=rate, seq_min=seq_min, seq_max=seq_max, col_min=col_min, col_max=col_max, \
+    query_df, branch_df, hit_table, query_list = fetchParameters(matrix, rate, host, user, password, db=db, seq_min=seq_min, seq_max=seq_max, col_min=col_min, col_max=col_max, \
         tables=tables, ic=ic, ic_sig=ic_sig, tree=tree, branch=branch, keep=keep, source=source, pquery=pquery)
     # Check results
     if query_df is None: 
@@ -628,7 +666,7 @@ def main():
         w.write('Query results were exported into file '+prefix+'.csv\n')
         if branch is True: 
             w.write('Branch lengths were exported into file '+prefix+'_branches.csv\n')
-        w.write('\nOverview of esults: \n')
+        w.write('\nOverview of results: \n')
 
     # Write hit table into log file
     hit_table.to_csv(prefix+'.log', index=False, sep=' ', mode='a')
