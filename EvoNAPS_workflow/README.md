@@ -19,6 +19,8 @@ The workflow was written in Snakemake (v5.9.1) (Köster & Rahmann, 2012; Mölder
 
 ## **System setup**
 
+### **Install Snakemake**
+
 This workflow requires an instance of the workflow managament software Snakemake (tested with version 5.9.1) to be installed on your computer. Installation using conda is recommended: [installation guide](https://snakemake-api.readthedocs.io/en/stable/getting_started/installation.html#:~:text=Installation%20via%20Conda%2FMamba%201%20Full%20installation%20Snakemake%20can,Notes%20on%20Bioconda%20as%20a%20package%20source%20).
 
 ### **Download scripts** 
@@ -57,20 +59,6 @@ First load the conda module and activate snakemake.
 name@server:~> module load conda
 name@server:~> conda activate snakemake
 ```
-If this step gives you an error, this might be due to a conflict between bioconda and the module python3. If there is an error run: 
-
-```console
-name@server:~> module unload python3
-```
-
-and then try to activate snakemake again.
-
-Once snakemake is activated, load the python3 module that includes all libraries needed, namely the networkx (v2.2) (Hagberg et al., 2008), pandas (v1.1.3) (McKinney, 2010) and Biopython (v1.78) (Cock et al., 2009) libraries. 
-
-```console
-(snakemake) name@server:~> module load python3 
-```
-
 Now we are ready to start the workflow on an alignment. The next section will explain how.
 
 ## **Manual** 
