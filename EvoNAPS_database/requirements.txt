@@ -1,0 +1,2 @@
+mariadb==1.1.5.post2
+pandas==1.2.4

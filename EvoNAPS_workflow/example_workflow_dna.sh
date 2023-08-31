@@ -3,9 +3,6 @@
 
 # Example bash script to start the EvoNAPS Snakemake worfkflow on all dna fasta alignments found in the folder given as input.
 
-module load python3
-
-date +"%Y/%m/%d %H:%M:%S"
 if [ 0 -ne $# ]
       then folder=$1
       else echo Missing folder name as input
@@ -16,5 +13,3 @@ for file in *fasta; do
       echo $i 
       snakemake --snakefile EvoNAPS_snakefile_dna.smk $file'_results/'$file'_ali_parameters.tsv' --cores 1 >> workflow.log 2>&1;
 done 
-date +"%m/%d/%Y %H:%M:%S" 
-
