@@ -21,7 +21,15 @@ The workflow was written in Snakemake (v5.9.1) (Köster & Rahmann, 2012; Mölder
 
 ### **Install Snakemake**
 
-This workflow requires an instance of the workflow managament software Snakemake (tested with version 5.9.1) to be installed on your computer. Installation using conda is recommended: [installation guide](https://snakemake-api.readthedocs.io/en/stable/getting_started/installation.html#:~:text=Installation%20via%20Conda%2FMamba%201%20Full%20installation%20Snakemake%20can,Notes%20on%20Bioconda%20as%20a%20package%20source%20).
+This workflow requires an instance of the workflow managament software Snakemake (tested with version 5.9.1) to be installed on your computer. Installation using conda is recommended. An installation guide can be found here: [installation guide](https://snakemake-api.readthedocs.io/en/stable/getting_started/installation.html#:~:text=Installation%20via%20Conda%2FMamba%201%20Full%20installation%20Snakemake%20can,Notes%20on%20Bioconda%20as%20a%20package%20source%20).
+
+Load the conda module and activate snakemake. 
+```console
+name@server:~> module load conda
+name@server:~> conda activate snakemake
+```
+
+Running the workflow reuqires a Snakefile and a number of Python scripts that will be adressed in the next section. 
 
 ### **Download scripts** 
 
@@ -45,20 +53,8 @@ Once completed, the Python scripts need to be made into executables. Do this by 
 name@server:~> chmod +x [script_name]
 ```
 
-for all scripts mentioned above. 
+for all Python scripts mentioned above. 
 
-Once all the mentioned files for the workflow have been downloaded, it is necessary to create the environment required to run the workflow. 
-
-### **Load neccessary modules**
-
-The system setup described here only applies to the CIBIV server. Snakemake as well as the required python libraries are all already installed. Therefore, an installation guide regarding said software will not be included here. 
-
-First load the conda module and activate snakemake. 
-
-```console
-name@server:~> module load conda
-name@server:~> conda activate snakemake
-```
 Now we are ready to start the workflow on an alignment. The next section will explain how.
 
 ## **Manual** 
