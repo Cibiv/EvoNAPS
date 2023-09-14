@@ -108,8 +108,8 @@
 	 
   </head>
   <body>
+	 
   <?php  session_start(); ?>
-  
   <div class ="center">
   
 
@@ -199,7 +199,7 @@
 			
 			</select>
 			
-			<input type="checkbox" name="+F" id="Matrices_+F" value="checked"<?php if($_SESSION['+F']== "checked"){ echo "checked"; }?>>
+			<input type="checkbox" name="+F" id="Matrices_+F" value="checked"<?php if(isset($_SESSION['+F'])){ echo "checked"; }?>>
 				<label class="btn btn-outline-dark-lg" for="Matrices_+F"> <h4>+F</h4> </label>
 			
 			 </div>
@@ -214,45 +214,45 @@
 		
 		<div class ="btn-group" role="group" aria-label="Basic checkbox toggle button group" "RHAS_MAT" id = "_RHAS_MAT"  >
 		
-		 <input type="checkbox" name="RHAS_uniform" id="RHAS_MAT_E" value="checked" <?php if($_SESSION['RHAS_uniform']== "checked"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_uniform" id="RHAS_MAT_E" value="checked" <?php if(isset($_SESSION['RHAS_uniform'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_E"><h4>uniform</h4> </label> 
 		
-		 <input type="checkbox" name="RHAS_I"  id="RHAS_MAT_I" value="+I" <?php if($_SESSION['RHAS_I']== "+I"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_I"  id="RHAS_MAT_I" value="+I" <?php if(isset($_SESSION['RHAS_I'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_I"> <h4>+I</h4></label> 
 		 
-		 <input type="checkbox" name="RHAS_IG4" id="RHAS_MAT_IG4" value="+I+G4"<?php if($_SESSION['RHAS_IG4']== "+I+G4"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_IG4" id="RHAS_MAT_IG4" value="+I+G4"<?php if(isset($_SESSION['RHAS_IG4'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_IG4"> <h4>+I+G4</h4></label> 
 		
-		 <input type="checkbox" name="RHAS_G4"  id="RHAS_MAT_G4" value="+G4" <?php if($_SESSION['RHAS_G4']== "+G4"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_G4"  id="RHAS_MAT_G4" value="+G4" <?php if(isset($_SESSION['RHAS_G4'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_G4"> <h4> +G4 </h4> </label> 
 		 
-		 <input type="checkbox" name="RHAS_R2" id="RHAS_MAT_R2" value="+R2"<?php if($_SESSION['RHAS_R2']== "+R2"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R2" id="RHAS_MAT_R2" value="+R2"<?php if(isset($_SESSION['RHAS_R2'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R2"> <h4> +R2 </h4> </label> 
 		
-		 <input type="checkbox" name="RHAS_R3"  id="RHAS_MAT_R3" value="+R3"<?php if($_SESSION['RHAS_R3']== "+R3"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R3"  id="RHAS_MAT_R3" value="+R3"<?php if(isset($_SESSION['RHAS_R3'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R3"> <h4>+R3 </h4></label>
 		 
 		 
-		 <input type="checkbox" name="RHAS_R4"  id="RHAS_MAT_R4" value="+R4"<?php if($_SESSION['RHAS_R4']== "+R4"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R4"  id="RHAS_MAT_R4" value="+R4"<?php if(isset($_SESSION['RHAS_R4'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R4"> <h4>+R4 </h4></label> 
 		 
-		 <input type="checkbox" name="RHAS_R5" id="RHAS_MAT_R5" value="+R5"<?php if($_SESSION['RHAS_R5']== "+R5"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R5" id="RHAS_MAT_R5" value="+R5"<?php if(isset($_SESSION['RHAS_R5'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R5"> <h4>+R5 </h4> </label> 
 		
-		 <input type="checkbox" name="RHAS_R6"  id="RHAS_MAT_R6" value="+R6"<?php if($_SESSION['RHAS_R6']== "+R6"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R6"  id="RHAS_MAT_R6" value="+R6"<?php if(isset($_SESSION['RHAS_R6'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R6"> <h4> +R6 </h4></label>
 		 
 		 
-		 <input type="checkbox" name="RHAS_R7"  id="RHAS_MAT_R7" value="+R7"<?php if($_SESSION['RHAS_R7']== "+R7"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R7"  id="RHAS_MAT_R7" value="+R7"<?php if(isset($_SESSION['RHAS_R7'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R7"> <h4> +R7 </h4> </label> 
 		 
-		 <input type="checkbox" name="RHAS_R8" id="RHAS_MAT_R8" value="+R8"<?php if($_SESSION['RHAS_R8']== "+R8"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R8" id="RHAS_MAT_R8" value="+R8"<?php if(isset($_SESSION['RHAS_R8'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R8"> <h4> +R8 </h4> </label> 
 		
-		 <input type="checkbox" name="RHAS_R9"  id="RHAS_MAT_R9" value="+R9"<?php if($_SESSION['RHAS_R9']== "+R9"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R9"  id="RHAS_MAT_R9" value="+R9"<?php if(isset($_SESSION['RHAS_R9'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R9"> <h4> +R9 </h4> </label>
 		 
-		 <input type="checkbox" name="RHAS_R10"  id="RHAS_MAT_R10" value="+R10"<?php if($_SESSION['RHAS_R10']== "+R10"){ echo "checked"; }?>>
+		 <input type="checkbox" name="RHAS_R10"  id="RHAS_MAT_R10" value="+R10"<?php if(isset($_SESSION['RHAS_R10'])){ echo "checked"; }?>>
 		 <label class="btn btn-outline-dark-lg" for = "RHAS_MAT_R10"> <h4> +R10 </h4> </label> 
 		 
 		
@@ -284,7 +284,7 @@
 			
 			
 			
-			 <input type="checkbox" name="Newick" id="NewWick"  value="TRUE" <?php if($_SESSION['Newick']== "TRUE"){ echo "checked"; }?>>
+			 <input type="checkbox" name="Newick" id="NewWick"  value="TRUE" <?php if(isset($_SESSION['Newick'])){ echo "checked"; }?>>
 			<label for = "NewWick">  <h4> include trees (Newick format)</h4></label> 
 			
 			
@@ -314,7 +314,7 @@
 		
 		<div class = "Alignment_Specs_Check" >
 		
-		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="TRUE" <?php if($_SESSION['alignment_features']== "TRUE"){ echo "checked"; }?> >
+		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="TRUE" <?php if(isset($_SESSION['alignment_features'])){ echo "checked"; }?> >
 		 <label for = "Alignment_Specs_Check"> <h4> alignment features </h4> </label> <br> <hr>
 	
 		</div>
@@ -322,7 +322,7 @@
 		<br>
 		
 		 <section class="Alignment_Specs">
-		<div class = "Alignment_Specs" id = "Ali_Specs"style = "display : none" <?php if($_SESSION['alignment_features']== "TRUE"){ echo "style = display : block";}else { echo "style = display : none";}?>>
+		<div class = "Alignment_Specs" id = "Ali_Specs" <?php if(isset($_SESSION['alignment_features'])){ echo "style = display : block";}else { echo "style = display : none";}?>>
           
 		  <label for="Nr_Seq"><h4>min number of sequences</h4></label> 
           <input type="number" name="number_of_sequences" id="Nr_Seq" step = "any" value = <?php echo $_SESSION['number_of_sequences']; ?>> <br>
@@ -367,13 +367,13 @@
 		  
 		  <h4> allignment source </h4><br>
 		   <label for = "all"> <h4> all </h4> </label> 
-		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" <?php if($_SESSION['selectAll']== "checked"){ echo "checked"; }?>>
+		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" <?php if(isset($_SESSION['selectAll'])){ echo "checked"; }?>>
 		  <label for = "PANDIT"> PANDIT </label>
-		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" <?php if($_SESSION['selectAll']== "checked"){ echo "checked"; }?>>
+		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" <?php if(isset($_SESSION['PANDIT'])){ echo "checked"; }?>>
 		   <label for = "Lanfear"> Lanfear </label> 
-		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" <?php if($_SESSION['Lanfear']== "Lanfear"){ echo "checked"; }?>>
+		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" <?php if(isset($_SESSION['Lanfear'])){ echo "checked"; }?>>
 		 <label for = "OrthoMaM"> OrthoMaM </label>
-		  <input type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" <?php if($_SESSION['OrthoMaM']== "OrthoMaM"){ echo "checked"; }?>>
+		  <input type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" <?php if(isset($_SESSION['OrthoMaM'])){ echo "checked"; }?>>
 		  
 		  </div>
 		  </section>
@@ -385,7 +385,7 @@
 		
 		<div class = "Trees_Specs_Check" >
 		
-		 <input type="checkbox" name="tree_features"  id="Trees_Specs_Check" onclick = "show4()" value="TRUE" <?php if($_SESSION['tree_features']== "TRUE"){ echo "checked"; }?>>
+		 <input type="checkbox" name="tree_features"  id="Trees_Specs_Check" onclick = "show4()" value="TRUE" <?php if(isset($_SESSION['tree_features'])){ echo "checked"; }?>>
 		 <label for = "Trees_Specs_Check"> <h4>tree features</h4> </label> <br> <hr>
 		
 		</div>
@@ -397,12 +397,13 @@
 		  
 		  
 		  <section class="Tree_Specs">
-		<div class = "Tree_Specs" id = "Tree_Specs" style = "display : none" <?php if($_SESSION['tree_features']== "TRUE"){ echo "style = display : block"; }else { echo "style = display : none";} ?>>
+		<div class = "Tree_Specs" id = "Tree_Specs" <?php if(isset($_SESSION['tree_features'])){ echo "style = display : block"; }else { echo "style = display : none";} ?>>
          
 		  <label for="tree_len"><h4>tree length</h4></label> 
           <input type="number" name="tree_length" id="tree_len" step = "any"<?php if(!empty($_SESSION['tree_length'])){ echo "value =".$_SESSION['tree_length'];} ?>> <br>
 		  <label for="tree_dia"><h4>tree diameter</h4></label>  
 		  <input type="number" name="tree_diameter" id="tree_dia" step = "any" <?php if(!empty($_SESSION['tree_diameter'])){ echo "value =".$_SESSION['tree_diameter'];} ?>> <br> <br>
+		  
 		  
 		  
 		  

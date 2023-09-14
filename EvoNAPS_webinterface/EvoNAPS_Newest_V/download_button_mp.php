@@ -5,7 +5,7 @@ session_start();
 
 include "DB_credentials.php";
 //ini_set('memory_limit','1000M');
-		error_reporting(0);
+		//error_reporting(0);
 		
 		
 		
@@ -536,13 +536,7 @@ $first = false;
 					*/ //////////////////////New//////////////////////
 					
 					
-					if(!empty($Matrices_D && $RHAS)){
-						
-						//old
-						//$f_d_conditions[] =  ' `dna_modelparameters`.`BASE_MODEL` = ? ';
-						//$f_d_parameters[] =  $modeld;
-						
-					}
+					
 					
 					
 					
@@ -575,13 +569,7 @@ $first = false;
 						
 					}
 					
-					// Insert ML or initial data catch w if here 
-					if ($Initial_Tree == "TRUE"){
-						
-						$f_d_conditions[] =  ' `dna_trees`.`TREE_TYPE` = ?';
-						$f_d_parameters[] =  $Initial_Tree;
-						
-					}
+					
 					
 					
 					
@@ -886,13 +874,7 @@ $first = false;
 					*/ //////////////////////New//////////////////////
 					
 					
-					if(!empty($Matrices_D && $RHAS)){
-						
-						//old
-						//$f_d_conditions[] =  ' `aa_modelparameters`.`BASE_MODEL` = ? ';
-						//$f_d_parameters[] =  $modeld;
-						
-					}
+					
 					
 					
 					
@@ -925,13 +907,7 @@ $first = false;
 						
 					}
 					
-					// Insert ML or initial data catch w if here 
-					if ($Initial_Tree == "TRUE"){
-						
-						$f_d_conditions[] =  ' `aa_trees`.`TREE_TYPE` = ?';
-						$f_d_parameters[] =  $Initial_Tree;
-						
-					}
+					
 					
 					
 					
@@ -1067,22 +1043,7 @@ $first = false;
 					
 					
 					// Check matrices
-					if(!empty($Matrices_D && $RHAS)){
-						
-						
-						//$f_d_conditions[] =  ' `aa_trees`.`BASE_MODEL` = ? ';
-						//$f_d_parameters[] =  $modeld;
-						
-						
-					}
 					
-					
-					if ($ML_Tree == "TRUE"){
-						
-						$f_d_conditions[] =  ' `aa_trees`.`TREE_TYPE` = ?';
-						$f_d_parameters[] =  $ML_Tree;
-						
-					}
 					
 					
 					

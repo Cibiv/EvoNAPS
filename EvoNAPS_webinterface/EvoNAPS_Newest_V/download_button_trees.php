@@ -3,12 +3,16 @@
 
 session_start();
 include "DB_credentials.php";
+
+
 			
 		$DNA_Prot = $_SESSION['datatype'];
 		
 	
-		
+		if(isset($_SESSION['number_of_sequences'])){
 		$Nr_Seq = $_SESSION['number_of_sequences'];
+
+		}
 		$Max_Nr_Seq = $_SESSION['max_number_of_sequences'];
 		
 		$Nr_sites = $_SESSION['number_of_sites'];
@@ -45,7 +49,7 @@ include "DB_credentials.php";
 		
 		
 
-		$Hits = "checked";
+		
 
 		$f_d_conditions = [];
 		$f_d_parameters = [];
@@ -67,7 +71,7 @@ include "DB_credentials.php";
 		}
 		
 		
-		if($Hits == "checked"){
+		
 			
 			
 			$f_d_query = " SELECT ".$select . " FROM ";
@@ -450,7 +454,7 @@ include "DB_credentials.php";
 			
 			
 		
-		}
+		
 		
 		
 		$connect = null;
