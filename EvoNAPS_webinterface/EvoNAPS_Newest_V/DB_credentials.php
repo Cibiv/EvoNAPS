@@ -21,7 +21,7 @@
 		// set the PDO error mode to exception
 		// $connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false); //Standard in PHP V.8 or higher unbuffered query setting
 		
-			echo "Connected successfully";
+			//echo "Connected successfully";
 					
 			}catch(PDOException $e) {
 				
