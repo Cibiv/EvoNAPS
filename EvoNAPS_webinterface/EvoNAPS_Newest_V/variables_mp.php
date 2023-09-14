@@ -75,8 +75,8 @@ session_start();
 		$Hits = $_POST['Hits_anzeigen'];
 		$_SESSION['Hits_anzeigen']= $Hits; 
 		
-		print(implode(" , ", $_POST));
 		
+
 		
 
 		

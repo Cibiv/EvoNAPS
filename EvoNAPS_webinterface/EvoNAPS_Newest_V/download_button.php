@@ -5,35 +5,7 @@
 //include 'downloadme_alignment.php';
 
 session_start();
-
-		$hostname = 'localhost';
-		$dbname= 'evonaps_try_2';
-		$username='root';
-		$password='';
-		$dsn= "mysql:host=$hostname;dbname=$dbname";
-		
-		//NEw
-		/*
-		$hostname = 'crick.cibiv.univie.ac.at';
-		$dbname= 'fra_db';
-		$username='evonapsweb';
-		$password='SesamOeffneDich99';
-		$dsn= "mysql:host=$hostname;dbname=$dbname";
-		
-		*/ 
-		
-		
-		try {
-			
-		$connect = new PDO($dsn, $username, $password);
-		
-		//echo "Connected successfully";
-		//echo '<br>';
-					
-			}catch(PDOException $e) {
-				
-			echo "Connection failed: " . $e->getMessage();
-			}
+include "DB_credentials.php";
 
 
 

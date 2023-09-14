@@ -7,23 +7,7 @@
 		
 		ini_set('memory_limit','1000M');
 	
-	/*
-		$hostname = 'localhost';
-		$dbname= 'evonaps_try_2';
-		$username='root';
-		$password='';
-		$dsn= "mysql:host=$hostname;dbname=$dbname";
-*/
-
-		//NEw
-		/*
-		$hostname = 'crick.cibiv.univie.ac.at';
-		$dbname= 'fra_db';
-		$username='evonapsweb';
-		$password='SesamOeffneDich99';
-		$dsn= "mysql:host=$hostname;dbname=$dbname";
-		
-		*/ 
+	
 
 
 
