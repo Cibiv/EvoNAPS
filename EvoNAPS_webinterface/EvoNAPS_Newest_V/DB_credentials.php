@@ -1,9 +1,9 @@
 <?php
 /*
-		$hostname = 'crick.cibiv.univie.ac.at';
-		$dbname= 'fra_db';
-		$username='evonapsweb';
-		$password='SesamOeffneDich99';
+		$hostname = xxxxx;
+		$dbname= xxxxx;
+		$username=xxxxx;
+		$password=xxxxx;
 		$dsn= "mysql:host=$hostname;dbname=$dbname";
 		
 		*/ 
