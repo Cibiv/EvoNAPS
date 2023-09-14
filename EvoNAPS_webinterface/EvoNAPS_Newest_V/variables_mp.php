@@ -108,7 +108,11 @@ session_start();
 		if(isset($_POST['RHAS_uniform'])){
 		$E = $_POST['RHAS_uniform'];
 		$_SESSION['RHAS_uniform']= $E; 
+		}else{
+
+			$E= "";
 		}
+		
 		if(isset($_POST['RHAS_I'])){
 		$I = $_POST['RHAS_I'];
 		$_SESSION['RHAS_I']= $I;
