@@ -128,7 +128,7 @@
 	echo "<h3>Used search parameters: </h3>";
   
    echo "<br>";
-  foreach($_POST as $names => $values){
+  foreach($_SESSION as $names => $values){
 	  
 	  if(!empty($values)){
 	  echo "<h4>".$names.": "." ". " ".$values." "."</h4>";

@@ -42,22 +42,7 @@
 		
 	}
 	
-	#Matrices_Prot{
-		
-		
-	}
 	
-	
-	
-	
-	
-	
-	
-	
-	#Restrict {
-		
-		
-	}
 	
 	#RHAS_Div {
 		

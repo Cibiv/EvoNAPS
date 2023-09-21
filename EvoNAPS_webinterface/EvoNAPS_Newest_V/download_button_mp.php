@@ -5,7 +5,7 @@ session_start();
 
 include "DB_credentials.php";
 //ini_set('memory_limit','1000M');
-		//error_reporting(0);
+	error_reporting(0);
 		
 		
 		
@@ -1097,28 +1097,51 @@ $first = false;
 		$headers_printed = false; 
 		$output = " ";
 		//$fasta = ">";
-		
+		$date = "##".date('Y/m/d H:i:s')."\n";
+
+		ob_clean();
 		foreach ($filter_query_result as $list) {
 			 
 			
 			///download me 	
 			if(!$headers_printed){
-				
 			
+			
+			fwrite($output_file,"#############################\n");
+			fwrite($output_file,"##         EvoNAPS         ##\n");
+			fwrite($output_file,"#############################\n");
+			fwrite($output_file,$date);
+			fwrite($output_file,"#############################\n");
+			fwrite($output_file,"## Used search parameters\n");
+			
+			foreach($_SESSION as $names => $values){
+	  
+				if(!empty($values)){
+				fwrite($output_file, "## ".$names.": ".$values	);
+				  //echo "<h3>".$values." "."</h3>";
+				  fwrite($output_file,"\n");
+			  }  
+			}
+			fwrite($output_file,"##");
+			fwrite($output_file,"\n");
+			fwrite($output_file,"##");
 			fwrite($output_file,"\n");
 			fputcsv($output_file,array('Alignment_ID', 'Base_Model','LOGL','BIC','weighted BIC'),"\t");
+			
 			$headers_printed = true;
-			fwrite($output_file,"\n");
+
 			
 			
 			
 			
+		
 			
 		}
 		// Write Results in Document 
 		//fwrite($output_file,"\n");
 		fputcsv($output_file,$list,"\t");
 		fpassthru($output_file);
+		
 			
 			
 			
