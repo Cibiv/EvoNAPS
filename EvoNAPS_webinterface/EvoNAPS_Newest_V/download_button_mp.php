@@ -1074,6 +1074,8 @@ $first = false;
 		$filter_query = $connect->prepare($f_d_query);
 		$filter_query->execute($f_d_parameters);
 
+		
+
 			
 		$filter_query_result = $filter_query->fetchAll(PDO::FETCH_ASSOC);
 		
@@ -1105,7 +1107,6 @@ $first = false;
 			
 			///download me 	
 			if(!$headers_printed){
-			
 			
 			fwrite($output_file,"#############################\n");
 			fwrite($output_file,"##         EvoNAPS         ##\n");

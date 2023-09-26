@@ -107,12 +107,12 @@ function show4() {
 	
 
 
-function selectall(){
-	
-    var checkboxes = document.getElementsByName('select_All');  
-     for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = this.checked;
-}
+function cbChange(obj) {
+    var cbs = document.getElementsByClassName("cb");
+    for (var i = 0; i < cbs.length; i++) {
+        cbs[i].checked = false;
+    }
+    obj.checked = true;
 }
 
 function loading() {
@@ -120,6 +120,7 @@ function loading() {
   $(".btn .btn-text").html("Loading");
   
 }
+
 	
 	
 	

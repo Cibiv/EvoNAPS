@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+$_SESSION = array();
 //error_reporting(0);
 
 // Set Variables for the Filter 
@@ -98,6 +98,32 @@ session_start();
 		if(isset($_POST['max_tree_diameter'])){
 		$Max_tree_dia = $_POST['max_tree_diameter'];
 		$_SESSION['max_tree_diameter']= $Max_tree_dia;
+
+
+		//Source Variables
+		$Source = [];
+		
+		
+		if(isset($_POST['PANDIT'])){
+		$Pan = $_POST['PANDIT'];
+		$_SESSION['PANDIT']= $Pan;
+		}
+		
+		if(isset($_POST['OrthoMaM'])){
+		$Ortho =$_POST['OrthoMaM'];
+		$_SESSION['OrthoMaM']= $Ortho;
+		}
+		if(isset($_POST['Lanfear'])){
+		$Lanf =$_POST['Lanfear'];
+		$_SESSION['Lanfear']= $Lanf;
+		}
+		if(isset($_POST['selectAll'])){
+		$ALL = $_POST['selectAll'];
+		$_SESSION['selectAll']= $ALL;
+		}else{
+
+			$ALL="";
+		}
 		}
 		
 		

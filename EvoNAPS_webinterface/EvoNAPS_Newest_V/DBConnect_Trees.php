@@ -11,50 +11,57 @@
 		
 		//error_reporting(0);
 	
-		/*
-		// Set Variables for the Filter 
 		
 		
-		$DNA_Prot = $_POST['DNA_Prot'];
+		/////////////////////String Building Source ///////////////////////
+
+$stringsource = "";
+$stringall = "'PANDIT','OrthoMaM','Lanfear'";
+
+if(!empty($Ortho)){
+			
+			$Source[] = $Ortho;
+		}
 		
 		
-		$Nr_Seq = $_POST['Nr_Seq'];
-		$Max_Nr_Seq = $_POST['Max_Nr_Seq'];
+if(!empty($Pan)){
+			
+			$Source[] = $Pan;
+		}
 		
-		$Nr_sites = $_POST['Nr_sites'];
-		$Max_Nr_sites = $_POST['Max_Nr_sites'];
-		
-		
-		
-	
-		$BL_mean_min = $_POST['BL_mean_min'];
-		$BL_mean_max = $_POST['BL_mean_max'];
-		$BL_min = $_POST['BL_min'];
-		$BL_max = $_POST['BL_max'];
-		
-	
-		$IBL_mean_min =  $_POST['IBL_mean_min'];
-		$IBL_mean_max =  $_POST['IBL_mean_max'];
-		$IBL_min  = $_POST['IBL_min'];
-		$IBL_max =  $_POST['IBL_max'];
+if(!empty($Lanf)){
+			
+			$Source[] = $Lanf;
+			
+		}
+
+//////////////Loop for String Source Building////////////////////////
+
+
+$first = false;
 		
 		
-		$EBL_mean_min = $_POST['EBL_mean_min'];
-		$EBL_mean_max = $_POST['EBL_mean_max'];
-		$EBL_min = $_POST['EBL_min'];
-		$EBL_max = $_POST['EBL_max'];
-		
-		$tree_len = $_POST['tree_len'];
-		$Max_tree_len = $_POST['Max_tree_len'];
-		$tree_dia = $_POST['tree_dia'];
-		$Max_tree_dia = $_POST['Max_tree_dia'];
-		
-		
-		$Branches_Check = $_POST['Branches_Check'];
-		
-		$Hits = $_POST['Hits_anzeigen'];
-		
-		*/
+		if(!empty($Source)){
+			
+		foreach($Source as $list){
+			
+			if($first == false){
+				
+				
+				$stringsource .= "'".$list."'";
+				
+				$first = true; 
+				
+			}else {
+				$stringsource .= ","."'".$list."'";
+				
+			}
+			
+			
+			
+			
+		}
+	}
 		
 		
 		// Dynamic Querys Parameters
@@ -109,6 +116,26 @@
 			$f_d_query_1 .= " WHERE `dna_trees`.`TREE_TYPE` =  'ml' ";
 			$f_d_query_1 .= " AND `dna_trees`.`KEEP_IDENT` = 0 ";
 			
+
+
+			if($Alignment_Specs_Check == "TRUE"){
+						
+						
+				//Add SourceList
+				
+				if ($ALL == "checked"){
+					
+				$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+				$f_d_query_1 .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+
+				}elseif(!empty($Source)){
+					
+					$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+					$f_d_query_1 .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+					
+				}
+
+			
 					//Min
 						if(!empty($Nr_Seq)){
 							
@@ -140,6 +167,9 @@
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
+					}
+
+					if($Trees_Specs_Check== "TRUE"){
 						
 						//min
 						if(!empty($tree_len)){
@@ -255,6 +285,8 @@
 							$f_d_parameters[] =  $EBL_mean_min;
 							
 							}
+
+						}
 						
 				
 				
@@ -270,6 +302,23 @@
 				$f_d_query_1 .= " WHERE `aa_trees`.`TREE_TYPE` =  'ml' ";
 				$f_d_query_1 .= " AND `aa_trees`.`KEEP_IDENT` = 0 ";
 			
+
+				if($Alignment_Specs_Check == "TRUE"){
+						
+						
+					//Add SourceList
+					
+					if ($ALL == "checked"){
+						
+					$f_d_query .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+					$f_d_query_1 .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+	
+					}elseif(!empty($Source)){
+						
+						$f_d_query .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+						$f_d_query_1 .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+						
+					}
 					//Min
 						if(!empty($Nr_Seq)){
 							
@@ -301,6 +350,10 @@
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
+					}
+
+					if($Trees_Specs_Check== "TRUE"){
+
 						
 						//min
 						if(!empty($tree_len)){
@@ -392,6 +445,8 @@
 							$f_d_parameters[] =  $EBL_mean;
 							
 							}
+
+						}
 				
 				
 				

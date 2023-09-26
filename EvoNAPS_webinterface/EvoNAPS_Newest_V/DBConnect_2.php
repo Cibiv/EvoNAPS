@@ -156,7 +156,7 @@ $first = false;
 		}
 	}
 	
-	echo $stringsource;
+	//echo $stringsource;
 		
 		
 

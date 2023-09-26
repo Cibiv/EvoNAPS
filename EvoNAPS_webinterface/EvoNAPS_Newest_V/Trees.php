@@ -11,6 +11,10 @@
     <title>Trees Interface</title>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 	<script src="js/main.js"></script>
+	
+	
+
+	
 	<style>
 	
 	.center {
@@ -97,7 +101,7 @@
 		
 		
 		<div class = "Trees_Specs_Check"  >
-		 <input type="checkbox" name="tree features" id="Trees_Specs_Check" onclick = "show4()" value="Checked" checked>
+		 <input type="checkbox" name="tree features" id="Trees_Specs_Check" onclick = "show4()" value="TRUE" checked>
           <label for="Trees_Specs_Check"><h3>tree features </h3> </label> <hr>
 		  </div>
 		</section>
@@ -183,7 +187,7 @@
 		   <section class="Alignment_Specs_Check">	
 
 		<div class = "Alignment_Specs_Check" >
-		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="Checked">
+		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="TRUE">
           <label for="Alignment_Specs_Check"><h3>alignment features </h3> </label> <hr>
 		  </div>
 		  
@@ -191,8 +195,21 @@
 		  
 
 		  <section class = "Ali_Specs">
-		  
+
 		  <div class ="Alignment_Specs" id= "Ali_Specs" style= "display : none">
+
+		  <h4> allignment source </h4>
+		   <label for = "all"><h4> all </h4></label> 
+		  <input class ="cb" type="checkbox" name="selectAll"  id="all" onchange = "cbchange(this)" value="checked">
+		  <label for = "PANDIT"><h4> PANDIT</h4> </label>
+		  <input class ="cb" type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" onclick = "cbchange(this)">
+		   <label for = "Lanfear"><h4> Lanfear </h4></label> 
+		  <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onclick = "cbchange(this)">
+		 <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
+		  <input class ="cb" type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" onclick = "cbchange(this)">
+		  
+		<br><br>
+
 		  <label for="Nr_Seq"><h4>number of sequences:</h4></label> 
 		  <label for="Nr_Seq"><h4>min</h4></label> 
           <input type="number" name="number_of_sequences" id="Nr_Seq" step = "any" > 
