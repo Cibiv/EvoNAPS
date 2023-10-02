@@ -64,11 +64,23 @@ $_SESSION = array();
 		$tree_len = $_POST['tree_length'];
 		$_SESSION['tree_length']= $tree_len; #
 		}
+
+		if(isset($_POST['max_tree_length'])){
+			$Max_tree_len = $_POST['max_tree_length'];
+			$_SESSION['max_tree_length']= $Max_tree_len;
+			}
+
 		if(isset($_POST['tree_diameter'])){
 		//$tree_top = $_POST['tree_top'];
 		$tree_dia = $_POST['tree_diameter'];
 		$_SESSION['tree_diameter']= $tree_dia; 
 		}
+
+		if(isset($_POST['max_tree_diameter'])){
+			$Max_tree_dia = $_POST['max_tree_diameter'];
+			$_SESSION['max_tree_diameter']= $Max_tree_dia;
+		}
+
 		if(isset($_POST['alignment_features'])){
 
 		$Alignment_Specs_Check = $_POST['alignment_features'];

@@ -214,11 +214,25 @@ $first = false;
 							$f_d_parameters[] =  $tree_len;
 							
 							}
+							//max
+						if(!empty($Max_tree_len)){
+						
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
+							
+							}
 						//min	
 						if(!empty($tree_dia)){
 							
 							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						//Branch length
@@ -389,11 +403,25 @@ $first = false;
 							$f_d_parameters[] =  $tree_len;
 							
 							}
+							//max
+						if(!empty($Max_tree_len)){
+						
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
+							
+							}
 						//min	
 						if(!empty($tree_dia)){
 							
 							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						//Branch length
@@ -537,7 +565,7 @@ $first = false;
 			///download me 	
 			if(!$headers_printed){
 				
-			
+			echo $f_d_query;
 			fwrite($output_file,"\n");
 			fputcsv($output_file,array("Alignment ID","Newick String","Prop Invar"),"\t");
 			$headers_printed = true;

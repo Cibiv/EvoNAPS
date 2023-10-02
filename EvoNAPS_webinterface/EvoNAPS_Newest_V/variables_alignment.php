@@ -1,6 +1,6 @@
 <?php
 session_start();
-		if(isset($_POST['Alignment_ID'])){
+		if(isset($_POST['datatype'])){
 		$DNA_Prot = $_POST['datatype'];
 		$_SESSION['datatype']= $DNA_Prot; 
 		}

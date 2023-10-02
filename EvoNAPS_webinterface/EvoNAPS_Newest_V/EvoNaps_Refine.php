@@ -246,6 +246,18 @@
 		
 		
 		</section>
+
+		<hr>
+
+		<h4> allignment source </h4><br>
+		   <label for = "all"> <h4> all </h4> </label> 
+		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" <?php if(isset($_SESSION['selectAll'])){ echo "checked"; }?>>
+		  <label for = "PANDIT"> <h4> PANDIT </h4> </label>
+		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" <?php if(isset($_SESSION['PANDIT'])){ echo "checked"; }?>>
+		   <label for = "Lanfear"> <h4> Lanfear </h4> </label> 
+		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" <?php if(isset($_SESSION['Lanfear'])){ echo "checked"; }?>>
+		 <label for = "OrthoMaM"> <h4> OrthoMaM </h4> </label>
+		  <input type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" <?php if(isset($_SESSION['OrthoMaM'])){ echo "checked"; }?>>
 		 
 		
 		 <hr>
@@ -318,7 +330,7 @@
 		  <label for="Nr_sites"><h4>min number of sites</h4></label> 
 		  <input type="number" name="number_of_sites" id="Nr_sites" step = "any" value = <?php echo $_SESSION['number_of_sites']; ?>> <br>
 		  
-		  <label for="Max_Nr_sitesNr_Seq"><h4>max number of sites</h4>s</label> 
+		  <label for="Max_Nr_sitesNr_Seq"><h4>max number of sites</h4></label> 
 		  <input type="number" name="max_number_of_sites" id="Max_Nr_sites" step = "any" value = <?php echo $_SESSION['max_number_of_sites']; ?>> <br>
 		  
 		  <label for="mean_dis"><h4>min mean distance</h4></label>  
@@ -350,15 +362,7 @@
 		  </div>
 		  </section>
 		  
-		  <h4> allignment source </h4><br>
-		   <label for = "all"> <h4> all </h4> </label> 
-		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" <?php if(isset($_SESSION['selectAll'])){ echo "checked"; }?>>
-		  <label for = "PANDIT"> PANDIT </label>
-		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" <?php if(isset($_SESSION['PANDIT'])){ echo "checked"; }?>>
-		   <label for = "Lanfear"> Lanfear </label> 
-		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" <?php if(isset($_SESSION['Lanfear'])){ echo "checked"; }?>>
-		 <label for = "OrthoMaM"> OrthoMaM </label>
-		  <input type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" <?php if(isset($_SESSION['OrthoMaM'])){ echo "checked"; }?>>
+		  
 		  
 		  </div>
 		  </section>
@@ -384,10 +388,15 @@
 		  <section class="Tree_Specs">
 		<div class = "Tree_Specs" id = "Tree_Specs" <?php if(isset($_SESSION['tree_features'])){ echo "style = display : block"; }else { echo "style = display : none";} ?>>
          
-		  <label for="tree_len"><h4>tree length</h4></label> 
-          <input type="number" name="tree_length" id="tree_len" step = "any"<?php if(!empty($_SESSION['tree_length'])){ echo "value =".$_SESSION['tree_length'];} ?>> <br>
-		  <label for="tree_dia"><h4>tree diameter</h4></label>  
-		  <input type="number" name="tree_diameter" id="tree_dia" step = "any" <?php if(!empty($_SESSION['tree_diameter'])){ echo "value =".$_SESSION['tree_diameter'];} ?>> <br> <br>
+		  <label for="tree_len"><h4>tree length: min </h4></label> 
+          <input type="number" name="tree_length" id="tree_len" step = "any" <?php if(!empty($_SESSION['tree_length'])){ echo "value =".$_SESSION['tree_length'];} ?>> 
+		  <label for="Max_tree_len"><h4>max</h4></label> 
+          <input type="number" name="max_tree_length" id="Max_tree_len" step = "any" <?php if(!empty($_SESSION['max_tree_length'])){ echo "value =".$_SESSION['max_tree_length'];} ?> > 
+		   <br>
+		  <label for="tree_dia"><h4>diameter: min</h4></label>  
+		  <input type="number" name="tree_diameter" id="tree_dia" step = "any" <?php if(!empty($_SESSION['tree_diameter'])){ echo "value =".$_SESSION['tree_diameter'];} ?>>  	 
+		  <label for="Max_tree_dia"><h4>max</h4></label>  
+		  <input type="number" name="max_tree_diameter" id="Max_tree_dia" step = "any" <?php if(!empty($_SESSION['max_tree_diameter'])){ echo "value =".$_SESSION['max_tree_diameter'];} ?>> 
 		  
 		  
 		  

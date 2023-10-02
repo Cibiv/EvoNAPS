@@ -7,10 +7,16 @@ $_SESSION = array();
 	if(isset($_POST['alignment_features'])){
 		$Alignment_Specs_Check = $_POST['alignment_features'];
 		$_SESSION['alignment_features']= $Alignment_Specs_Check; 
+	}else{
+		$Alignment_Specs_Check = "";
+
 	}
 	if(isset($_POST['tree_features'])){
 		$Trees_Specs_Check = $_POST['tree_features'];
 		$_SESSION['tree_features']= $Trees_Specs_Check; 
+	}else{
+		$Trees_Specs_Check = "";
+
 	}
 		if(isset($_POST['datatype'])){
 		$DNA_Prot = $_POST['datatype'];

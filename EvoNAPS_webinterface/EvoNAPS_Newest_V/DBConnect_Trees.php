@@ -178,11 +178,25 @@ $first = false;
 							$f_d_parameters[] =  $tree_len;
 							
 							}
+							//max
+						if(!empty($Max_tree_len)){
+						
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
+							
+							}
 						//min	
 						if(!empty($tree_dia)){
 							
 							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						//Branch length
@@ -204,7 +218,7 @@ $first = false;
 						//mean (min)
 						if(!empty($BL_mean_min)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` >= ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`BL_MEAN` >= ? ';
 							$f_d_parameters[] =  $BL_mean_min;
 							
 							}
@@ -212,7 +226,7 @@ $first = false;
 							//mean (max)
 						if(!empty($BL_mean_max)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`BL_MEAN` <= ? ';
 							$f_d_parameters[] =  $BL_mean_max;
 							
 							}
@@ -362,11 +376,26 @@ $first = false;
 							$f_d_parameters[] =  $tree_len;
 							
 							}
+						//max
+						if(!empty($Max_tree_len)){
+						
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $$Max_tree_len;
+							
+							}
 						//min	
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						//Branch length
@@ -388,7 +417,14 @@ $first = false;
 						//mean (min)
 						if(!empty($BL_mean)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` >= ? ';
+							$f_d_conditions[] =  ' `aa_trees`.`BL_MEAN` >= ? ';
+							$f_d_parameters[] =  $BL_mean;
+							
+							}
+							//mean (max)
+						if(!empty($BL_mean)){
+						
+							$f_d_conditions[] =  ' `aa_trees`.`BL_MEAN` >= ? ';
 							$f_d_parameters[] =  $BL_mean;
 							
 							}
@@ -411,15 +447,22 @@ $first = false;
 							
 						}
 						//mean (min)
-						if(!empty($IBL_mean)){
+						if(!empty($IBL_mean_min)){
 							
 							$f_d_conditions[] =  ' `aa_trees`.`IBL_MEAN` >= ? ';
-							$f_d_parameters[] =  $IBL_mean;
+							$f_d_parameters[] =  $IBL_mean_min;
 							
 							}
+						if(!empty($IBL_mean_max)){
+						
+							$f_d_conditions[] =  ' `aa_trees`.`IBL_MEAN` <= ? ';
+							$f_d_parameters[] =  $IBL_mean_max;
 							
+							}
+								
+								
 							
-							
+								
 							
 							
 						//External Branch
@@ -439,10 +482,17 @@ $first = false;
 							
 						}
 						//mean (min)
-						if(!empty($EBL_mean)){
+						if(!empty($EBL_mean_min)){
 							
 							$f_d_conditions[] =  ' `aa_trees`.`EBL_MEAN` >= ? ';
-							$f_d_parameters[] =  $EBL_mean;
+							$f_d_parameters[] =  $EBL_mean_min;
+							
+							}
+							//mean (max)
+						if(!empty($EBL_mean_max)){
+					
+							$f_d_conditions[] =  ' `aa_trees`.`EBL_MEAN` <= ? ';
+							$f_d_parameters[] =  $EBL_mean_max;
 							
 							}
 
@@ -467,6 +517,9 @@ $first = false;
 				$f_d_query_1 .= " AND ".implode(" AND ", $f_d_conditions)." LIMIT 20";
 				
 			}
+
+
+			echo $f_d_query;
 			 
 			 
 			

@@ -284,6 +284,17 @@
 		
 		</div>
 		</section>
+
+		<hr>
+		<h4> allignment source </h4><br>
+		<input class ="cb" type="checkbox" name="selectAll"  id="all" onchange = "cbchange(this)" value="checked" checked>
+		  <label for = "all"><h4> all </h4></label> 
+		  <input class ="cb" type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" onclick = "cbchange(this)">
+		  <label for = "PANDIT"><h4> PANDIT</h4> </label>
+		  <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onclick = "cbchange(this)">
+		  <label for = "Lanfear"><h4> Lanfear </h4></label> 
+		  <input class ="cb" type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" onclick = "cbchange(this)">
+		  <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
 		 
 		
 		 <hr>
@@ -321,11 +332,11 @@
           <label for="amount"> <h4>restriction of model performance</h4></label> <br><hr>
 
 		  <label for="BIC"><h4> min BIC: weight</h4></label> 
-		  <input type="number" name="BIC" id="BIC" step = "any" value= "0.05">
+		  <input type="number" name="BIC" id="BIC" step = "any" value= "0.05" min="0" max="1">
 		  <label for="AIC"> <h4>min AIC weight:</h4></label> 
-          <input type="number" name="AIC" id="AIC" step="any">
+          <input type="number" name="AIC" id="AIC" step="any" min="0" max="1">
 		   <label for="AICC"><h4>min AICc weight:</h4></label> 
-		  <input type="number" name="AICC" id="AICC" step="any">
+		  <input type="number" name="AICC" id="AICC" step="any" min="0" max="1">
 		  
 		   
 		 </div>
@@ -391,16 +402,7 @@
 		  </div>
 		  </section>
 		  
-		 <h4> allignment source </h4><br>
-		   <label for = "all"><h4> all </h4></label> 
-		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked">
-		  <label for = "PANDIT"><h4> PANDIT</h4> </label>
-		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT">
-		   <label for = "Lanfear"><h4> Lanfear </h4></label> 
-		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear">
-		 <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
-		  <input type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM">
-		  
+		 
 		  </div>
 		  </section>
 		
@@ -425,11 +427,20 @@
 		  <section class="Tree_Specs">
 		<div class = "Tree_Specs" id = "Tree_Specs" style = "display : none">
          
-		  <label for="tree_len"><h4>tree length</h4></label> 
-          <input type="number" name="tree_length" id="tree_len" step = "any" > <br>
-		  <label for="tree_dia"><h4>tree diameter</h4></label>  
-		  <input type="number" name="tree_diameter" id="tree_dia" step = "any"> <br> <br>
-		  
+		<label for="tree_len"><h4>tree length: min </h4></label> 
+          <input type="number" name="tree_length" id="tree_len" step = "any" > 
+		 
+		  <label for="Max_tree_len"><h4>max</h4></label> 
+          <input type="number" name="max_tree_length" id="Max_tree_len" step = "any"> <br>
+
+
+		  <label for="tree_dia"><h4>tree diameter: min</h4></label>  
+		  <input type="number" name="tree_diameter" id="tree_dia" step = "any">  	 
+		  <label for="Max_tree_dia"><h4>max</h4></label>  
+		  <input type="number" name="max_tree_diameter" id="Max_tree_dia" step = "any"> 
+
+
+		
 		  
 		  
 		

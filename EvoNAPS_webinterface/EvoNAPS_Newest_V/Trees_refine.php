@@ -96,14 +96,14 @@
 		
 		
 		<div class = "Trees_Specs_Check" >
-		 <input type="checkbox" name="tree_features" id="Trees_Specs_Check" onclick = "show4()" value="Checked"<?php if($_SESSION['tree_features']== "Checked"){ echo "checked"; }?>>
+		 <input type="checkbox" name="tree_features" id="Trees_Specs_Check" onclick = "show4()" value="Checked"<?php if(isset($_SESSION['tree_features'])){ echo "checked"; }?>>
           <label for="Trees_Specs_Check"><h3>tree features </h3> </label> <hr>
 		  </div>
 		</section>
 		  
 		  
 		  <section class="Tree_Specs">
-		<div class = "Tree_Specs" id = "Tree_Specs"<?php if($_SESSION['tree_features']== "Checked"){ echo ' style= "display:block"'; }else{echo ' style= "display:none"';}?>>
+		<div class = "Tree_Specs" id = "Tree_Specs"<?php if(isset($_SESSION['tree_features'])){ echo "style = display : block"; }else { echo "style = display : none";} ?>>
 		 
 		  <label for="tree_len"><h4>tree length: min </h4></label> 
 		  
@@ -179,7 +179,7 @@
 		  <section class="Alignment_Specs_Check">	
 
 		<div class = "Alignment_Specs_Check" >
-		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="Checked"<?php if($_SESSION['alignment_features']== "Checked"){ echo "checked"; }?>>
+		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="Checked"<?php if(isset($_SESSION['alignment_features'])){ echo "checked"; }?>>
           <label for="Alignment_Specs_Check"><h3>alignment features </h3> </label> <hr>
 		  </div>
 		  
@@ -187,7 +187,7 @@
 		  
 		  
 		  <section class="Ali_Specs ">
-		<div class = "Alignment_Specs" id = "Ali_Specs"<?php if($_SESSION['alignment_features']== "Checked"){ echo ' style= "display:block"'; }else{echo ' style= "display:none"';}?>>
+		<div class = "Alignment_Specs" id = "Ali_Specs"<?php if(isset($_SESSION['alignment_features'])){ echo "style = display : block";}else { echo "style = display : none";}?>>
           
 		  
 		  <label for="Nr_Seq"><h4>number of sequences:</h4></label> 

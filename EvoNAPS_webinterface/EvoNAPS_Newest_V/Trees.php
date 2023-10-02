@@ -199,14 +199,15 @@
 		  <div class ="Alignment_Specs" id= "Ali_Specs" style= "display : none">
 
 		  <h4> allignment source </h4>
-		   <label for = "all"><h4> all </h4></label> 
-		  <input class ="cb" type="checkbox" name="selectAll"  id="all" onchange = "cbchange(this)" value="checked">
-		  <label for = "PANDIT"><h4> PANDIT</h4> </label>
+		   
+		  <input class ="cb" type="checkbox" name="selectAll"  id="all" onchange = "cbchange(this)" value="checked"checked>
+		  <label for = "all"><h4> all </h4></label> 
 		  <input class ="cb" type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" onclick = "cbchange(this)">
-		   <label for = "Lanfear"><h4> Lanfear </h4></label> 
+		  <label for = "PANDIT"><h4> PANDIT</h4> </label>
 		  <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onclick = "cbchange(this)">
-		 <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
+		  <label for = "Lanfear"><h4> Lanfear </h4></label> 
 		  <input class ="cb" type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" onclick = "cbchange(this)">
+		  <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
 		  
 		<br><br>
 

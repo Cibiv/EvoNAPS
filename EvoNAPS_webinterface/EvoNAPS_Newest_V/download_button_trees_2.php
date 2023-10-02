@@ -15,7 +15,9 @@ include "DB_credentials.php";
 		$Nr_sites = $_SESSION['number_of_sites'];
 		$Max_Nr_sites = $_SESSION['max_number_of_sites'];
 		
-		
+		$Alignment_Specs_Check = $_SESSION['alignment_features'];
+
+		$Trees_Specs_Check = $_SESSION['tree_features'];
 		
 	
 		$BL_mean_min = $_SESSION['min_mean_branch_length'];
@@ -43,13 +45,71 @@ include "DB_credentials.php";
 
 		
 		//$Hits = $_SESSION['Hits_anzeigen'];
-		
-		
 
-		$Hits = "checked";
+			//////////////////Setting Variables////////////777
+	$Source = [];
+	$Pan = $_SESSION['PANDIT'];
+	$Ortho =$_SESSION['OrthoMaM'];
+	$Lanf =$_SESSION['Lanfear'];
+	$ALL = $_SESSION['selectAll'];
+
+
 
 		$f_d_conditions = [];
 		$f_d_parameters = [];
+
+
+
+
+//////////////////////String Building Source ///////////////////////
+
+$stringsource = "";
+$stringall = "'PANDIT','OrthoMaM','Lanfear'";
+
+if(!empty($Ortho)){
+			
+			$Source[] = $Ortho;
+		}
+		
+		
+if(!empty($Pan)){
+			
+			$Source[] = $Pan;
+		}
+		
+if(!empty($Lanf)){
+			
+			$Source[] = $Lanf;
+			
+		}
+
+//////////////Loop for String Source Building////////////////////////
+
+
+$first = false;
+		
+		
+		if(!empty($Source)){
+			
+		foreach($Source as $list){
+			
+			if($first == false){
+				
+				
+				$stringsource .= "'".$list."'";
+				
+				$first = true; 
+				
+			}else {
+				$stringsource .= ","."'".$list."'";
+				
+			}
+			
+		
+			
+			
+		}
+	}
 		$usedna = false;
 
 		
@@ -68,7 +128,7 @@ include "DB_credentials.php";
 		}
 		
 		
-		if($Hits == "checked"){
+		
 			
 			
 			$f_d_query = " SELECT ".$select . " FROM ";
@@ -87,6 +147,22 @@ include "DB_credentials.php";
 			$f_d_query .= " INNER JOIN `dna_trees` ON   (`dna_branches`.`ALI_ID` =`dna_trees`.`ALI_ID`) AND (`dna_branches`.`TREE_TYPE` =`dna_trees`.`TREE_TYPE`) AND (`dna_branches`.`TIME_STAMP` = `dna_trees`.`TIME_STAMP`) ";
 			$f_d_query .= " LEFT JOIN `dna_sequences`  ON (`dna_branches`.`ALI_ID`=`dna_sequences`.`ALI_ID`) AND (`dna_branches`.`BRANCH_INDEX`=`dna_sequences`.`SEQ_INDEX`)";
 			$f_d_query .= " WHERE `dna_branches`.`TREE_TYPE` =  'ml' ";
+			
+
+			if($ALL == "checked"){
+							
+				$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+
+				}elseif(!empty($Source)){
+					
+					$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+					
+				} 
+
+				if($Alignment_Specs_Check == "TRUE"){		
+					//Add SourceList
+				
+						
 			
 					//Min
 						if(!empty($Nr_Seq)){
@@ -119,7 +195,9 @@ include "DB_credentials.php";
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
-						
+					}
+				if($Trees_Specs_Check== "TRUE"){
+
 						//min
 						if(!empty($tree_len)){
 							
@@ -127,11 +205,25 @@ include "DB_credentials.php";
 							$f_d_parameters[] =  $tree_len;
 							
 							}
+							//max
+						if(!empty($Max_tree_len)){
+						
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
+							
+							}
 						//min	
 						if(!empty($tree_dia)){
 							
 							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						//Branch length
@@ -234,6 +326,10 @@ include "DB_credentials.php";
 							$f_d_parameters[] =  $EBL_mean_min;
 							
 							}
+
+						}
+
+
 						
 				
 				
@@ -246,6 +342,20 @@ include "DB_credentials.php";
 			$f_d_query .= " LEFT JOIN `aa_sequences`  ON (`aa_branches`.`ALI_ID`=`aa_sequences`.`ALI_ID`) AND (`aa_branches`.`BRANCH_INDEX`=`aa_sequences`.`SEQ_INDEX`)";
 			$f_d_query .= " WHERE `aa_branches`.`TREE_TYPE` =  'ml' ";
 			
+			if($ALL == "checked"){
+						
+				$f_d_query .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+
+				}elseif(!empty($Source)){
+					
+					$f_d_query .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+					
+				} 
+
+			if($Alignment_Specs_Check == "TRUE"){		
+				//Add SourceList
+			
+					
 					//Min
 						if(!empty($Nr_Seq)){
 							
@@ -277,6 +387,8 @@ include "DB_credentials.php";
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
+					}
+					if($Trees_Specs_Check== "TRUE"){
 						
 						//min
 						if(!empty($tree_len)){
@@ -285,11 +397,25 @@ include "DB_credentials.php";
 							$f_d_parameters[] =  $tree_len;
 							
 							}
+							//max
+						if(!empty($Max_tree_len)){
+						
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
+							
+							}
 						//min	
 						if(!empty($tree_dia)){
 							
 							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						//Branch length
@@ -391,15 +517,16 @@ include "DB_credentials.php";
 							$f_d_conditions[] =  ' `aa_trees`.`EBL_MEAN` <= ? ';
 							$f_d_parameters[] =  $EBL_mean_min;
 							
-							}				
+							}	
+							
+						}
 			}
 			
 			//Fuze Conditions
 			
 			if($f_d_conditions)
 				$f_d_query .= " AND ".implode(" AND ", $f_d_conditions);
-			echo $f_d_query;
-		
+			
 			
 			
 						
@@ -429,7 +556,7 @@ include "DB_credentials.php";
 			///download me 	
 			if(!$headers_printed){
 				
-			
+			echo $f_d_query;
 			fwrite($output_file,"\n");
 			fputcsv($output_file,array('Alignment Key ','Branch Key'));
 			$headers_printed = true;
@@ -453,7 +580,7 @@ include "DB_credentials.php";
 			
 			
 		
-		}
+		
 		
 		
 		$connect = null;

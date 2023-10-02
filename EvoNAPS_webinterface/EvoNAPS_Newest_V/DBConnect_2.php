@@ -429,7 +429,17 @@ $first = false;
 					
 					
 					
-				
+					if ($ALL == "checked"){
+							
+						$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+						$f_d_query_1 .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+
+						}elseif(!empty($Source)){
+							
+							$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+							$f_d_query_1 .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+							
+						}
 					
 					if($Trees_Specs_Check== "TRUE"){
 						
@@ -440,15 +450,28 @@ $first = false;
 						//Catch the Data 
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` = ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
+							
+							}
+						if(!empty($Max_tree_len)){
+					
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 							
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` = ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						
@@ -474,17 +497,7 @@ $first = false;
 						
 						//Add SourceList
 						
-						if ($ALL == "checked"){
-							
-						$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
-						$f_d_query_1 .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
-
-						}elseif(!empty($Source)){
-							
-							$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
-							$f_d_query_1 .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
-							
-						}
+						
 						
 						//Since we already inner joined in dna allignments we can collect the data 
 						
@@ -628,16 +641,7 @@ $first = false;
 					$f_d_query_1 .= " AND `dna_trees`.`TREE_TYPE` =  'ml' ";
 					
 					
-					
-					
-					
-					if($Alignment_Specs_Check == "TRUE"){	
-						
-						//Since we already inner joined in dna allignments we can collect the data 
-						
-						//Add SourceList
-						
-						if ($ALL == "checked"){
+					if ($ALL == "checked"){
 							
 						$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
 						$f_d_query_1 .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
@@ -648,6 +652,15 @@ $first = false;
 							$f_d_query_1 .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 							
 						}
+					
+					
+					if($Alignment_Specs_Check == "TRUE"){	
+						
+						//Since we already inner joined in dna allignments we can collect the data 
+						
+						//Add SourceList
+						
+						
 						
 						//Min
 						if(!empty($Nr_Seq)){
@@ -708,15 +721,28 @@ $first = false;
 						//Catch the Data 
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` = ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
+							
+							}
+						if(!empty($Max_tree_len)){
+				
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 							
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` = ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						
@@ -821,17 +847,32 @@ $first = false;
 						//Catch the Data 
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` = ? ';
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
+							
+							}
+							
+						if(!empty($Max_tree_len)){
+				
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 							
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` = ? ';
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
 							
 						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
+							
+						}
+						
 						
 						
 						/* Tree topology
@@ -847,15 +888,10 @@ $first = false;
 						*/ 
 						
 					}
+
+					//Add SourceList
 						
-						
-					//  is Allignment Checked if yes catch data
-					if($Alignment_Specs_Check == "TRUE"){
-						
-						
-						//Add SourceList
-						
-						if ($ALL == "checked"){
+					if ($ALL == "checked"){
 							
 						$f_d_query .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
 						$f_d_query_1 .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
@@ -867,6 +903,13 @@ $first = false;
 							$f_d_query_1 .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 							
 						}
+						
+						
+					//  is Allignment Checked if yes catch data
+					if($Alignment_Specs_Check == "TRUE"){
+						
+						
+						
 						
 						//Since we already inner joined in aa allignments we can collect the data 
 						
@@ -1010,16 +1053,7 @@ $first = false;
 					$f_d_query_1 .= " AND `aa_trees`.`TREE_TYPE` =  'ml' ";
 					
 					
-					
-					
-					
-					if($Alignment_Specs_Check == "TRUE"){	
-						
-						//Since we already inner joined in aa allignments we can collect the data 
-						
-						//Add SourceList
-						
-						if ($ALL == "checked"){
+					if ($ALL == "checked"){
 							
 						$f_d_query .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
 
@@ -1028,6 +1062,15 @@ $first = false;
 							$f_d_query .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 							
 						}
+					
+					
+					if($Alignment_Specs_Check == "TRUE"){	
+						
+						//Since we already inner joined in aa allignments we can collect the data 
+						
+						//Add SourceList
+						
+						
 						
 						//Min
 						if(!empty($Nr_Seq)){
@@ -1088,15 +1131,29 @@ $first = false;
 						//Catch the Data 
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` = ? ';
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
+							
+							}
+
+						if(!empty($Max_tree_len)){
+				
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 							
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` = ? ';
+							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
+							
+						}
+						//max
+						if(!empty($Max_tree_dia)){
+							
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						
@@ -1163,7 +1220,7 @@ $first = false;
 				
 				 // Check if Statements 
 				 
-				 //echo ($f_d_query);
+				 echo ($f_d_query_1);
 			
 			/*
 				foreach($f_d_parameters as $f_d_list)
