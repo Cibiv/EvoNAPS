@@ -46,8 +46,17 @@ include "DB_credentials.php";
 		$tree_dia = $_SESSION['tree_diameter'];
 		$Max_tree_dia = $_SESSION['max_tree_diameter'];
 		
-		$Alignment_Specs_Check = $_SESSION['alignment_features'];
-		$Trees_Specs_Check = $_SESSION['tree_features'];
+		if(isset($_SESSION['alignment_features'])){
+			$Alignment_Specs_Check = $_SESSION['alignment_features'];
+			}else{
+				$Alignment_Specs_Check="";
+			}
+			if(isset($_SESSION['tree_features'])){
+			$Trees_Specs_Check = $_SESSION['tree_features'];
+			}else{
+				$Trees_Specs_Check ="";
+			}
+		
 		
 		$Hits = $_SESSION['Hits_anzeigen'];
 		
@@ -93,9 +102,15 @@ include "DB_credentials.php";
 		
 //////////////////Setting Variables////////////777
 		$Source = [];
-		$Pan = $_SESSION['PANDIT'];
+		if(isset($_SESSION['PANDIT'])){
+			$Pan = $_SESSION['PANDIT'];
+		}
+		if(isset($_SESSION['OrthoMaM'])){
 		$Ortho =$_SESSION['OrthoMaM'];
+		}
+		if(isset($_SESSION['Lanfear'])){
 		$Lanf =$_SESSION['Lanfear'];
+		}
 		$ALL = $_SESSION['selectAll'];
 
 
@@ -1156,7 +1171,7 @@ $first = false;
 		$output = " ";
 		//$fasta = ">";
 		$date = "##".date('Y/m/d H:i:s')."\n";
-
+		$counter = 0;
 		ob_clean();
 		foreach ($filter_query_result as $list) {
 			 
@@ -1199,13 +1214,15 @@ $first = false;
 		//fwrite($output_file,"\n");
 		fputcsv($output_file,$list,"\t");
 		fpassthru($output_file);
-		
+		$counter++;
 			
 			
 			
 			
 		
 		}
+
+		fwrite($output_file,"Nr of Hits:".$counter);
 			
 			
 			

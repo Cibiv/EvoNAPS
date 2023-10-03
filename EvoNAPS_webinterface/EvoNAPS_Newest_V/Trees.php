@@ -94,7 +94,19 @@
 		    <label for = "Prot_Radio"> <h2>Proteins</h2> </label>
 			
 			</div>
-			<br>
+			<hr>
+			<h4> allignment source </h4>
+		   
+		   <input class ="cb" type="checkbox" name="selectAll"  id="all" onchange = "cbchange(this)" value="checked"checked>
+		   <label for = "all"><h4> all </h4></label> 
+		   <input class ="cb" type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" onclick = "cbchange(this)">
+		   <label for = "PANDIT"><h4> PANDIT</h4> </label>
+		   <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onclick = "cbchange(this)">
+		   <label for = "Lanfear"><h4> Lanfear </h4></label> 
+		   <input class ="cb" type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" onclick = "cbchange(this)">
+		   <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
+
+		   <hr>
 		
 		  
 		  <section class="Tree_Specs_Check" >
@@ -198,16 +210,7 @@
 
 		  <div class ="Alignment_Specs" id= "Ali_Specs" style= "display : none">
 
-		  <h4> allignment source </h4>
-		   
-		  <input class ="cb" type="checkbox" name="selectAll"  id="all" onchange = "cbchange(this)" value="checked"checked>
-		  <label for = "all"><h4> all </h4></label> 
-		  <input class ="cb" type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" onclick = "cbchange(this)">
-		  <label for = "PANDIT"><h4> PANDIT</h4> </label>
-		  <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onclick = "cbchange(this)">
-		  <label for = "Lanfear"><h4> Lanfear </h4></label> 
-		  <input class ="cb" type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" onclick = "cbchange(this)">
-		  <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
+		 
 		  
 		<br><br>
 

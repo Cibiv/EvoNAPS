@@ -287,13 +287,13 @@
 
 		<hr>
 		<h4> allignment source </h4><br>
-		<input class ="cb" type="checkbox" name="selectAll"  id="all" onchange = "cbchange(this)" value="checked" checked>
+		<input class ="cb" type="checkbox" name="selectAll"  id="all" onchange = "checkkall()" value="checked" checked>
 		  <label for = "all"><h4> all </h4></label> 
-		  <input class ="cb" type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" onclick = "cbchange(this)">
+		  <input class ="cb" type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" onchange = "checkkall()">
 		  <label for = "PANDIT"><h4> PANDIT</h4> </label>
-		  <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onclick = "cbchange(this)">
+		  <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onchange = "checkkall()">
 		  <label for = "Lanfear"><h4> Lanfear </h4></label> 
-		  <input class ="cb" type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" onclick = "cbchange(this)">
+		  <input class ="cb" type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" onchange = "checkkall()">
 		  <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
 		 
 		

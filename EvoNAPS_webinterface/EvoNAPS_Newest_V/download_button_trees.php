@@ -5,9 +5,16 @@ session_start();
 include "DB_credentials.php";
 
 
-$Alignment_Specs_Check = $_SESSION['alignment_features'];
-
-$Trees_Specs_Check = $_SESSION['tree_features'];
+	if(isset($_SESSION['alignment_features'])){
+	$Alignment_Specs_Check = $_SESSION['alignment_features'];
+	}else{
+		$Alignment_Specs_Check="";
+	}
+	if(isset($_SESSION['tree_features'])){
+	$Trees_Specs_Check = $_SESSION['tree_features'];
+	}else{
+		$Trees_Specs_Check ="";
+	}
 
 		$DNA_Prot = $_SESSION['datatype'];
 		
@@ -50,9 +57,15 @@ $Trees_Specs_Check = $_SESSION['tree_features'];
 
 	//////////////////Setting Variables////////////777
 	$Source = [];
-	$Pan = $_SESSION['PANDIT'];
+	if(isset($_SESSION['PANDIT'])){
+		$Pan = $_SESSION['PANDIT'];
+	}
+	if(isset($_SESSION['OrthoMaM'])){
 	$Ortho =$_SESSION['OrthoMaM'];
+	}
+	if(isset($_SESSION['Lanfear'])){
 	$Lanf =$_SESSION['Lanfear'];
+	}
 	$ALL = $_SESSION['selectAll'];
 
 
@@ -159,20 +172,21 @@ $first = false;
 			$f_d_query .= " WHERE `dna_trees`.`TREE_TYPE` =  'ml' ";
 			$f_d_query .= " AND `dna_trees`.`KEEP_IDENT` = 0 ";
 
+			if($ALL == "checked"){
+						
+				$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+
+				}elseif(!empty($Source)){
+					
+					$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+					
+				}
 			
 						
 			if($Alignment_Specs_Check == "TRUE"){		
 					//Add SourceList
 					
-					if($ALL == "checked"){
-						
-					$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
-
-					}elseif(!empty($Source)){
-						
-						$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
-						
-					}
+					
 			
 					//Min
 						if(!empty($Nr_Seq)){
@@ -347,12 +361,7 @@ $first = false;
 			$f_d_query .= " WHERE `aa_trees`.`TREE_TYPE` =  'ml' ";
 			$f_d_query .= " AND `aa_trees`.`KEEP_IDENT` = 0 ";
 
-			if($Alignment_Specs_Check == "TRUE"){
-						
-						
-				//Add SourceList
-				
-				if ($ALL == "checked"){
+			if ($ALL == "checked"){
 					
 				$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
 
@@ -361,6 +370,13 @@ $first = false;
 					$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 					
 				}
+			
+			if($Alignment_Specs_Check == "TRUE"){
+						
+						
+				//Add SourceList
+				
+				
 			
 					//Min
 						if(!empty($Nr_Seq)){
@@ -558,7 +574,7 @@ $first = false;
 		$headers_printed = false; 
 		$output = " ";
 		//$fasta = ">";
-		
+		$counter = 0;
 		foreach ($filter_query_result as $list) {
 			 
 			
@@ -579,12 +595,14 @@ $first = false;
 		fwrite($output_file,"\n");
 		fputcsv($output_file,$list,"\t");
 		fpassthru($output_file);
-			
+			$counter++;
 			
 			
 			
 		
 		}
+		echo "Nr of Hits".$counter;
+
 			
 			
 			

@@ -88,7 +88,19 @@
 			
 			</div>
 			
-			<br>
+			
+			<hr>
+			<h4> allignment source </h4><br>
+		   <label for = "all"> <h4> all </h4> </label> 
+		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" <?php if(isset($_SESSION['selectAll'])){ echo "checked"; }?>>
+		  <label for = "PANDIT"> <h4> PANDIT </h4> </label>
+		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" <?php if(isset($_SESSION['PANDIT'])){ echo "checked"; }?>>
+		   <label for = "Lanfear"> <h4> Lanfear </h4> </label> 
+		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" <?php if(isset($_SESSION['Lanfear'])){ echo "checked"; }?>>
+		 <label for = "OrthoMaM"> <h4> OrthoMaM </h4> </label>
+		  <input type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" <?php if(isset($_SESSION['OrthoMaM'])){ echo "checked"; }?>>
+		 
+			<hr>
 		  
 		  
 		  

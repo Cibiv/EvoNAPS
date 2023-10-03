@@ -1,6 +1,6 @@
 <?php
 
-ini_set('memory_limit','1000M');
+ini_set('memory_limit','-1');
 session_start();
 include "DB_credentials.php";
 			
@@ -15,10 +15,16 @@ include "DB_credentials.php";
 		$Nr_sites = $_SESSION['number_of_sites'];
 		$Max_Nr_sites = $_SESSION['max_number_of_sites'];
 		
+		if(isset($_SESSION['alignment_features'])){
 		$Alignment_Specs_Check = $_SESSION['alignment_features'];
-
+		}else{
+			$Alignment_Specs_Check="";
+		}
+		if(isset($_SESSION['tree_features'])){
 		$Trees_Specs_Check = $_SESSION['tree_features'];
-		
+		}else{
+			$Trees_Specs_Check ="";
+		}
 	
 		$BL_mean_min = $_SESSION['min_mean_branch_length'];
 		$BL_mean_max = $_SESSION['max_mean_branch_length'];
@@ -48,9 +54,15 @@ include "DB_credentials.php";
 
 			//////////////////Setting Variables////////////777
 	$Source = [];
-	$Pan = $_SESSION['PANDIT'];
+	if(isset($_SESSION['PANDIT'])){
+		$Pan = $_SESSION['PANDIT'];
+	}
+	if(isset($_SESSION['OrthoMaM'])){
 	$Ortho =$_SESSION['OrthoMaM'];
+	}
+	if(isset($_SESSION['Lanfear'])){
 	$Lanf =$_SESSION['Lanfear'];
+	}
 	$ALL = $_SESSION['selectAll'];
 
 

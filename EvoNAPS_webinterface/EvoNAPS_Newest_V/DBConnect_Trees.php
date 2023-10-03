@@ -76,7 +76,7 @@ $first = false;
 		if($DNA_Prot == "dna" ){
 			
 			// DNA select
-			$select = "`dna_alignments` .`ALI_ID`, `dna_trees`.`NEWICK_STRING`, `dna_trees`.`PROP_INVAR`,`dna_trees`.`ALPHA`,`dna_trees`.`STAT_FREQ_TYPE`, `dna_trees`.`STAT_FREQ_A`,`dna_trees`.`STAT_FREQ_C`, `dna_trees`.`STAT_FREQ_G`,`dna_trees`.`STAT_FREQ_T`,`dna_trees`.`RATE_AC`,`dna_trees`.`RATE_AG`,`dna_trees`.`RATE_AT`,`dna_trees`.`RATE_CA`,`dna_trees`.`RATE_CG`,`dna_trees`.`RATE_CT`,`dna_trees`.`RATE_GA`,`dna_trees`.`RATE_GC`,`dna_trees`.`RATE_GT`, `dna_trees`.`RATE_TA`";
+			$select = "`dna_alignments` .`ALI_ID`, `dna_trees`.`NEWICK_STRING`, `dna_trees`.`PROP_INVAR`,`dna_trees`.`ALPHA`,`dna_trees`.`STAT_FREQ_TYPE`, `dna_trees`.`STAT_FREQ_A`,`dna_trees`.`STAT_FREQ_C`, `dna_trees`.`STAT_FREQ_G`,`dna_trees`.`STAT_FREQ_T`,`dna_trees`.`RATE_AC`,`dna_trees`.`RATE_AG`,`dna_trees`.`RATE_AT`,`dna_trees`.`RATE_CA`,`dna_trees`.`RATE_CG`,`dna_trees`.`RATE_CT`,`dna_trees`.`RATE_GA`,`dna_trees`.`RATE_GC`,`dna_trees`.`RATE_GT`, `dna_trees`.`RATE_TA`,`dna_trees`.`TREE_LENGTH`";
 			
 			
 			
@@ -116,14 +116,7 @@ $first = false;
 			$f_d_query_1 .= " WHERE `dna_trees`.`TREE_TYPE` =  'ml' ";
 			$f_d_query_1 .= " AND `dna_trees`.`KEEP_IDENT` = 0 ";
 			
-
-
-			if($Alignment_Specs_Check == "TRUE"){
-						
-						
-				//Add SourceList
-				
-				if ($ALL == "checked"){
+			if ($ALL == "checked"){
 					
 				$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
 				$f_d_query_1 .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
@@ -134,6 +127,13 @@ $first = false;
 					$f_d_query_1 .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 					
 				}
+
+			if($Alignment_Specs_Check == "TRUE"){
+						
+						
+				//Add SourceList
+				
+				
 
 			
 					//Min
@@ -316,13 +316,7 @@ $first = false;
 				$f_d_query_1 .= " WHERE `aa_trees`.`TREE_TYPE` =  'ml' ";
 				$f_d_query_1 .= " AND `aa_trees`.`KEEP_IDENT` = 0 ";
 			
-
-				if($Alignment_Specs_Check == "TRUE"){
-						
-						
-					//Add SourceList
-					
-					if ($ALL == "checked"){
+				if ($ALL == "checked"){
 						
 					$f_d_query .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
 					$f_d_query_1 .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
@@ -333,6 +327,13 @@ $first = false;
 						$f_d_query_1 .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 						
 					}
+
+				if($Alignment_Specs_Check == "TRUE"){
+						
+						
+					//Add SourceList
+					
+					
 					//Min
 						if(!empty($Nr_Seq)){
 							
