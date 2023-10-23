@@ -72,13 +72,13 @@
 	<ul class ="navbar-nav ms-auto">
 	
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>Home</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>Home</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>Documentation</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>Documentation</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>FAQ</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>FAQ</h4></a>
 	 </li>
 	
 	</ul>
@@ -100,7 +100,7 @@
 
    
   
-	<form action= "downloadme_2.php" method="post" >
+	<form action= "results_modelparameters.php" method="post" >
 	
           <br>
 		<div class = "Radio_DNA_Prot">

@@ -106,7 +106,7 @@ function show4() {
 }
 	
 function checkkall(){
-	alert("Hiiii");
+	
  cb1= document.getElementById('PANDIT');
  cb2= document.getElementById('Lanfear');
  cb3= document.getElementById('OrthoMaM');
@@ -116,7 +116,7 @@ if(cb4.checked == true){
 	document.getElementById('PANDIT').checked = false;
 	document.getElementById('Lanfear').checked = false;
 	document.getElementById('OrthoMaM').checked = false;
-	alert("Hiiii");
+	
 }
 if(cb1.checked == true){
 	cb4.checked = false;
@@ -204,3 +204,4 @@ function show3() {
 
 */
 
+	

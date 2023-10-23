@@ -86,21 +86,21 @@
 	
       
 </nav>
-
-
-
-
-
-
-
 <?php
-Include 'DBConnect_Trees.php';
-echo '<div class ="center">';
+	
+	//////////Include DB connection with query result////////////////////
+		
+		
+		Include 'query_builder_modelparameters.php';
+		Include "DB_credentials.php";
+		echo '<div class ="center">';
+		
+		
+		
+		
+		
+ ////////////////////////////////Filter Output //////////////////////////////
 
-//Download Button 
-		
-		
-		//Count 
 		$filter_query = $connect->prepare($f_d_query);
 		$filter_query->execute($f_d_parameters);
 		//Preview
@@ -128,7 +128,7 @@ echo '<div class ="center">';
 	echo "<h3>Used search parameters: </h3>";
   
    echo "<br>";
-  foreach($_POST as $names => $values){
+  foreach($_SESSION as $names => $values){
 	  
 	  if(!empty($values)){
 	  echo "<h4>".$names.": "." ". " ".$values." "."</h4>";
@@ -142,10 +142,9 @@ echo '<div class ="center">';
 	
 	
 	
-	echo '<h3> Download tree dataset:  <a href ="download_button_trees.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected data of trees! "> Download</a></h3> ';
-	echo '<h3> Download  branches dataset:  <a href ="download_button_trees_2.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected data of branches! "> Download</a></h3> ';
+	echo '<h3> Download tree dataset:  <a href ="download_button_modelparameters.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected data of modelparameters! "> Download</a></h3> ';
 	echo "<br>";
-	echo '<h3>Refine your search: <a href ="Trees_refine.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with search parameters already filled in ">Refine </a> </h3> ';
+	echo '<h3>Refine your search: <a href ="form_modelparameters_refine.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with search parameters already filled in ">Refine </a> </h3> ';
 	echo "<hr>";
 	
 	echo "<h3> Preview of selected dataset (max 20 results): </h3>";
@@ -172,7 +171,7 @@ echo '<div class ="center">';
 		
 		
 		
-		
+		//////////Footer////////////////////////
 		////////////////////////////////////////
 		
 			

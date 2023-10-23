@@ -188,14 +188,14 @@ $first = false;
 						//min	
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
 							
 						}
 						//max
 						if(!empty($Max_tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
@@ -419,14 +419,14 @@ $first = false;
 						if(!empty($BL_mean)){
 							
 							$f_d_conditions[] =  ' `aa_trees`.`BL_MEAN` >= ? ';
-							$f_d_parameters[] =  $BL_mean;
+							$f_d_parameters[] =  $BL_mean_min;
 							
 							}
 							//mean (max)
 						if(!empty($BL_mean)){
 						
-							$f_d_conditions[] =  ' `aa_trees`.`BL_MEAN` >= ? ';
-							$f_d_parameters[] =  $BL_mean;
+							$f_d_conditions[] =  ' `aa_trees`.`BL_MEAN` <= ? ';
+							$f_d_parameters[] =  $BL_mean_max;
 							
 							}
 							

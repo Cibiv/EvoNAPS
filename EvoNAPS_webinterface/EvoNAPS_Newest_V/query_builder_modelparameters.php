@@ -2,7 +2,7 @@
 
 
 		//Connect to DB
-		include "variables_mp.php";
+		include "variables_modelparameters.php";
 	//	include "DB_credentials.php";
 		
 		ini_set('memory_limit','1000M');

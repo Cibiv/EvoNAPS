@@ -93,7 +93,7 @@
 
 
 
-Include 'DBConnect_Alignment.php';
+Include 'query_builder_alignment.php';
 
 echo '<div class ="center">';
 

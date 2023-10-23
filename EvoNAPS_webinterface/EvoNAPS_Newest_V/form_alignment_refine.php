@@ -64,13 +64,13 @@
 	<ul class ="navbar-nav ms-auto">
 	
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>Home</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>Home</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>Documentation</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>Documentation</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>FAQ</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>FAQ</h4></a>
 	 </li>
 	
 	</ul>
@@ -85,7 +85,7 @@
   
    <div class ="center">
   
-	<form action= "downloadme_alignment.php" method="post" class="was-validated">
+	<form action= "results_alignment.php" method="post" class="was-validated">
 	
           <br>
 		<div class = "Radio_DNA_Prot">

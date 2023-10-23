@@ -73,13 +73,13 @@
 	<ul class ="navbar-nav ms-auto">
 	
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>Home</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>Home</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>Documentation</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>Documentation</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="indexx.php"><h4>FAQ</h4></a>
+	 <a class="nav-link active" href="index.php"><h4>FAQ</h4></a>
 	 </li>
 	
 	</ul>
@@ -108,7 +108,7 @@
       <h4 class="card-title">modelparameters</h4>
       <p class="card-text">Click conduct search down below in order to browse the EvoNAPS Database for parameters for sequence evolution. Filter for specific models, rate heterogenity, alginment/trees specifications and more.</p>
 	  <p class="card-text">If your search was sucessfull you can download the collected data for further usage!</p>
-       <div class="card-footer"> <a href="EvoNaps.php" class="btn btn-outline-primary" ><span class="bi-search"></span> Start your search!</a></div>
+       <div class="card-footer"> <a href="form_modelparameters.php" class="btn btn-outline-primary" ><span class="bi-search"></span> Start your search!</a></div>
    
     </div>
   </div>
@@ -118,7 +118,7 @@
       <h4 class="card-title">trees</h4>
       <p class="card-text">Click conduct search down below in order to browse the EvoNAPS Database for species trees and their branches. Filter for differnt branch, alignment and tree specifications.</p>
 	  <p class="card-text">If your search was sucessfull you can download the collected data of trees and their associated branches for further usage. </p>
-	<div class="card-footer"> <a href="trees.php" class="btn btn-outline-primary"><span class="bi-search"></span> Start your search!</a></div>
+	<div class="card-footer"> <a href="form_tree.php" class="btn btn-outline-primary"><span class="bi-search"></span> Start your search!</a></div>
     </div>
   </div>
   <div class="card">
@@ -127,7 +127,7 @@
       <h4 class="card-title">alignments</h4>
      <p class="card-text">Click conduct search down below in order to browse the EvoNAPS Database for DNA or Protein alignments. Restrict your search by filtering with the alignment ID. </p>
 	  <p class="card-text">If your search was sucessfull you can download the alignment as a FASTA file and use it for further research.  </p> 
-	 <div class="card-footer"> <a href="alignment.php" class="btn btn-outline-primary"><span class="bi-search"></span> Start your search!</a></div>
+	 <div class="card-footer"> <a href="form_alignment.php" class="btn btn-outline-primary"><span class="bi-search"></span> Start your search!</a></div>
    
     </div>
 	</div>
