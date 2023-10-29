@@ -108,9 +108,6 @@
 		$filter_query_1->execute($f_d_parameters);
 		
 		$filter_query_result = $filter_query_1->fetchAll(PDO::FETCH_ASSOC);
-		
-		
-		
 		$count = $filter_query -> fetchColumn();
 		
 		

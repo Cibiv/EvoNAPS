@@ -407,23 +407,18 @@ $first = false;
 					
 					//Alignment join
 					$f_d_query .= "`dna_modelparameters` INNER JOIN `dna_alignments` USING (`ALI_ID`)";
-					
 					//Tree Join 
 					$f_d_query .= " INNER JOIN `dna_trees` USING (`ALI_ID`,`TIME_STAMP` ) " ;
-					
 					$f_d_query .= " WHERE `dna_modelparameters`.`MODEL` in " . "(" . $string_model. ")";
-					
 					$f_d_query .= " AND `dna_modelparameters`.`KEEP_IDENT` = 0 ";
 					$f_d_query .= " AND `dna_trees`.`TREE_TYPE` =  'initial' ";
 					
 					
-					$f_d_query_1 .= "`dna_modelparameters` INNER JOIN `dna_alignments` USING (`ALI_ID`)";
-					
+					//Alignment join
+					$f_d_query_1 .= "`dna_modelparameters` INNER JOIN `dna_alignments` USING (`ALI_ID`)";	
 					//Tree Join 
 					$f_d_query_1 .= " INNER JOIN `dna_trees` USING (`ALI_ID`,`TIME_STAMP` ) " ;
-					
 					$f_d_query_1 .= " WHERE `dna_modelparameters`.`MODEL` in " . "(" . $string_model. ")";
-					
 					$f_d_query_1 .= " AND `dna_modelparameters`.`KEEP_IDENT` = 0 ";
 					$f_d_query_1 .= " AND `dna_trees`.`TREE_TYPE` =  'initial' ";
 					
@@ -802,17 +797,9 @@ $first = false;
 					// if !DNA must be Proteins
 					
 				} else {
-					
-					
-					
-					
 					// Same code with Protein
-					
-					
 					if( $OPT_uOPT == "modelparameters"){
-					
-					
-					//Download
+				
 					//Alignment join
 					$f_d_query .= "`aa_modelparameters` INNER JOIN `aa_alignments` USING (`ALI_ID`)";
 					
@@ -841,8 +828,7 @@ $first = false;
 					if($Trees_Specs_Check== "TRUE"){
 						
 						//Joins earlier due to nature of seach 
-						//$f_d_query .= " INNER JOIN `aa_models` ON (`aa_modelparameters`.`BASE_MODEL` = `aa_models`.`MODEL_NAME` ) ";
-						//$f_d_query .= " INNER JOIN `aa_trees` ON (`aa_models`.`MODEL_NAME` = `aa_trees`.`BASE_MODEL`) AND (`aa_trees`.`ALI_ID` = `aa_alignments`.`ALI_ID`) " ;
+						
 						
 						//Catch the Data 
 						if(!empty($tree_len)){
@@ -1157,40 +1143,9 @@ $first = false;
 							
 						}
 						
-					}
-						
-						
-						/* Tree topology
-						if(!empty($mean_dis)){
-							
-							
-							$f_d_conditions[] =  ' `aa_trees`.`DIST_MEAN` = ? ';
-							$f_d_parameters[] =  $mean_dis;
-							
-							
-							
-						}
-						*/ 
-						
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-		
-						
-					
-					
-				}
-		
-					
-					
-				}
+					}							
+				}	
+			}
 					
 				
 				
@@ -1199,7 +1154,7 @@ $first = false;
 				
 				
 				
-				
+				// fuze conditions 
 				if($f_d_conditions){
 					
 				$f_d_query .= " AND ".implode(" AND ", $f_d_conditions);
@@ -1222,258 +1177,12 @@ $first = false;
 				 
 				 echo ($f_d_query_1);
 			
-			/*
-				foreach($f_d_parameters as $f_d_list)
-				{
-					
-					echo '<br>' . $f_d_list;
-					//echo $AIC;
-					//echo $AICC;
-				}
-				
-				
-				*/
-				
-				
-				//echo $AIC;
-				
-				//echo $AICC;
-				
-				
-				
-				
-		
-		//work in progress
-		
-		
-		
-		
-		
-		
-		//$filter_query = $connect->query('SELECT * FROM `evonaps_try`.`dna_modelparameters` AS modelpara INNER JOIN `evonaps_try`.`dna_trees` AS tree ON (modelpara.`ALI_ID` = tree.`ALI_ID`)');
-		//$filter_query = $connect->query('SELECT * FROM `evonaps_try`.`dna_modelparameters` AS modelpara INNER JOIN `evonaps_try`.`dna_trees` AS tree');
-		//$filter_query = $connect->prepare('SELECT * FROM `evonaps_try`.`dna_modelparameters` AS modelpara INNER JOIN `evonaps_try`.`dna_trees` AS tree WHERE modelpara.`BASE_MODEL` = :modeld');
-		//$filter_query = $connect->prepare('SELECT * FROM `evonaps_try`.`dna_modelparameters` WHERE `BASE_MODEL` = :modeld');
-		
-		//////////////////////////////////////////works//////////////////////////////////////////////////////////////////////////////////////
-		
-		/*
-		$filter_query = $connect->prepare("SELECT * FROM `dna_modelparameters` INNER JOIN `dna_trees` ON (`dna_modelparameters`.`ALI_ID` = `dna_trees`.`ALI_ID` ) WHERE `dna_modelparameters`.`BASE_MODEL` = :modeld OR `dna_modelparameters`.`WEIGHTED_BIC` = :BIC");
-		$filter_query->execute(['modeld' => $modeld , 'BIC' => $BIC]);
-		$filter_query_result = $filter_query->fetchAll(PDO::FETCH_ASSOC);
-		
-		*/
-		/////////////////////////////////////////////////////Dynmaic Query/////////////////////////////////////////////////
-		//session_start();
-		//$filter_query = $connect->prepare($f_d_query);
-		//$filter_query->execute($f_d_parameters);
-		//session_start();
-		//$filter_query_result = $filter_query->fetchAll(PDO::FETCH_ASSOC);
-		//$filter_query_result_column = $filter_query->fetchAll(PDO::FETCH_COLUMN);
-		
-		//$filter_query_result_column_im = implode("\t",$filter_query_result_column);
-		
-		
-		//$filter_column_name = $filter_query_col->fetchAll(PDO::FETCH_COLUMN);
-		
-		
-		
-		
-		
-	
-		
-		
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		
-		
-		
-		
-		
-		
-		
-		///////////////Download me//////////////
-		
-		/*
-		
-		if(!$headers_printed)
-		{
-			$output .= join(',', array_keys($row)) ."\n";
-			$headers_printed = true;
-		}
-		
-		*/
-		
-		//////////////Old Download me ////////////////////////////////////
-		/*
-		header('Content-Type: text/csv; charset=utf-8');
-		header('Content-Disposition: attachment; filename=data.txt');
-		$output_file = fopen("php://output", "w"); 
-		
-		$headers_printed = True; 
-		$output = " ";
-		*/
-		
-
-		//////////////////////////////////////////////////////////////////
-		
-		
-		////////////////////// OutPut List /////////////////////////////
-		//$count = count($filter_query_result);
-		
-		
-		 /*
-		foreach ($filter_query_result as $list) {
 			
-			
-			
-			
-			///download me 
-			
-			if(!$headers_printed){
-				
-			$output = implode(" ", array_keys($list));
-			fputcsv($output_file, $output);
-			$headers_printed = true;
-		}
-		
-		//fputcsv($output_file,$list,"\t");
-		
-		
-			
-			
-			$hits ++;
-			
-			////////////////////// Check List/////////// output
-			
-		
-		echo "<br>" ;
-			
-		echo "<br> ". implode( "\t",$list);
-		echo "<br>";
-		
-	
-		// echo $list["ALI_ID"] . " " . $list["TIME_STAMP"] . " " . $list["MODEL_TYPE"] . " " . $list["MODEL"] . " " . $list["BASE_MODEL"] . " " . $list["BIC"];
-		echo "<br>";
-		
-		
-			//$connect = null;
-
-
-
-		
-			
-			
-		}
-		
-		*/
-		
-		
-		/* Check L8
-		echo " <br>";
-		echo " <br>";
-		 
-		 
-		echo '<a href="EvoNaps.php">Reset</a>';
-		
-		// echo "$modeld";
-		
-		echo " <br>";
-		
-		
-		*/ 
-		
-	
-		///////////////////////Output File Stuff/////////////////////
-		//fseek($output_file, 0);
-		//fpassthru($output_file);
-		
-		/////////////////////////////////////
-		
-		//$connect = null;
-		//echo "Anzahl der Hits prim. : ";
-		//echo $count;
 		
 		}catch(PDOException $e) {
 				
 			echo "Connection Stable Query wrong " . $e->getMessage();
 			}
-			
-			
-			
-			
-			///////////Rest Button for Filter//////////////
-		/*	
-		echo " <br>";
-		echo " <br>";
-		 
-		 
-		echo '<a href="EvoNaps.php">Reset</a>';
-		echo "<hr>";
-		;
-		
-	
-		echo '<a href="downloadme_2.php">Downlaod</a>';
-		
-		// echo "$modeld";
-		
-		echo " <br>";
-		
-		
-			*/
-		//echo ("$modelp   ");
-		//echo ("$modeld    ");
-		//echo("$Matrices_D");
-		//echo "RHAS ";
-		
-		
-		
-		
-		
-		
-		//////////////////////////////////////////////////////////
-	
-	/*
-		echo "$DNA_Prot "; 
-		echo "$Matrices_D "; 
-		echo "$Matrices_P ";  
-		echo "$RHAS "; 
-		echo "$OPT_uOPT ";
-		echo "$AIC ";
-		echo "$AICC "; 
-		echo "$BIC "; 
-		echo "$AICC ";
-		echo "$CAIC ";
-		echo "$ABIC ";
-		echo "$Nr_Seq "; 
-		echo "$Nr_sites "; 
-		echo "$mean_dis ";
-		echo "$tree_len ";
-		echo "$tree_top ";
-		echo "$tree_dia ";
-*/
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>

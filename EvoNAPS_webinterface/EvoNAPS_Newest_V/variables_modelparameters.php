@@ -1,8 +1,9 @@
 <?php
+	// start session
+	session_start();
+	// clean old session
+	$_SESSION = array();
 
-session_start();
-$_SESSION = array();
-//error_reporting(0);
 		if(isset($_POST['datatype'])){
 		$DNA_Prot = $_POST['datatype'];
 		$_SESSION['datatype']= $DNA_Prot; 
