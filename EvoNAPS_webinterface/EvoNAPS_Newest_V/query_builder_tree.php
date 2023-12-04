@@ -16,11 +16,24 @@
 		/////////////////////String Building Source ///////////////////////
 
 $stringsource = "";
-$stringall = "'PANDIT','OrthoMaM','Lanfear'";
+$stringall = "'PANDIT','Lanfear','TreeBASE', 'OrthoMaM_v10c', 'OrthoMaM_v12a'";
 
-if(!empty($Ortho)){
+if(!empty($Ortho_v1)){
 			
-			$Source[] = $Ortho;
+			$Source[] = $OrthoM_v1;
+		}
+
+
+if(!empty($Ortho_v2)){
+			
+			$Source[] = $OrthoM_v2;
+		}
+
+
+
+if(!empty($TreeBASE)){
+			
+			$Source[] = $TreeBASE;
 		}
 		
 		
@@ -76,14 +89,57 @@ $first = false;
 		if($DNA_Prot == "dna" ){
 			
 			// DNA select
-			$select = "`dna_alignments` .`ALI_ID`, `dna_trees`.`NEWICK_STRING`, `dna_trees`.`PROP_INVAR`,`dna_trees`.`ALPHA`,`dna_trees`.`STAT_FREQ_TYPE`, `dna_trees`.`STAT_FREQ_A`,`dna_trees`.`STAT_FREQ_C`, `dna_trees`.`STAT_FREQ_G`,`dna_trees`.`STAT_FREQ_T`,`dna_trees`.`RATE_AC`,`dna_trees`.`RATE_AG`,`dna_trees`.`RATE_AT`,`dna_trees`.`RATE_CA`,`dna_trees`.`RATE_CG`,`dna_trees`.`RATE_CT`,`dna_trees`.`RATE_GA`,`dna_trees`.`RATE_GC`,`dna_trees`.`RATE_GT`, `dna_trees`.`RATE_TA`,`dna_trees`.`TREE_LENGTH`";
-			
+			$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+			`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS,
+			`tree`.MODEL, `tree`.BASE_MODEL, `tree`.RHAS_MODEL, ROUND(`tree`.LOGL,4) AS LOGL, 
+			ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_T,4) AS FREQ_T,
+			ROUND(`tree`.RATE_AC,4) AS RATE_AC, ROUND(`tree`.RATE_AG,4) AS RATE_AG, ROUND(`tree`.RATE_AT,4) AS RATE_AT, 
+			ROUND(`tree`.RATE_CG,4) AS RATE_CG, ROUND(`tree`.RATE_CT,4) AS RATE_CT, ROUND(`tree`.RATE_GT,4) AS RATE_GT,
+			ROUND(`tree`.ALPHA,5) AS ALPHA, ROUND(`tree`.PROP_INVAR,5) AS PROP_INVAR,
+			ROUND(`tree`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`tree`.PROP_CAT_1,5) AS PROP_CAT_1, 
+			ROUND(`tree`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`tree`.PROP_CAT_2,5) AS PROP_CAT_2, 
+			ROUND(`tree`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`tree`.PROP_CAT_3,5) AS PROP_CAT_3,
+			ROUND(`tree`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`tree`.PROP_CAT_4,5) AS PROP_CAT_4, 
+			ROUND(`tree`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`tree`.PROP_CAT_5,5) AS PROP_CAT_5, 
+			ROUND(`tree`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`tree`.PROP_CAT_6,5) AS PROP_CAT_6,
+			ROUND(`tree`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`tree`.PROP_CAT_7,5) AS PROP_CAT_7, 
+			ROUND(`tree`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`tree`.PROP_CAT_8,5) AS PROP_CAT_8, 
+			ROUND(`tree`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`tree`.PROP_CAT_9,5) AS PROP_CAT_9,
+			ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10,
+			ROUND(`tree`.BL_MAX,5) AS BL_MAX, ROUND(`tree`.BL_MEAN,5) AS BL_MEAN, 
+			ROUND(`tree`.IBL_MAX,5) AS IBL_MAX, ROUND(`tree`.IBL_MEAN,5) AS IBL_MEAN,
+			ROUND(`tree`.EBL_MAX,5) AS EBL_MAX, ROUND(`tree`.EBL_MEAN,5) AS EBL_MEAN,
+			`tree`.NEWICK_STRING ";
 			
 			
 		} else {
 			
 			//Aa select
-		$select = "`aa_alignments` .`ALI_ID`, `aa_trees`.`NEWICK_STRING`, `aa_trees`.`PROP_INVAR`,`aa_trees`.`ALPHA`,`aa_trees`.`STAT_FREQ_TYPE`, `aa_trees`.`STAT_FREQ_A`,`aa_trees`.`STAT_FREQ_R`, `aa_trees`.`STAT_FREQ_N`,`aa_trees`.`STAT_FREQ_D`";
+		$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+		`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS,
+		`tree`.MODEL, `tree`.BASE_MODEL, `tree`.RHAS_MODEL, ROUND(`tree`.LOGL,4) AS LOGL, 
+		ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_R,4) AS FREQ_R, ROUND(`tree`.FREQ_N,4) AS FREQ_N, 
+		ROUND(`tree`.FREQ_D,4) AS FREQ_D, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_Q,4) AS FREQ_Q, 
+		ROUND(`tree`.FREQ_E,4) AS FREQ_E, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_H,4) AS FREQ_H, 
+		ROUND(`tree`.FREQ_I,4) AS FREQ_I, ROUND(`tree`.FREQ_L,4) AS FREQ_L, ROUND(`tree`.FREQ_K,4) AS FREQ_K, 
+		ROUND(`tree`.FREQ_M,4) AS FREQ_M, ROUND(`tree`.FREQ_F,4) AS FREQ_F, ROUND(`tree`.FREQ_P,4) AS FREQ_P, 
+		ROUND(`tree`.FREQ_S,4) AS FREQ_S, ROUND(`tree`.FREQ_T,4) AS FREQ_T, ROUND(`tree`.FREQ_W,4) AS FREQ_W, 
+		ROUND(`tree`.FREQ_Y,4) AS FREQ_Y, ROUND(`tree`.FREQ_V,4) AS FREQ_V, 
+		ROUND(`tree`.ALPHA,5) AS ALPHA, ROUND(`tree`.PROP_INVAR,5) AS PROP_INVAR,
+		ROUND(`tree`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`tree`.PROP_CAT_1,5) AS PROP_CAT_1, 
+		ROUND(`tree`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`tree`.PROP_CAT_2,5) AS PROP_CAT_2, 
+		ROUND(`tree`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`tree`.PROP_CAT_3,5) AS PROP_CAT_3,
+		ROUND(`tree`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`tree`.PROP_CAT_4,5) AS PROP_CAT_4, 
+		ROUND(`tree`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`tree`.PROP_CAT_5,5) AS PROP_CAT_5, 
+		ROUND(`tree`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`tree`.PROP_CAT_6,5) AS PROP_CAT_6,
+		ROUND(`tree`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`tree`.PROP_CAT_7,5) AS PROP_CAT_7, 
+		ROUND(`tree`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`tree`.PROP_CAT_8,5) AS PROP_CAT_8, 
+		ROUND(`tree`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`tree`.PROP_CAT_9,5) AS PROP_CAT_9,
+		ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10,
+		ROUND(`tree`.BL_MAX,5) AS BL_MAX, ROUND(`tree`.BL_MEAN,5) AS BL_MEAN, 
+		ROUND(`tree`.IBL_MAX,5) AS IBL_MAX, ROUND(`tree`.IBL_MEAN,5) AS IBL_MEAN,
+		ROUND(`tree`.EBL_MAX,5) AS EBL_MAX, ROUND(`tree`.EBL_MEAN,5) AS EBL_MEAN,
+		`tree`.NEWICK_STRING ";
 			$useprot = true;
 		}
 		
@@ -107,24 +163,23 @@ $first = false;
 				
 
 			//count
-			$f_d_query .= " `dna_trees` INNER JOIN `dna_alignments` USING (`ALI_ID`) "; 
-			$f_d_query .= " WHERE `dna_trees`.`TREE_TYPE` =  'ml' ";
-			$f_d_query .= " AND `dna_trees`.`KEEP_IDENT` = 0 ";
-			
+			$f_d_query .= " `dna_alignments` as `ali` INNER JOIN `dna_trees` as `tree` USING (`ALI_ID`) "; 
+			$f_d_query .= " WHERE `tree`.`TREE_TYPE` =  'ml' ";
+			$f_d_query .= " AND `tree`.`ORIGINAL_ALI` = 1 ";
 			//preview
-			$f_d_query_1 .= " `dna_trees` INNER JOIN `dna_alignments` USING (`ALI_ID`) "; 
-			$f_d_query_1 .= " WHERE `dna_trees`.`TREE_TYPE` =  'ml' ";
-			$f_d_query_1 .= " AND `dna_trees`.`KEEP_IDENT` = 0 ";
-			
+			$f_d_query_1 .= " `dna_alignments` as `ali` INNER JOIN `dna_trees` as `tree` USING (`ALI_ID`) "; 
+			$f_d_query_1 .= " WHERE `tree`.`TREE_TYPE` =  'ml' ";
+			$f_d_query_1 .= " AND `tree`.`ORIGINAL_ALI` = 1 ";
+
 			if ($ALL == "checked"){
 					
-				$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
-				$f_d_query_1 .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+				$f_d_query .= "AND  `ali`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+				$f_d_query_1 .= "AND  `ali`.`FROM_DATABASE` in " . "(" . $stringall. ")";
 
 				}elseif(!empty($Source)){
 					
-					$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
-					$f_d_query_1 .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+					$f_d_query .= "AND `ali`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+					$f_d_query_1 .= "AND `ali`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 					
 				}
 
@@ -139,7 +194,7 @@ $first = false;
 					//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`SEQUENCES` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`SEQUENCES` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 						
 						}
@@ -147,7 +202,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`SEQUENCES` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`SEQUENCES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -156,14 +211,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`COLUMNS` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`COLUMNS` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`COLUMNS` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`COLUMNS` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -174,28 +229,28 @@ $first = false;
 						//min
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
 							
 							}
 							//max
 						if(!empty($Max_tree_len)){
 						
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` <= ? ';
 							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 						//min	
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
 							
 						}
 						//max
 						if(!empty($Max_tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
@@ -204,21 +259,21 @@ $first = false;
 						//min
 						if(!empty($BL_min)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`BL_MIN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`BL_MIN` >= ? ';
 							$f_d_parameters[] =  $BL_min;
 							
 							}
 						//max	
 						if(!empty($BL_max)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`BL_MAX` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`BL_MAX` <= ? ';
 							$f_d_parameters[] =  $BL_max;
 							
 						}
 						//mean (min)
 						if(!empty($BL_mean_min)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`BL_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`BL_MEAN` >= ? ';
 							$f_d_parameters[] =  $BL_mean_min;
 							
 							}
@@ -226,7 +281,7 @@ $first = false;
 							//mean (max)
 						if(!empty($BL_mean_max)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`BL_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`BL_MEAN` <= ? ';
 							$f_d_parameters[] =  $BL_mean_max;
 							
 							}
@@ -237,21 +292,21 @@ $first = false;
 							//min
 						if(!empty($IBL_min)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`IBL_MIN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`IBL_MIN` >= ? ';
 							$f_d_parameters[] =  $IBL_min;
 							
 							}
 						//max	
 						if(!empty($IBL_max)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`IBL_MAX` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`IBL_MAX` <= ? ';
 							$f_d_parameters[] =  $IBL_max;
 							
 						}
 						//mean (min)
 						if(!empty($IBL_mean_min)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`IBL_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`IBL_MEAN` >= ? ';
 							$f_d_parameters[] =  $IBL_mean_min;
 							
 							}
@@ -259,7 +314,7 @@ $first = false;
 						//mean (max)
 						if(!empty($IBL_mean_max)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`IBL_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`IBL_MEAN` <= ? ';
 							$f_d_parameters[] =  $IBL_mean_max;
 							
 							}
@@ -273,21 +328,21 @@ $first = false;
 						//min
 						if(!empty($EBL_min)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`EBL_MIN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`EBL_MIN` >= ? ';
 							$f_d_parameters[] =  $EBL_min;
 							
 							}
 						//max	
 						if(!empty($EBL_max)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`EBL_MAX` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`EBL_MAX` <= ? ';
 							$f_d_parameters[] =  $EBL_max;
 							
 						}
 						//mean (min)
 						if(!empty($EBL_mean_min)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`EBL_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`EBL_MEAN` >= ? ';
 							$f_d_parameters[] =  $EBL_mean_min;
 							
 							}
@@ -295,7 +350,7 @@ $first = false;
 							//mean (max)
 						if(!empty($EBL_mean_min)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`EBL_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`EBL_MEAN` <= ? ';
 							$f_d_parameters[] =  $EBL_mean_min;
 							
 							}
@@ -306,25 +361,25 @@ $first = false;
 				
 				//Proteins Trees
 			}else{
-				
-				
-				$f_d_query .= "`aa_trees` INNER JOIN `aa_alignments` USING (`ALI_ID`)"; 
-				$f_d_query .= " WHERE `aa_trees`.`TREE_TYPE` =  'ml' ";
-				$f_d_query .= " AND `aa_trees`.`KEEP_IDENT` = 0 ";
-				
-				$f_d_query_1 .= "`aa_trees` INNER JOIN `aa_alignments` USING (`ALI_ID`)"; 
-				$f_d_query_1 .= " WHERE `aa_trees`.`TREE_TYPE` =  'ml' ";
-				$f_d_query_1 .= " AND `aa_trees`.`KEEP_IDENT` = 0 ";
+					
+				//count
+			$f_d_query .= " `aa_alignments` as `ali` INNER JOIN `aa_trees` as `tree` USING (`ALI_ID`) "; 
+			$f_d_query .= " WHERE `tree`.`TREE_TYPE` =  'ml' ";
+			$f_d_query .= " AND `tree`.`ORIGINAL_ALI` = 1 ";
+			//preview
+			$f_d_query_1 .= " `aa_alignments` as `ali` INNER JOIN `aa_trees` as `tree` USING (`ALI_ID`) "; 
+			$f_d_query_1 .= " WHERE `tree`.`TREE_TYPE` =  'ml' ";
+			$f_d_query_1 .= " AND `tree`.`ORIGINAL_ALI` = 1 ";
 			
 				if ($ALL == "checked"){
 						
-					$f_d_query .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
-					$f_d_query_1 .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+					$f_d_query .= "AND  `ali`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+					$f_d_query_1 .= "AND  `ali`.`FROM_DATABASE` in " . "(" . $stringall. ")";
 	
 					}elseif(!empty($Source)){
 						
-						$f_d_query .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
-						$f_d_query_1 .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+						$f_d_query .= "AND `ali`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+						$f_d_query_1 .= "AND `ali`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 						
 					}
 
@@ -337,7 +392,7 @@ $first = false;
 					//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`SEQUENCES` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`SEQUENCES` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 						
 						}
@@ -345,7 +400,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`SEQUENCES` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`SEQUENCES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -354,14 +409,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`COLUMNS` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`COLUMNS` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`COLUMNS` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`COLUMNS` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -373,21 +428,21 @@ $first = false;
 						//min
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
 							
 							}
 						//max
 						if(!empty($Max_tree_len)){
 						
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` <= ? ';
 							$f_d_parameters[] =  $$Max_tree_len;
 							
 							}
 						//min	
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
 							
 						}
@@ -395,7 +450,7 @@ $first = false;
 
 						if(!empty($Max_tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
@@ -404,28 +459,28 @@ $first = false;
 						//min
 						if(!empty($BL_min)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`BL_MIN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`BL_MIN` >= ? ';
 							$f_d_parameters[] =  $BL_min;
 							
 							}
 						//max	
 						if(!empty($BL_max)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`BL_MAX` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`BL_MAX` <= ? ';
 							$f_d_parameters[] =  $BL_max;
 							
 						}
 						//mean (min)
 						if(!empty($BL_mean)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`BL_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`BL_MEAN` >= ? ';
 							$f_d_parameters[] =  $BL_mean_min;
 							
 							}
 							//mean (max)
 						if(!empty($BL_mean)){
 						
-							$f_d_conditions[] =  ' `aa_trees`.`BL_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`BL_MEAN` <= ? ';
 							$f_d_parameters[] =  $BL_mean_max;
 							
 							}
@@ -436,27 +491,27 @@ $first = false;
 							
 						if(!empty($IBL_min)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`IBL_MIN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`IBL_MIN` >= ? ';
 							$f_d_parameters[] =  $IBL_min;
 							
 							}
 						//max	
 						if(!empty($IBL_max)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`IBL_MAX` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`IBL_MAX` <= ? ';
 							$f_d_parameters[] =  $IBL_max;
 							
 						}
 						//mean (min)
 						if(!empty($IBL_mean_min)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`IBL_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`IBL_MEAN` >= ? ';
 							$f_d_parameters[] =  $IBL_mean_min;
 							
 							}
 						if(!empty($IBL_mean_max)){
 						
-							$f_d_conditions[] =  ' `aa_trees`.`IBL_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`IBL_MEAN` <= ? ';
 							$f_d_parameters[] =  $IBL_mean_max;
 							
 							}
@@ -478,21 +533,21 @@ $first = false;
 						//max	
 						if(!empty($EBL_max)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`EBL_MAX` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`EBL_MAX` <= ? ';
 							$f_d_parameters[] =  $EBL_max;
 							
 						}
 						//mean (min)
 						if(!empty($EBL_mean_min)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`EBL_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`EBL_MEAN` >= ? ';
 							$f_d_parameters[] =  $EBL_mean_min;
 							
 							}
 							//mean (max)
 						if(!empty($EBL_mean_max)){
 					
-							$f_d_conditions[] =  ' `aa_trees`.`EBL_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`EBL_MEAN` <= ? ';
 							$f_d_parameters[] =  $EBL_mean_max;
 							
 							}

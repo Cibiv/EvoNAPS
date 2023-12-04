@@ -11,7 +11,7 @@
 		
 		// For testing purposes this credentials are going to be deleted
 		$hostname = 'localhost';
-		$dbname= 'try4';
+		$dbname= 'evonaps_try_2';
 		$username='root';
 		$password='';
 		$dsn= "mysql:host=$hostname;dbname=$dbname";

@@ -109,14 +109,14 @@ function checkkall(){
 	
  cb1= document.getElementById('PANDIT');
  cb2= document.getElementById('Lanfear');
- cb3= document.getElementById('OrthoMaM_v12a');
+ cb3= document.getElementById('OrthoMaM');
  cb4= document.getElementById('all');
- cb5= document.getElementById('OrthoMaM_v10c');
+
 if(cb4.checked == true){
 	document.getElementById('PANDIT').checked = false;
 	document.getElementById('Lanfear').checked = false;
-	document.getElementById('OrthoMaM_v10c');
-	document.getElementById('OrthoMaM_v12a');
+	document.getElementById('OrthoMaM').checked = false;
+	
 }
 if(cb1.checked == true){
 	cb4.checked = false;
@@ -127,10 +127,6 @@ if(cb2.checked == true){
 
 }
 if(cb3.checked == true){
-	cb4.checked = false;
-
-}
-if(cb5.checked == true){
 	cb4.checked = false;
 
 }

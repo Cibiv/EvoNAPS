@@ -293,12 +293,9 @@
 		  <label for = "PANDIT"><h4> PANDIT</h4> </label>
 		  <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onchange = "checkkall()">
 		  <label for = "Lanfear"><h4> Lanfear </h4></label> 
-		  <input class ="cb" type="checkbox" name="OrthoMaM_v10c"  id="OrthoMaM_v10c"  value="OrthoMaM_v10c" onchange = "checkkall()">
-		  <label for = "OrthoMaM_v10c"> <h4>OrthoMaM_v10c</h4> </label>
-		  <input class ="cb" type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" onchange = "checkkall()">
-		  <label for = "OrthoMaM_v12a"> <h4>OrthoMaM_v12a</h4> </label>
-		  <input class ="cb" type="checkbox" name="Treebase"  id="Treebase"  value="TreeBASE" onchange = "checkkall()">
-		  <label for = "Treebase"> <h4>TreeBASE</h4> </label>
+		  <input class ="cb" type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" onchange = "checkkall()">
+		  <label for = "OrthoMaM"> <h4>OrthoMaM</h4> </label>
+		 
 		
 		 <hr>
 			

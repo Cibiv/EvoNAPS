@@ -206,7 +206,7 @@
 		}else{
 			$F="";
 		}
-//////////////////Setting Variables for dif. DB ////////////777
+//////////////////Setting Variables////////////777
 		$Source = [];
 		
 		
@@ -215,27 +215,14 @@
 		$_SESSION['PANDIT']= $Pan;
 		}
 		
-		if(isset($_POST['OrthoMaM_v10c'])){
-		$Ortho_v1 =$_POST['OrthoMaM_v10c'];
-		$_SESSION['OrthoMaM_v10c']= $Ortho_v1;
+		if(isset($_POST['OrthoMaM'])){
+		$Ortho =$_POST['OrthoMaM'];
+		$_SESSION['OrthoMaM']= $Ortho;
 		}
-
-		if(isset($_POST['OrthoMaM_v12a'])){
-		$Ortho_v2 =$_POST['OrthoMaM_v12a'];
-		$_SESSION['OrthoMaM_v12a']= $Ortho_v2;
-		}
-
 		if(isset($_POST['Lanfear'])){
 		$Lanf =$_POST['Lanfear'];
 		$_SESSION['Lanfear']= $Lanf;
 		}
-
-		if(isset($_POST['TreeBASE'])){
-		$TreeBASE =$_POST['TreeBASE'];
-		$_SESSION['TreeBASE']= $TreeBASE;
-		}
-
-	
 		if(isset($_POST['selectAll'])){
 		$ALL = $_POST['selectAll'];
 		$_SESSION['selectAll']= $ALL;

@@ -91,18 +91,14 @@
 			
 			<hr>
 			<h4> allignment source </h4><br>
-			<label for = "all"> <h4> all </h4> </label> 
-		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" <?php if(isset($_SESSION['selectAll'])){ echo "checked"; }?>onchange = "checkkall()">
+		   <label for = "all"> <h4> all </h4> </label> 
+		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" <?php if(isset($_SESSION['selectAll'])){ echo "checked"; }?>>
 		  <label for = "PANDIT"> <h4> PANDIT </h4> </label>
-		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" <?php if(isset($_SESSION['PANDIT'])){ echo "checked"; }?>onchange = "checkkall()">
+		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" <?php if(isset($_SESSION['PANDIT'])){ echo "checked"; }?>>
 		   <label for = "Lanfear"> <h4> Lanfear </h4> </label> 
-		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" <?php if(isset($_SESSION['Lanfear'])){ echo "checked"; }?>onchange = "checkkall()">
-		 <label for = "OrthoMaM_v10c"> <h4> OrthoMaM_v10c </h4> </label>
-		  <input type="checkbox" name="OrthoMaM_v10c"  id="OrthoMaM_v10c"  value="OrthoMaM_v10c" <?php if(isset($_SESSION['OrthoMaM_v10c'])){ echo "checked"; }?>onchange = "checkkall()">
-		  <label for = "OrthoMaM_v12a"> <h4> OrthoMaM_v12a </h4> </label>
-		  <input type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" <?php if(isset($_SESSION['OrthoMaM_v12a'])){ echo "checked"; }?>onchange = "checkkall()">
-		  <input class ="cb" type="checkbox" name="Treebase"  id="Treebase"  value="TreeBASE" <?php if(isset($_SESSION['TreeBASE'])){ echo "checked"; }?> onchange = "checkkall()">
-		  <label for = "Treebase"> <h4>TreeBASE</h4> </label>; }?>>
+		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" <?php if(isset($_SESSION['Lanfear'])){ echo "checked"; }?>>
+		 <label for = "OrthoMaM"> <h4> OrthoMaM </h4> </label>
+		  <input type="checkbox" name="OrthoMaM"  id="OrthoMaM"  value="OrthoMaM" <?php if(isset($_SESSION['OrthoMaM'])){ echo "checked"; }?>>
 		 
 			<hr>
 		  

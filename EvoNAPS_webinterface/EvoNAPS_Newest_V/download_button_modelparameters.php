@@ -1,29 +1,20 @@
 
 <?php
-
+//start session here in order to catch variables
 session_start();
 
 include "DB_credentials.php";
-//ini_set('memory_limit','1000M');
-	error_reporting(0);
-		
-		
-		
-	
 
+	error_reporting(0);
+
+		// initialize variables for the filter 
 		
-		// Set Variables for the Filter 
-		
-		
+
 		$DNA_Prot = $_SESSION['datatype'];
 		
 		
 		$Matrices_D = $_SESSION['DNA_model'];
 		$Matrices_P = $_SESSION['Protein_model'];
-		
-		
-		//$modelp = $Matrices_P." ".$RHAS;
-		//$modeld = $Matrices_D." ".$RHAS;
 		
 		$OPT_uOPT = $_SESSION['query_type'];
 		
@@ -42,7 +33,7 @@ include "DB_credentials.php";
 		
 		$tree_len = $_SESSION['tree_length'];
 		$Max_tree_len = $_SESSION['max_tree_length'];
-		//$tree_top = $_SESSION['tree_top'];
+		
 		$tree_dia = $_SESSION['tree_diameter'];
 		$Max_tree_dia = $_SESSION['max_tree_diameter'];
 		
@@ -56,6 +47,15 @@ include "DB_credentials.php";
 			}else{
 				$Trees_Specs_Check ="";
 			}
+
+
+			$wildcard_gaps_fraction = $_SESSION['wildcard_gaps_fraction'];
+		
+		
+			$parsimony_sites_fraction=$_SESSION['parsimony_sites_fraction'];
+
+		
+			$distinct_patterns_fraction =$_SESSION['distinct_patterns_fraction'];
 		
 		
 		$Hits = $_SESSION['Hits_anzeigen'];
@@ -64,21 +64,13 @@ include "DB_credentials.php";
 		$ML_Tree = "ml";
 		
 		
-		$NewWick = $_SESSION['Newick'];
-		//Variables for the Hit
-		
-		 
-		
-		
-		
-		
+		$NewWick = $_SESSION['Newick'];		
 		
 		// Dynamic Querys Parameters
 		
 		
 		$f_d_conditions = [];
 		$f_d_parameters = [];
-		
 		
 		
 		/// Model Combination RHAS + BASE model
@@ -88,7 +80,6 @@ include "DB_credentials.php";
 		$I = $_SESSION['RHAS_I'];
 		$G4 = $_SESSION['RHAS_G4'];
 		$IG4 = $_SESSION['RHAS_IG4'];
-		//echo $IG4;
 		$R2 = $_SESSION['RHAS_R2'];
 		$R3 =$_SESSION['RHAS_R3'];
 		$R4 =$_SESSION['RHAS_R4'];
@@ -105,14 +96,19 @@ include "DB_credentials.php";
 		if(isset($_SESSION['PANDIT'])){
 			$Pan = $_SESSION['PANDIT'];
 		}
-		if(isset($_SESSION['OrthoMaM'])){
-		$Ortho =$_SESSION['OrthoMaM'];
+		if(isset($_SESSION['OrthoMaM_v10c'])){
+		$Ortho_v1 =$_SESSION['OrthoMaM_v10c'];
 		}
+		if(isset($_SESSION['OrthoMaM_v12a'])){
+		$Ortho_v2 =$_SESSION['OrthoMaM_v12a'];
+			}
 		if(isset($_SESSION['Lanfear'])){
 		$Lanf =$_SESSION['Lanfear'];
 		}
+		if(isset($_SESSION['TreeBASE'])){
+		$TreeBASE =$_SESSION['TreeBASE'];
+			}
 		$ALL = $_SESSION['selectAll'];
-
 
 
 
@@ -120,17 +116,22 @@ include "DB_credentials.php";
 		$f_d_parameters = [];
 
 
-
-
 /////////////////////String Building Source ///////////////////////
 
 $stringsource = "";
-$stringall = "'PANDIT','OrthoMaM','Lanfear'";
+$stringall = "'PANDIT','Lanfear','TreeBASE', 'OrthoMaM_v10c', 'OrthoMaM_v12a'";
 
 if(!empty($Ortho)){
 			
-			$Source[] = $Ortho;
+			$Source[] = $Ortho_v1;
 		}
+
+
+if(!empty($Ortho)){
+			
+			$Source[] = $Ortho_v2;
+		}
+
 		
 		
 if(!empty($Pan)){
@@ -144,8 +145,12 @@ if(!empty($Lanf)){
 			
 		}
 
-//////////////Loop for String Source Building////////////////////////
+if(!empty($TreeBASE)){
+			
+			$Source[] = $TreeBASE;
+		}		
 
+//////////////Loop for String Source Building////////////////////////
 
 $first = false;
 		
@@ -156,7 +161,6 @@ $first = false;
 			
 			if($first == false){
 				
-				
 				$stringsource .= "'".$list."'";
 				
 				$first = true; 
@@ -164,39 +168,16 @@ $first = false;
 			}else {
 				$stringsource .= ","."'".$list."'";
 				
-			}
-			
-		
-			
-			
+			}			
 		}
-	}
-	
-	echo $stringsource;
-		
-		
-
-
-
-
-
-		
-		
-		
-		
-	////////////////String Building Model/////////////////////////////////////////////
+	}		
+	////////////////String Building Model////////////////////////////////////
 		
 		
 		$string_model = "";
 		$string_model_p = "";
 		
 		
-		/* old Uniform
-		if(!empty($E)){
-			
-			$model[] = $E;
-		}
-		*/ 
 		if(!empty($I)){
 			
 			$model[] = $I;
@@ -260,10 +241,7 @@ $first = false;
 			
 			$model[] = $R10;
 		}
-		
-		//echo $E;
-		
-		
+				
 		
 		/////////////Loop for String Building////////////////////////////
 		$first_one = false;
@@ -275,9 +253,6 @@ $first = false;
 			
 			if($first_one == false){
 				
-				//$string_model .= "'".$Matrices_D . " " . $list . "'";
-				//$string_model .= " 'Index '". "," ."'". $Matrices_D. "'";
-				//$string_model_p .= " 'Index '". ","."'". $Matrices_P."'";
 				$string_model .= " 'Index '";
 				$string_model_p .= " 'Index '";
 				$first_one = true; 
@@ -307,17 +282,6 @@ $first = false;
 		}
 		
 		
-		//echo "Start here : ".$string_model;
-		/////////////////////////Filter Outpur//////////////////////////////
-		
-		
-		
-				
-		
-		/////////////Query Start //////////
-		
-		
-		
 		//check which select depending on input
 		
 		if($DNA_Prot == "dna"){
@@ -328,26 +292,100 @@ $first = false;
 				
 				if($NewWick == "TRUE"){
 			
-				$select = "`dna_alignments` .`ALI_ID`, `dna_modelparameters`.MODEL, `dna_modelparameters`.BASE_MODEL, `dna_modelparameters`.`MODEL_RATE_HETEROGENEITY`,`dna_modelparameters`.`LOGL`, `dna_modelparameters`.`BIC`, `dna_modelparameters`.`WEIGHTED_BIC`,`dna_modelparameters`.`STAT_FREQ_A`, `dna_modelparameters`.`STAT_FREQ_C`, `dna_modelparameters`.`STAT_FREQ_G`, `dna_modelparameters`.`STAT_FREQ_T`,`dna_modelparameters`.`RATE_AC`, `dna_modelparameters`.`RATE_AG`, `dna_modelparameters`.`RATE_AT`, `dna_modelparameters`.`RATE_CG`, `dna_modelparameters`.`RATE_CT`, `dna_modelparameters`.`RATE_GT`, `dna_modelparameters`.`ALPHA`, `dna_modelparameters`.`PROP_INVAR`,`dna_modelparameters`.`REL_RATE_CAT_1`, `dna_modelparameters`.`PROP_CAT_1` , `dna_modelparameters`.`REL_RATE_CAT_2` , `dna_modelparameters`.`PROP_CAT_2`, `dna_modelparameters`.`REL_RATE_CAT_3`, `dna_modelparameters`.`PROP_CAT_3`,`dna_modelparameters`.`REL_RATE_CAT_4`, `dna_modelparameters`.`PROP_CAT_4`, `dna_modelparameters`.`REL_RATE_CAT_5`, `dna_modelparameters`.`PROP_CAT_5`, `dna_modelparameters`.`REL_RATE_CAT_6`, `dna_modelparameters`.`PROP_CAT_6`,`dna_modelparameters`.`REL_RATE_CAT_7`, `dna_modelparameters`.`PROP_CAT_7` , `dna_modelparameters`.`REL_RATE_CAT_8`, `dna_modelparameters`.`PROP_CAT_8`, `dna_modelparameters`.`REL_RATE_CAT_9`, `dna_modelparameters`.`PROP_CAT_9`,`dna_modelparameters`.`REL_RATE_CAT_10` , `dna_modelparameters`.`PROP_CAT_10`, `dna_trees`.`NEWICK_STRING`" ;
-			
-				} else {
+				$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+				`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `tree`.DIST_MEAN,
+				`mod`.MODEL, `mod`.BASE_MODEL, `mod`.RHAS_MODEL, 
+				ROUND(`mod`.LOGL,4) AS LOGL, 
+				ROUND(`mod`.BIC,4) AS AIC, `mod`.AIC_WEIGHT, 
+				ROUND(`mod`.BIC,4) AS AICC, `mod`.AICC_WEIGHT, 
+				ROUND(`mod`.BIC,4) AS BIC, `mod`.BIC_WEIGHT, 
+				ROUND(`mod`.FREQ_A,4) AS FREQ_A, ROUND(`mod`.FREQ_C,4) AS FREQ_C, 
+				ROUND(`mod`.FREQ_G,4) AS FREQ_G, ROUND(`mod`.FREQ_T,4) AS FREQ_T,
+				ROUND(`mod`.RATE_AC,4) AS RATE_AC, ROUND(`mod`.RATE_AG,4) AS RATE_AG, ROUND(`mod`.RATE_AT,4) AS RATE_AT, 
+				ROUND(`mod`.RATE_CG,4) AS RATE_CG, ROUND(`mod`.RATE_CT,4) AS RATE_CT, ROUND(`mod`.RATE_GT,4) AS RATE_GT,
+				ROUND(`mod`.ALPHA,5) AS ALPHA, ROUND(`mod`.PROP_INVAR,5) AS PROP_INVAR,
+				ROUND(`mod`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`mod`.PROP_CAT_1,5) AS PROP_CAT_1, 
+				ROUND(`mod`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`mod`.PROP_CAT_2,5) AS PROP_CAT_2, 
+				ROUND(`mod`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`mod`.PROP_CAT_3,5) AS PROP_CAT_3,
+				ROUND(`mod`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`mod`.PROP_CAT_4,5) AS PROP_CAT_4, 
+				ROUND(`mod`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`mod`.PROP_CAT_5,5) AS PROP_CAT_5, 
+				ROUND(`mod`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`mod`.PROP_CAT_6,5) AS PROP_CAT_6,
+				ROUND(`mod`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`mod`.PROP_CAT_7,5) AS PROP_CAT_7, 
+				ROUND(`mod`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`mod`.PROP_CAT_8,5) AS PROP_CAT_8, 
+				ROUND(`mod`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`mod`.PROP_CAT_9,5) AS PROP_CAT_9,
+				ROUND(`mod`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`mod`.PROP_CAT_10,5) AS PROP_CAT_10,
+				`tree`.NEWICK_STRING ";
+				//WO Newick String
+			} else {
 					
-				$select = "`dna_alignments` .`ALI_ID`,  `dna_modelparameters`.MODEL, `dna_modelparameters`.`MODEL_RATE_HETEROGENEITY`,CAST(`dna_modelparameters`.`LOGL` AS DECIMAL(7,2)),CAST( `dna_modelparameters`.`BIC` AS DECIMAL(7,2)), `dna_modelparameters`.`WEIGHTED_BIC`,CAST(`dna_modelparameters`.`STAT_FREQ_A`AS DECIMAL(7,4)),CAST( `dna_modelparameters`.`STAT_FREQ_C`AS DECIMAL(7,4)), CAST(`dna_modelparameters`.`STAT_FREQ_G`AS DECIMAL(7,4)), CAST( `dna_modelparameters`.`STAT_FREQ_T`AS DECIMAL(7,4)),CAST(`dna_modelparameters`.`RATE_AC` AS DECIMAL(7,4)),CAST( `dna_modelparameters`.`RATE_AG`AS DECIMAL(7,4)),CAST( `dna_modelparameters`.`RATE_AT`AS DECIMAL(7,4)), `dna_modelparameters`.`RATE_CG`, `dna_modelparameters`.`RATE_CT`, `dna_modelparameters`.`RATE_GT`, `dna_modelparameters`.`ALPHA`, `dna_modelparameters`.`PROP_INVAR`,`dna_modelparameters`.`REL_RATE_CAT_1`, `dna_modelparameters`.`PROP_CAT_1` , `dna_modelparameters`.`REL_RATE_CAT_2` , `dna_modelparameters`.`PROP_CAT_2`, `dna_modelparameters`.`REL_RATE_CAT_3`, `dna_modelparameters`.`PROP_CAT_3`,`dna_modelparameters`.`REL_RATE_CAT_4`, `dna_modelparameters`.`PROP_CAT_4`, `dna_modelparameters`.`REL_RATE_CAT_5`, `dna_modelparameters`.`PROP_CAT_5`, `dna_modelparameters`.`REL_RATE_CAT_6`, `dna_modelparameters`.`PROP_CAT_6`,`dna_modelparameters`.`REL_RATE_CAT_7`, `dna_modelparameters`.`PROP_CAT_7` , `dna_modelparameters`.`REL_RATE_CAT_8`, `dna_modelparameters`.`PROP_CAT_8`, `dna_modelparameters`.`REL_RATE_CAT_9`, `dna_modelparameters`.`PROP_CAT_9`,`dna_modelparameters`.`REL_RATE_CAT_10` , `dna_modelparameters`.`PROP_CAT_10` " ;
-			
-				}  
+				$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+				`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `tree`.DIST_MEAN,
+				`mod`.MODEL, `mod`.BASE_MODEL, `mod`.RHAS_MODEL, 
+				ROUND(`mod`.LOGL,4) AS LOGL, 
+				ROUND(`mod`.BIC,4) AS AIC, `mod`.AIC_WEIGHT, 
+				ROUND(`mod`.BIC,4) AS AICC, `mod`.AICC_WEIGHT, 
+				ROUND(`mod`.BIC,4) AS BIC, `mod`.BIC_WEIGHT, 
+				ROUND(`mod`.FREQ_A,4) AS FREQ_A, ROUND(`mod`.FREQ_C,4) AS FREQ_C, 
+				ROUND(`mod`.FREQ_G,4) AS FREQ_G, ROUND(`mod`.FREQ_T,4) AS FREQ_T,
+				ROUND(`mod`.RATE_AC,4) AS RATE_AC, ROUND(`mod`.RATE_AG,4) AS RATE_AG, ROUND(`mod`.RATE_AT,4) AS RATE_AT, 
+				ROUND(`mod`.RATE_CG,4) AS RATE_CG, ROUND(`mod`.RATE_CT,4) AS RATE_CT, ROUND(`mod`.RATE_GT,4) AS RATE_GT,
+				ROUND(`mod`.ALPHA,5) AS ALPHA, ROUND(`mod`.PROP_INVAR,5) AS PROP_INVAR,
+				ROUND(`mod`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`mod`.PROP_CAT_1,5) AS PROP_CAT_1, 
+				ROUND(`mod`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`mod`.PROP_CAT_2,5) AS PROP_CAT_2, 
+				ROUND(`mod`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`mod`.PROP_CAT_3,5) AS PROP_CAT_3,
+				ROUND(`mod`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`mod`.PROP_CAT_4,5) AS PROP_CAT_4, 
+				ROUND(`mod`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`mod`.PROP_CAT_5,5) AS PROP_CAT_5, 
+				ROUND(`mod`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`mod`.PROP_CAT_6,5) AS PROP_CAT_6,
+				ROUND(`mod`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`mod`.PROP_CAT_7,5) AS PROP_CAT_7, 
+				ROUND(`mod`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`mod`.PROP_CAT_8,5) AS PROP_CAT_8, 
+				ROUND(`mod`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`mod`.PROP_CAT_9,5) AS PROP_CAT_9,
+				ROUND(`mod`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`mod`.PROP_CAT_10,5) AS PROP_CAT_10";
+				}    
 					//DNA w Trees 
 			}else {
 				
 				
 				if($NewWick == "TRUE"){
 			
-				$select = "`dna_alignments` .`ALI_ID`, `dna_trees`.`KEEP_IDENT`, `dna_trees`.MODEL, `dna_trees`.BASE_MODEL, `dna_trees`.`MODEL_RATE_HETEROGENEITY`,`dna_trees`.`LOGL`, `dna_trees`.`BIC`,`dna_trees`.`STAT_FREQ_A`, `dna_trees`.`STAT_FREQ_C`, `dna_trees`.`STAT_FREQ_G`, `dna_trees`.`STAT_FREQ_T`,`dna_trees`.`RATE_AC`, `dna_trees`.`RATE_AG`, `dna_trees`.`RATE_AT`, `dna_trees`.`RATE_CG`, `dna_trees`.`RATE_CT`, `dna_trees`.`RATE_GT`, `dna_trees`.`ALPHA`, `dna_trees`.`PROP_INVAR`,`dna_trees`.`REL_RATE_CAT_1`, `dna_trees`.`PROP_CAT_1` , `dna_trees`.`REL_RATE_CAT_2` , `dna_trees`.`PROP_CAT_2`, `dna_trees`.`REL_RATE_CAT_3`, `dna_trees`.`PROP_CAT_3`,`dna_trees`.`REL_RATE_CAT_4`, `dna_trees`.`PROP_CAT_4`, `dna_trees`.`REL_RATE_CAT_5`, `dna_trees`.`PROP_CAT_5`, `dna_trees`.`REL_RATE_CAT_6`, `dna_trees`.`PROP_CAT_6`,`dna_trees`.`REL_RATE_CAT_7`, `dna_trees`.`PROP_CAT_7` , `dna_trees`.`REL_RATE_CAT_8`, `dna_trees`.`PROP_CAT_8`, `dna_trees`.`REL_RATE_CAT_9`, `dna_trees`.`PROP_CAT_9`,`dna_trees`.`REL_RATE_CAT_10` , `dna_trees`.`PROP_CAT_10`, `dna_trees`.`NEWICK_STRING`" ;
-			
-				} else {
-					
-				$select = "`dna_alignments` .`ALI_ID`, `dna_trees`.`KEEP_IDENT`, `dna_trees`.MODEL, `dna_trees`.BASE_MODEL, `dna_trees`.`MODEL_RATE_HETEROGENEITY`,`dna_trees`.`LOGL`, `dna_trees`.`BIC`,`dna_trees`.`STAT_FREQ_A`, `dna_trees`.`STAT_FREQ_C`, `dna_trees`.`STAT_FREQ_G`, `dna_trees`.`STAT_FREQ_T`,`dna_trees`.`RATE_AC`, `dna_trees`.`RATE_AG`, `dna_trees`.`RATE_AT`, `dna_trees`.`RATE_CG`, `dna_trees`.`RATE_CT`, `dna_trees`.`RATE_GT`, `dna_trees`.`ALPHA`, `dna_trees`.`PROP_INVAR`,`dna_trees`.`REL_RATE_CAT_1`, `dna_trees`.`PROP_CAT_1` , `dna_trees`.`REL_RATE_CAT_2` , `dna_trees`.`PROP_CAT_2`, `dna_trees`.`REL_RATE_CAT_3`, `dna_trees`.`PROP_CAT_3`,`dna_trees`.`REL_RATE_CAT_4`, `dna_trees`.`PROP_CAT_4`, `dna_trees`.`REL_RATE_CAT_5`, `dna_trees`.`PROP_CAT_5`, `dna_trees`.`REL_RATE_CAT_6`, `dna_trees`.`PROP_CAT_6`,`dna_trees`.`REL_RATE_CAT_7`, `dna_trees`.`PROP_CAT_7` , `dna_trees`.`REL_RATE_CAT_8`, `dna_trees`.`PROP_CAT_8`, `dna_trees`.`REL_RATE_CAT_9`, `dna_trees`.`PROP_CAT_9`,`dna_trees`.`REL_RATE_CAT_10` , `dna_trees`.`PROP_CAT_10` " ;
-			
-				}
+					$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+					`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `tree`.DIST_MEAN,
+					`tree`.MODEL, `tree`.BASE_MODEL, `tree`.RHAS_MODEL, ROUND(`tree`.LOGL,4) AS LOGL,  
+					ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_T,4) AS FREQ_T,
+					ROUND(`tree`.RATE_AC,4) AS RATE_AC, ROUND(`tree`.RATE_AG,4) AS RATE_AG, ROUND(`tree`.RATE_AT,4) AS RATE_AT, 
+					ROUND(`tree`.RATE_CG,4) AS RATE_CG, ROUND(`tree`.RATE_CT,4) AS RATE_CT, ROUND(`tree`.RATE_GT,4) AS RATE_GT,
+					ROUND(`tree`.ALPHA,5) AS ALPHA, ROUND(`tree`.PROP_INVAR,5) AS PROP_INVAR,
+					ROUND(`tree`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`tree`.PROP_CAT_1,5) AS PROP_CAT_1, 
+					ROUND(`tree`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`tree`.PROP_CAT_2,5) AS PROP_CAT_2, 
+					ROUND(`tree`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`tree`.PROP_CAT_3,5) AS PROP_CAT_3,
+					ROUND(`tree`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`tree`.PROP_CAT_4,5) AS PROP_CAT_4, 
+					ROUND(`tree`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`tree`.PROP_CAT_5,5) AS PROP_CAT_5, 
+					ROUND(`tree`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`tree`.PROP_CAT_6,5) AS PROP_CAT_6,
+					ROUND(`tree`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`tree`.PROP_CAT_7,5) AS PROP_CAT_7, 
+					ROUND(`tree`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`tree`.PROP_CAT_8,5) AS PROP_CAT_8, 
+					ROUND(`tree`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`tree`.PROP_CAT_9,5) AS PROP_CAT_9,
+					ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10,
+					`tree`.TREE_LENGTH, `tree`.TREE_DIAMETER,`tree`.NEWICK_STRING";
+					} else {
+						
+					$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+					`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `tree`.DIST_MEAN,
+					`tree`.MODEL, `tree`.BASE_MODEL, `tree`.RHAS_MODEL, ROUND(`tree`.LOGL,4) AS LOGL,  
+					ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_T,4) AS FREQ_T,
+					ROUND(`tree`.RATE_AC,4) AS RATE_AC, ROUND(`tree`.RATE_AG,4) AS RATE_AG, ROUND(`tree`.RATE_AT,4) AS RATE_AT, 
+					ROUND(`tree`.RATE_CG,4) AS RATE_CG, ROUND(`tree`.RATE_CT,4) AS RATE_CT, ROUND(`tree`.RATE_GT,4) AS RATE_GT,
+					ROUND(`tree`.ALPHA,5) AS ALPHA, ROUND(`tree`.PROP_INVAR,5) AS PROP_INVAR,
+					ROUND(`tree`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`tree`.PROP_CAT_1,5) AS PROP_CAT_1, 
+					ROUND(`tree`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`tree`.PROP_CAT_2,5) AS PROP_CAT_2, 
+					ROUND(`tree`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`tree`.PROP_CAT_3,5) AS PROP_CAT_3,
+					ROUND(`tree`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`tree`.PROP_CAT_4,5) AS PROP_CAT_4, 
+					ROUND(`tree`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`tree`.PROP_CAT_5,5) AS PROP_CAT_5, 
+					ROUND(`tree`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`tree`.PROP_CAT_6,5) AS PROP_CAT_6,
+					ROUND(`tree`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`tree`.PROP_CAT_7,5) AS PROP_CAT_7, 
+					ROUND(`tree`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`tree`.PROP_CAT_8,5) AS PROP_CAT_8, 
+					ROUND(`tree`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`tree`.PROP_CAT_9,5) AS PROP_CAT_9,
+					ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10,
+					`tree`.TREE_LENGTH, `tree`.TREE_DIAMETER";
+					}
 				
 				
 				
@@ -361,48 +399,116 @@ $first = false;
 				
 				if($NewWick == "TRUE"){
 			
-				$select = "`aa_alignments` .`ALI_ID`, `aa_modelparameters`.`KEEP_IDENT`, `aa_modelparameters`.MODEL, `aa_modelparameters`.BASE_MODEL, `aa_modelparameters`.`MODEL_RATE_HETEROGENEITY`,`aa_modelparameters`.`LOGL`, `aa_modelparameters`.`BIC`, `aa_modelparameters`.`WEIGHTED_BIC`,`aa_modelparameters`.`STAT_FREQ_A`, `aa_modelparameters`.`STAT_FREQ_C`, `aa_modelparameters`.`STAT_FREQ_G`, `aa_modelparameters`.`STAT_FREQ_T`,`aa_modelparameters`.`ALPHA`, `aa_modelparameters`.`PROP_INVAR`,`aa_modelparameters`.`REL_RATE_CAT_1`, `aa_modelparameters`.`PROP_CAT_1` , `aa_modelparameters`.`REL_RATE_CAT_2` , `aa_modelparameters`.`PROP_CAT_2`, `aa_modelparameters`.`REL_RATE_CAT_3`, `aa_modelparameters`.`PROP_CAT_3`,`aa_modelparameters`.`REL_RATE_CAT_4`, `aa_modelparameters`.`PROP_CAT_4`, `aa_modelparameters`.`REL_RATE_CAT_5`, `aa_modelparameters`.`PROP_CAT_5`, `aa_modelparameters`.`REL_RATE_CAT_6`, `aa_modelparameters`.`PROP_CAT_6`,`aa_modelparameters`.`REL_RATE_CAT_7`, `aa_modelparameters`.`PROP_CAT_7` , `aa_modelparameters`.`REL_RATE_CAT_8`, `aa_modelparameters`.`PROP_CAT_8`, `aa_modelparameters`.`REL_RATE_CAT_9`, `aa_modelparameters`.`PROP_CAT_9`,`aa_modelparameters`.`REL_RATE_CAT_10` , `aa_modelparameters`.`PROP_CAT_10`, `aa_trees`.`NEWICK_STRING`" ;
-			
-				} else {
-					
-				$select = "`aa_alignments` .`ALI_ID`, `aa_modelparameters`.`KEEP_IDENT`, `aa_modelparameters`.MODEL, `aa_modelparameters`.BASE_MODEL, `aa_modelparameters`.`MODEL_RATE_HETEROGENEITY`,`aa_modelparameters`.`LOGL`, `aa_modelparameters`.`BIC`, `aa_modelparameters`.`WEIGHTED_BIC`,`aa_modelparameters`.`STAT_FREQ_A`, `aa_modelparameters`.`STAT_FREQ_C`, `aa_modelparameters`.`STAT_FREQ_G`, `aa_modelparameters`.`STAT_FREQ_T`, `aa_modelparameters`.`ALPHA`, `aa_modelparameters`.`PROP_INVAR`,`aa_modelparameters`.`REL_RATE_CAT_1`, `aa_modelparameters`.`PROP_CAT_1` , `aa_modelparameters`.`REL_RATE_CAT_2` , `aa_modelparameters`.`PROP_CAT_2`, `aa_modelparameters`.`REL_RATE_CAT_3`, `aa_modelparameters`.`PROP_CAT_3`,`aa_modelparameters`.`REL_RATE_CAT_4`, `aa_modelparameters`.`PROP_CAT_4`, `aa_modelparameters`.`REL_RATE_CAT_5`, `aa_modelparameters`.`PROP_CAT_5`, `aa_modelparameters`.`REL_RATE_CAT_6`, `aa_modelparameters`.`PROP_CAT_6`,`aa_modelparameters`.`REL_RATE_CAT_7`, `aa_modelparameters`.`PROP_CAT_7` , `aa_modelparameters`.`REL_RATE_CAT_8`, `aa_modelparameters`.`PROP_CAT_8`, `aa_modelparameters`.`REL_RATE_CAT_9`, `aa_modelparameters`.`PROP_CAT_9`,`aa_modelparameters`.`REL_RATE_CAT_10` , `aa_modelparameters`.`PROP_CAT_10` " ;
-			
-				}  
+					$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+					`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `tree`.DIST_MEAN,
+					`mod`.MODEL, `mod`.BASE_MODEL, `mod`.RHAS_MODEL, 
+					ROUND(`mod`.LOGL,4) AS LOGL, 
+					ROUND(`mod`.BIC,4) AS AIC, `mod`.AIC_WEIGHT, 
+					ROUND(`mod`.BIC,4) AS AICC, `mod`.AICC_WEIGHT, 
+					ROUND(`mod`.BIC,4) AS BIC, `mod`.BIC_WEIGHT,  
+					ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_R,4) AS FREQ_R, ROUND(`tree`.FREQ_N,4) AS FREQ_N, 
+					ROUND(`tree`.FREQ_D,4) AS FREQ_D, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_Q,4) AS FREQ_Q, 
+					ROUND(`tree`.FREQ_E,4) AS FREQ_E, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_H,4) AS FREQ_H, 
+					ROUND(`tree`.FREQ_I,4) AS FREQ_I, ROUND(`tree`.FREQ_L,4) AS FREQ_L, ROUND(`tree`.FREQ_K,4) AS FREQ_K, 
+					ROUND(`tree`.FREQ_M,4) AS FREQ_M, ROUND(`tree`.FREQ_F,4) AS FREQ_F, ROUND(`tree`.FREQ_P,4) AS FREQ_P, 
+					ROUND(`tree`.FREQ_S,4) AS FREQ_S, ROUND(`tree`.FREQ_T,4) AS FREQ_T, ROUND(`tree`.FREQ_W,4) AS FREQ_W, 
+					ROUND(`tree`.FREQ_Y,4) AS FREQ_Y, ROUND(`tree`.FREQ_V,4) AS FREQ_V,
+					ROUND(`mod`.ALPHA,5) AS ALPHA, ROUND(`mod`.PROP_INVAR,5) AS PROP_INVAR,
+					ROUND(`mod`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`mod`.PROP_CAT_1,5) AS PROP_CAT_1, 
+					ROUND(`mod`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`mod`.PROP_CAT_2,5) AS PROP_CAT_2, 
+					ROUND(`mod`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`mod`.PROP_CAT_3,5) AS PROP_CAT_3,
+					ROUND(`mod`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`mod`.PROP_CAT_4,5) AS PROP_CAT_4, 
+					ROUND(`mod`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`mod`.PROP_CAT_5,5) AS PROP_CAT_5, 
+					ROUND(`mod`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`mod`.PROP_CAT_6,5) AS PROP_CAT_6,
+					ROUND(`mod`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`mod`.PROP_CAT_7,5) AS PROP_CAT_7, 
+					ROUND(`mod`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`mod`.PROP_CAT_8,5) AS PROP_CAT_8, 
+					ROUND(`mod`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`mod`.PROP_CAT_9,5) AS PROP_CAT_9,
+					ROUND(`mod`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`mod`.PROP_CAT_10,5) AS PROP_CAT_10,
+					`tree`.NEWICK_STRING ";
+					} else {
+						
+					$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+					`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `tree`.DIST_MEAN,
+					`mod`.MODEL, `mod`.BASE_MODEL, `mod`.RHAS_MODEL, 
+					ROUND(`mod`.LOGL,4) AS LOGL, 
+					ROUND(`mod`.BIC,4) AS AIC, `mod`.AIC_WEIGHT, 
+					ROUND(`mod`.BIC,4) AS AICC, `mod`.AICC_WEIGHT, 
+					ROUND(`mod`.BIC,4) AS BIC, `mod`.BIC_WEIGHT,  
+					ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_R,4) AS FREQ_R, ROUND(`tree`.FREQ_N,4) AS FREQ_N, 
+					ROUND(`tree`.FREQ_D,4) AS FREQ_D, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_Q,4) AS FREQ_Q, 
+					ROUND(`tree`.FREQ_E,4) AS FREQ_E, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_H,4) AS FREQ_H, 
+					ROUND(`tree`.FREQ_I,4) AS FREQ_I, ROUND(`tree`.FREQ_L,4) AS FREQ_L, ROUND(`tree`.FREQ_K,4) AS FREQ_K, 
+					ROUND(`tree`.FREQ_M,4) AS FREQ_M, ROUND(`tree`.FREQ_F,4) AS FREQ_F, ROUND(`tree`.FREQ_P,4) AS FREQ_P, 
+					ROUND(`tree`.FREQ_S,4) AS FREQ_S, ROUND(`tree`.FREQ_T,4) AS FREQ_T, ROUND(`tree`.FREQ_W,4) AS FREQ_W, 
+					ROUND(`tree`.FREQ_Y,4) AS FREQ_Y, ROUND(`tree`.FREQ_V,4) AS FREQ_V,
+					ROUND(`mod`.ALPHA,5) AS ALPHA, ROUND(`mod`.PROP_INVAR,5) AS PROP_INVAR,
+					ROUND(`mod`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`mod`.PROP_CAT_1,5) AS PROP_CAT_1, 
+					ROUND(`mod`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`mod`.PROP_CAT_2,5) AS PROP_CAT_2, 
+					ROUND(`mod`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`mod`.PROP_CAT_3,5) AS PROP_CAT_3,
+					ROUND(`mod`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`mod`.PROP_CAT_4,5) AS PROP_CAT_4, 
+					ROUND(`mod`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`mod`.PROP_CAT_5,5) AS PROP_CAT_5, 
+					ROUND(`mod`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`mod`.PROP_CAT_6,5) AS PROP_CAT_6,
+					ROUND(`mod`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`mod`.PROP_CAT_7,5) AS PROP_CAT_7, 
+					ROUND(`mod`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`mod`.PROP_CAT_8,5) AS PROP_CAT_8, 
+					ROUND(`mod`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`mod`.PROP_CAT_9,5) AS PROP_CAT_9,
+					ROUND(`mod`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`mod`.PROP_CAT_10,5) AS PROP_CAT_10";
+					}  
 			//Prot w Trees 		
 			}else {
 				
-				
 				if($NewWick == "TRUE"){
 			
-				$select = "`aa_alignments` .`ALI_ID`, `aa_trees`.`KEEP_IDENT`, `aa_trees`.MODEL, `aa_trees`.BASE_MODEL, `aa_trees`.`MODEL_RATE_HETEROGENEITY`,`aa_trees`.`LOGL`, `aa_trees`.`BIC`,`aa_trees`.`STAT_FREQ_A`, `aa_trees`.`STAT_FREQ_C`, `aa_trees`.`STAT_FREQ_G`, `aa_trees`.`STAT_FREQ_T`, `aa_trees`.`ALPHA`, `aa_trees`.`PROP_INVAR`,`aa_trees`.`REL_RATE_CAT_1`, `aa_trees`.`PROP_CAT_1` , `aa_trees`.`REL_RATE_CAT_2` , `aa_trees`.`PROP_CAT_2`, `aa_trees`.`REL_RATE_CAT_3`, `aa_trees`.`PROP_CAT_3`,`aa_trees`.`REL_RATE_CAT_4`, `aa_trees`.`PROP_CAT_4`, `aa_trees`.`REL_RATE_CAT_5`, `aa_trees`.`PROP_CAT_5`, `aa_trees`.`REL_RATE_CAT_6`, `aa_trees`.`PROP_CAT_6`,`aa_trees`.`REL_RATE_CAT_7`, `aa_trees`.`PROP_CAT_7` , `aa_trees`.`REL_RATE_CAT_8`, `aa_trees`.`PROP_CAT_8`, `aa_trees`.`REL_RATE_CAT_9`, `aa_trees`.`PROP_CAT_9`,`aa_trees`.`REL_RATE_CAT_10` , `aa_trees`.`PROP_CAT_10`, `aa_trees`.`NEWICK_STRING`" ;
-			
-				} else {
-					
-				$select = "`aa_alignments` .`ALI_ID`, `aa_trees`.`KEEP_IDENT`, `aa_trees`.MODEL, `aa_trees`.BASE_MODEL, `aa_trees`.`MODEL_RATE_HETEROGENEITY`,`aa_trees`.`LOGL`, `aa_trees`.`BIC`,`aa_trees`.`STAT_FREQ_A`, `aa_trees`.`STAT_FREQ_C`, `aa_trees`.`STAT_FREQ_G`, `aa_trees`.`STAT_FREQ_T`,`aa_trees`.`ALPHA`, `aa_trees`.`PROP_INVAR`,`aa_trees`.`REL_RATE_CAT_1`, `aa_trees`.`PROP_CAT_1` , `aa_trees`.`REL_RATE_CAT_2` , `aa_trees`.`PROP_CAT_2`, `aa_trees`.`REL_RATE_CAT_3`, `aa_trees`.`PROP_CAT_3`,`aa_trees`.`REL_RATE_CAT_4`, `aa_trees`.`PROP_CAT_4`, `aa_trees`.`REL_RATE_CAT_5`, `aa_trees`.`PROP_CAT_5`, `aa_trees`.`REL_RATE_CAT_6`, `aa_trees`.`PROP_CAT_6`,`aa_trees`.`REL_RATE_CAT_7`, `aa_trees`.`PROP_CAT_7` , `aa_trees`.`REL_RATE_CAT_8`, `aa_trees`.`PROP_CAT_8`, `aa_trees`.`REL_RATE_CAT_9`, `aa_trees`.`PROP_CAT_9`,`aa_trees`.`REL_RATE_CAT_10` , `aa_trees`.`PROP_CAT_10` " ;
-			
-				}
-			
-			
-			
+					$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+					`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `tree`.DIST_MEAN,
+					`tree`.MODEL, `tree`.BASE_MODEL, `tree`.RHAS_MODEL, ROUND(`tree`.LOGL,4) AS LOGL, 
+					ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_R,4) AS FREQ_R, ROUND(`tree`.FREQ_N,4) AS FREQ_N, 
+					ROUND(`tree`.FREQ_D,4) AS FREQ_D, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_Q,4) AS FREQ_Q, 
+					ROUND(`tree`.FREQ_E,4) AS FREQ_E, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_H,4) AS FREQ_H, 
+					ROUND(`tree`.FREQ_I,4) AS FREQ_I, ROUND(`tree`.FREQ_L,4) AS FREQ_L, ROUND(`tree`.FREQ_K,4) AS FREQ_K, 
+					ROUND(`tree`.FREQ_M,4) AS FREQ_M, ROUND(`tree`.FREQ_F,4) AS FREQ_F, ROUND(`tree`.FREQ_P,4) AS FREQ_P, 
+					ROUND(`tree`.FREQ_S,4) AS FREQ_S, ROUND(`tree`.FREQ_T,4) AS FREQ_T, ROUND(`tree`.FREQ_W,4) AS FREQ_W, 
+					ROUND(`tree`.FREQ_Y,4) AS FREQ_Y, ROUND(`tree`.FREQ_V,4) AS FREQ_V,
+					ROUND(`tree`.ALPHA,5) AS ALPHA, ROUND(`tree`.PROP_INVAR,5) AS PROP_INVAR,
+					ROUND(`tree`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`tree`.PROP_CAT_1,5) AS PROP_CAT_1, 
+					ROUND(`tree`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`tree`.PROP_CAT_2,5) AS PROP_CAT_2, 
+					ROUND(`tree`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`tree`.PROP_CAT_3,5) AS PROP_CAT_3,
+					ROUND(`tree`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`tree`.PROP_CAT_4,5) AS PROP_CAT_4, 
+					ROUND(`tree`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`tree`.PROP_CAT_5,5) AS PROP_CAT_5, 
+					ROUND(`tree`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`tree`.PROP_CAT_6,5) AS PROP_CAT_6,
+					ROUND(`tree`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`tree`.PROP_CAT_7,5) AS PROP_CAT_7, 
+					ROUND(`tree`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`tree`.PROP_CAT_8,5) AS PROP_CAT_8, 
+					ROUND(`tree`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`tree`.PROP_CAT_9,5) AS PROP_CAT_9,
+					ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10,
+					`tree`.TREE_LENGTH, `tree`.TREE_DIAMETER,`tree`.NEWICK_STRING";
+					} else {
+						
+					$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
+					`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `tree`.DIST_MEAN,
+					`tree`.MODEL, `tree`.BASE_MODEL, `tree`.RHAS_MODEL, ROUND(`tree`.LOGL,4) AS LOGL, 
+					ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_R,4) AS FREQ_R, ROUND(`tree`.FREQ_N,4) AS FREQ_N, 
+					ROUND(`tree`.FREQ_D,4) AS FREQ_D, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_Q,4) AS FREQ_Q, 
+					ROUND(`tree`.FREQ_E,4) AS FREQ_E, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_H,4) AS FREQ_H, 
+					ROUND(`tree`.FREQ_I,4) AS FREQ_I, ROUND(`tree`.FREQ_L,4) AS FREQ_L, ROUND(`tree`.FREQ_K,4) AS FREQ_K, 
+					ROUND(`tree`.FREQ_M,4) AS FREQ_M, ROUND(`tree`.FREQ_F,4) AS FREQ_F, ROUND(`tree`.FREQ_P,4) AS FREQ_P, 
+					ROUND(`tree`.FREQ_S,4) AS FREQ_S, ROUND(`tree`.FREQ_T,4) AS FREQ_T, ROUND(`tree`.FREQ_W,4) AS FREQ_W, 
+					ROUND(`tree`.FREQ_Y,4) AS FREQ_Y, ROUND(`tree`.FREQ_V,4) AS FREQ_V,
+					ROUND(`tree`.ALPHA,5) AS ALPHA, ROUND(`tree`.PROP_INVAR,5) AS PROP_INVAR,
+					ROUND(`tree`.REL_RATE_CAT_1,5) AS RATE_CAT_1, ROUND(`tree`.PROP_CAT_1,5) AS PROP_CAT_1, 
+					ROUND(`tree`.REL_RATE_CAT_2,5) AS RATE_CAT_2, ROUND(`tree`.PROP_CAT_2,5) AS PROP_CAT_2, 
+					ROUND(`tree`.REL_RATE_CAT_3,5) AS RATE_CAT_3, ROUND(`tree`.PROP_CAT_3,5) AS PROP_CAT_3,
+					ROUND(`tree`.REL_RATE_CAT_4,5) AS RATE_CAT_4, ROUND(`tree`.PROP_CAT_4,5) AS PROP_CAT_4, 
+					ROUND(`tree`.REL_RATE_CAT_5,5) AS RATE_CAT_5, ROUND(`tree`.PROP_CAT_5,5) AS PROP_CAT_5, 
+					ROUND(`tree`.REL_RATE_CAT_6,5) AS RATE_CAT_6, ROUND(`tree`.PROP_CAT_6,5) AS PROP_CAT_6,
+					ROUND(`tree`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`tree`.PROP_CAT_7,5) AS PROP_CAT_7, 
+					ROUND(`tree`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`tree`.PROP_CAT_8,5) AS PROP_CAT_8, 
+					ROUND(`tree`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`tree`.PROP_CAT_9,5) AS PROP_CAT_9,
+					ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10,
+					`tree`.TREE_LENGTH, `tree`.TREE_DIAMETER";
+					}			
+			}
 		}
-		
-		}
-		
-	
-		
-		
-		
-			
-			
 			$f_d_query = " SELECT ".$select . " FROM ";
 		
-			
-		
-		
-		
-	
-		
-			// Activate Try here 
 		try {
 			
 			//decide to search in Proteins or DNA 
@@ -415,93 +521,74 @@ $first = false;
 				if( $OPT_uOPT == "modelparameters"){
 					
 					//Alignment join
-					$f_d_query .= "`dna_modelparameters` INNER JOIN `dna_alignments` USING (`ALI_ID`)";
-					
+					$f_d_query .= "`dna_alignments` as `ali`  INNER JOIN `dna_modelparameters` as `mod` USING (`ALI_ID`)";
 					//Tree Join 
-					$f_d_query .= " INNER JOIN `dna_trees` USING (`ALI_ID`,`TIME_STAMP` ) " ;
+					$f_d_query .= " INNER JOIN `dna_trees` as `tree` USING (`ALI_ID`) " ;
+					$f_d_query .= " WHERE `mod`.`MODEL` in " . "(" . $string_model. ")";
+					$f_d_query .= " AND `mod`.`ORIGINAL_ALI` = 1 ";
+					$f_d_query .= " AND `tree`.`TREE_TYPE` =  'initial' ";
+					$f_d_query .= " AND `tree`.`ORIGINAL_ALI` = 1 ";
 					
-					$f_d_query .= " WHERE `dna_modelparameters`.`MODEL` in " . "(" . $string_model. ")";
+		
 					
-					$f_d_query .= " AND `dna_modelparameters`.`KEEP_IDENT` = 0 ";
-					$f_d_query .= " AND `dna_trees`.`TREE_TYPE` =  'initial' ";
-					
-					
-					
-				
+					if ($ALL == "checked"){
+							
+						$f_d_query .= "AND  `ali`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+						
+
+						}elseif(!empty($Source)){
+							
+							$f_d_query .= "AND `ali`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+							
+							
+						}
 					
 					if($Trees_Specs_Check== "TRUE"){
-						
-						//Joins earlier due to nature of seach 
-						//$f_d_query .= " INNER JOIN `dna_models` ON (`dna_modelparameters`.`BASE_MODEL` = `dna_models`.`MODEL_NAME` ) ";
-						//$f_d_query .= " INNER JOIN `dna_trees` ON (`dna_models`.`MODEL_NAME` = `dna_trees`.`BASE_MODEL`) AND (`dna_trees`.`ALI_ID` = `dna_alignments`.`ALI_ID`) " ;
 						
 						//Catch the Data 
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
 							
 							}
 						if(!empty($Max_tree_len)){
-				
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+					
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` <= ? ';
 							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 							
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
 							
 						}
+						//max
 						if(!empty($Max_tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						
 						
-						/* Tree topology
-						if(!empty($mean_dis)){
-							
-							
-							$f_d_conditions[] =  ' `dna_trees`.`DIST_MEAN` = ? ';
-							$f_d_parameters[] =  $mean_dis;
-							
-							
-							
-						}
-						*/ 
-						
 					}
-
-					if ($ALL == "checked"){
-							
-						$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
-
-						}elseif(!empty($Source)){
-							
-							$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
-							
-						}
 						
 						
 					//  is Allignment Checked if yes catch data
 					if($Alignment_Specs_Check == "TRUE"){
 						
 						
-						//Add SourceList
-						
-						
+
 						
 						//Since we already inner joined in dna allignments we can collect the data 
 						
 						//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`SEQUENCES` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 							
 						}
@@ -509,7 +596,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`SEQUENCES` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -518,14 +605,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`COLUMNS` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`COLUMNS` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -533,7 +620,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `dna_trees`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -541,33 +628,39 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
+						// fraction parsimony sies
+						if(!empty($parsimony_sites_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`PARSIMONY_INFORMATIVE_SITES` / `ali`.`SITES` >= ? ';
+							$f_d_parameters[] =  $parsimony_sites_fraction;
+							
+						}
+						//fraction of patterns
+						if(!empty($distinct_patterns_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`DISTINCT_PATTERNS` / `ali`.`SITES` >= ? ';
+							$f_d_parameters[] =  $distinct_patterns_fraction;
+							
+						}
+						
+						//wildcard gaps
+						if(!empty($wildcard_gaps_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`FRAC_WILDCARDS_GAPS` <= ? ';
+							$f_d_parameters[] =  $wildcard_gaps_fraction;
+							
+						}
+
+						
+
+				
 						
 					}
-					
-						// Check matrices
 						
-						
-						
-						
-						
-						/* Old
-					if(!empty($Matrices_D && $RHAS)){
-						
-						
-						$f_d_conditions[] =  ' `dna_modelparameters`.`BASE_MODEL` = ? ';
-						$f_d_parameters[] =  $modeld;
-						
-						
-					}
-					
-					*/ //////////////////////New//////////////////////
-					
-					
-					
 					
 					
 					
@@ -577,7 +670,7 @@ $first = false;
 						//AIC check 
 					if( !empty($AIC)){
 						
-						$f_d_conditions[] =  ' `dna_modelparameters`.`WEIGHTED_AIC` = ? ';
+						$f_d_conditions[] =  ' `mod`.`AIC_WEIGHT` >= ? ';
 						$f_d_parameters[] =  $AIC;
 						
 					}
@@ -585,7 +678,7 @@ $first = false;
 					
 					if( !empty($AICC)){
 											
-						$f_d_conditions[] =  ' `dna_modelparameters`.`WEIGHTED_AICC` = ? ';
+						$f_d_conditions[] =  ' `mod`.`AICC_WEIGHT` >= ? ';
 						$f_d_parameters[] =  $AICC;
 						
 						
@@ -595,7 +688,7 @@ $first = false;
 					
 					if( !empty($BIC)){
 						
-						$f_d_conditions[] =  ' `dna_modelparameters`.`WEIGHTED_BIC` >= ?';
+						$f_d_conditions[] =  ' `mod`.`BIC_WEIGHT` >= ?';
 						$f_d_parameters[] =  $BIC;
 						
 					}
@@ -608,34 +701,31 @@ $first = false;
 					
 					
 					
+					
 					// if !Modelparameters must be trees due to natiure of form valdiation radio button	
 				} else {
 					
-					//OLD 
-					/*
-					$f_d_query .= "`dna_trees` INNER JOIN `dna_alignments` ON (`dna_trees`.`ALI_ID` = `dna_alignments`.`ALI_ID` )";
-					$f_d_query .= " WHERE `dna_trees`.`BASE_MODEL` in " . "(" . $string_model. ")";
-					*/ 
 					
-					//new
-					$f_d_query .= "`dna_trees` INNER JOIN `dna_alignments` USING (`ALI_ID`)";
+					//Joins
+					$f_d_query .= "`dna_alignments` as `ali`  INNER JOIN `dna_trees` as `tree` USING (`ALI_ID`)";
 					
 					
-					$f_d_query .= " WHERE `dna_trees`.`MODEL` in " . "(" . $string_model. ")";
+					$f_d_query .= " WHERE `tree`.`MODEL` in " . "(" . $string_model. ")";
 					
-					$f_d_query .= " AND `dna_trees`.`KEEP_IDENT` = 0 ";
-					$f_d_query .= " AND `dna_trees`.`TREE_TYPE` =  'ml' ";
+					$f_d_query .= " AND `tree`.`ORIGINAL_ALI` = 1 ";
+					$f_d_query .= " AND `tree`.`TREE_TYPE` =  'ml' ";
 					
 					
-					//Add SourceList
-						
+					
 					if ($ALL == "checked"){
 							
-						$f_d_query .= "AND  `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+						$f_d_query .= "AND  `ali`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+						
 
 						}elseif(!empty($Source)){
 							
-							$f_d_query .= "AND `dna_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+							$f_d_query .= "AND `ali`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+							
 							
 						}
 					
@@ -644,12 +734,14 @@ $first = false;
 						
 						//Since we already inner joined in dna allignments we can collect the data 
 						
+						//Add SourceList
+						
 						
 						
 						//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`SEQUENCES` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 							
 						}
@@ -657,7 +749,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`SEQUENCES` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -666,14 +758,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`COLUMNS` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`COLUMNS` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -681,7 +773,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `dna_trees`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -689,10 +781,36 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
+						// fraction parsimony sies
+						if(!empty($parsimony_sites_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`PARSIMONY_INFORMATIVE_SITES` / `ali`.`SITES` >= ? ';
+							$f_d_parameters[] =  $parsimony_sites_fraction;
+							
+						}
+						//fraction of patterns
+						if(!empty($distinct_patterns_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`DISTINCT_PATTERNS` / `ali`.`SITES` >= ? ';
+							$f_d_parameters[] =  $distinct_patterns_fraction;
+							
+						}
+
+						//wildcard gaps
+						if(!empty($wildcard_gaps_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`FRAC_WILDCARDS_GAPS` <= ? ';
+							$f_d_parameters[] =  $wildcard_gaps_fraction;
+							
+						}
+
+
+
+
 						
 					}
 						
@@ -705,134 +823,92 @@ $first = false;
 						//Catch the Data 
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
 							
 							}
 						if(!empty($Max_tree_len)){
-			
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_LENGTH` <= ? ';
+				
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` <= ? ';
 							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 							
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
 							
 						}
+						//max
 						if(!empty($Max_tree_dia)){
 							
-							$f_d_conditions[] =  ' `dna_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						
-					}
-						
-						
-						/* Tree topology
-						if(!empty($mean_dis)){
-							
-							
-							$f_d_conditions[] =  ' `dna_trees`.`DIST_MEAN` = ? ';
-							$f_d_parameters[] =  $mean_dis;
-							
-							
-							
-						}
-						*/ 
-						
-					
-					
-					
-					// Check matrices
-					
-					
-					
-					
-		
-						
-					
-					
+					}					
 				}
 				
-				
-				
-				
-				
-				
-				
-				
-					
 					// if !DNA must be Proteins
 					
 				} else {
-					
-					
-					
-					
 					// Same code with Protein
-					
-					
 					if( $OPT_uOPT == "modelparameters"){
-					
+				
 					//Alignment join
-					$f_d_query .= "`aa_modelparameters` INNER JOIN `aa_alignments` USING (`ALI_ID`)";
-					
+					$f_d_query .= "`aa_alignments` as `ali` INNER JOIN `aa_modelparameters` as `mod`  USING (`ALI_ID`)";
 					//Tree Join 
-					$f_d_query .= " INNER JOIN `aa_trees` USING (`ALI_ID`,`TIME_STAMP` ) " ;
-					
-					$f_d_query .= " WHERE `aa_modelparameters`.`MODEL` in " . "(" . $string_model_p. ")";
-					
-					$f_d_query .= " AND `aa_modelparameters`.`KEEP_IDENT` = 0 ";
-					$f_d_query .= " AND `aa_trees`.`TREE_TYPE` =  'initial' ";
-					
-					
-					
+					$f_d_query .= " INNER JOIN `aa_trees` as `tree` USING (`ALI_ID`) " ;
+					$f_d_query .= " WHERE `mod`.`MODEL` in " . "(" . $string_model_p. ")";
+					$f_d_query .= " AND `mod`.`ORIGINAL_ALI` = 1 ";
+					$f_d_query .= " AND `tree`.`TREE_TYPE` =  'initial' ";
+					$f_d_query .= " AND `tree`.`ORIGINAL_ALI` = 1 ";
+			
 				
 					
 					if($Trees_Specs_Check== "TRUE"){
 						
 						//Joins earlier due to nature of seach 
-						//$f_d_query .= " INNER JOIN `aa_models` ON (`aa_modelparameters`.`BASE_MODEL` = `aa_models`.`MODEL_NAME` ) ";
-						//$f_d_query .= " INNER JOIN `aa_trees` ON (`aa_models`.`MODEL_NAME` = `aa_trees`.`BASE_MODEL`) AND (`aa_trees`.`ALI_ID` = `aa_alignments`.`ALI_ID`) " ;
+						
 						
 						//Catch the Data 
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
 							
 							}
-
+							
 						if(!empty($Max_tree_len)){
-			
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` <= ? ';
+				
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` <= ? ';
 							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 							
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
 							
 						}
+						//max
 						if(!empty($Max_tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
+						
 						
 						
 						/* Tree topology
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `aa_trees`.`DIST_MEAN` = ? ';
+							$f_d_conditions[] =  ' `dna_trees`.`DIST_MEAN` = ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 							
@@ -841,22 +917,24 @@ $first = false;
 						*/ 
 						
 					}
+
+					//Add SourceList
 						
 					if ($ALL == "checked"){
 							
-						$f_d_query .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+						$f_d_query .= "AND  `ali`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+						
 
 						}elseif(!empty($Source)){
 							
-							$f_d_query .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+							$f_d_query .= "AND `ali`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
 							
-						}	
-
+						}
+						
+						
 					//  is Allignment Checked if yes catch data
 					if($Alignment_Specs_Check == "TRUE"){
 						
-						
-						//Add SourceList
 						
 						
 						
@@ -865,7 +943,7 @@ $first = false;
 						//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`SEQUENCES` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 							
 						}
@@ -873,7 +951,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`SEQUENCES` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -882,14 +960,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`COLUMNS` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`COLUMNS` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -897,7 +975,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `aa_trees`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -905,43 +983,42 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
+							
+						}
+
+
+						// fraction parsimony sies
+						if(!empty($parsimony_sites_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`PARSIMONY_INFORMATIVE_SITES` / `ali`.`SITES` >= ? ';
+							$f_d_parameters[] =  $parsimony_sites_fraction;
+							
+						}
+						//fraction of patterns
+						if(!empty($distinct_patterns_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`DISTINCT_PATTERNS` / `ali`.`SITES` >= ? ';
+							$f_d_parameters[] =  $distinct_patterns_fraction;
+							
+						}
+
+						//wildcard gaps
+						if(!empty($wildcard_gaps_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`FRAC_WILDCARDS_GAPS` <= ? ';
+							$f_d_parameters[] =  $wildcard_gaps_fraction;
 							
 						}
 						
 					}
 					
-						// Check matrices
-						
-						
-						
-						
-						
-						/* Old
-					if(!empty($Matrices_D && $RHAS)){
-						
-						
-						$f_d_conditions[] =  ' `aa_modelparameters`.`BASE_MODEL` = ? ';
-						$f_d_parameters[] =  $modeld;
-						
-						
-					}
-					
-					*/ //////////////////////New//////////////////////
-					
-					
-					
-					
-					
-					
-					///////////////////////////////////////////////////
-					
 	
 						//AIC check 
 					if( !empty($AIC)){
 						
-						$f_d_conditions[] =  ' `aa_modelparameters`.`WEIGHTED_AIC` = ? ';
+						$f_d_conditions[] =  ' `mod`.`AIC_WEIGHT` >= ? ';
 						$f_d_parameters[] =  $AIC;
 						
 					}
@@ -949,7 +1026,7 @@ $first = false;
 					
 					if( !empty($AICC)){
 											
-						$f_d_conditions[] =  ' `aa_modelparameters`.`WEIGHTED_AICC` = ? ';
+						$f_d_conditions[] =  ' `mod`.`AICC_WEIGHT` >= ? ';
 						$f_d_parameters[] =  $AICC;
 						
 						
@@ -959,61 +1036,48 @@ $first = false;
 					
 					if( !empty($BIC)){
 						
-						$f_d_conditions[] =  ' `aa_modelparameters`.`WEIGHTED_BIC` >= ?';
+						$f_d_conditions[] =  ' `mod`.`BIC_WEIGHT` >= ?';
 						$f_d_parameters[] =  $BIC;
 						
 					}
 					
 					
-					
-					
-					
-					
-					
-					
-					
 					// if !Modelparameters must be trees due to natiure of form valdiation radio button	
 				} else {
 					
-					//OLD 
-					/*
-					$f_d_query .= "`aa_trees` INNER JOIN `aa_alignments` ON (`aa_trees`.`ALI_ID` = `aa_alignments`.`ALI_ID` )";
-					$f_d_query .= " WHERE `aa_trees`.`BASE_MODEL` in " . "(" . $string_model. ")";
-					*/ 
-					
-					//new
-					$f_d_query .= "`aa_trees` INNER JOIN `aa_alignments` USING (`ALI_ID`)";
+				//Joins
+					$f_d_query .= "`aa_alignments` as `ali`  INNER JOIN `aa_trees` as `tree` USING (`ALI_ID`)";
 					
 					
-					$f_d_query .= " WHERE `aa_trees`.`MODEL` in " . "(" . $string_model_p. ")";
+					$f_d_query .= " WHERE `tree`.`MODEL` in " . "(" . $string_model_p. ")";
 					
-					$f_d_query .= " AND `aa_trees`.`KEEP_IDENT` = 0 ";
-					$f_d_query .= " AND `aa_trees`.`TREE_TYPE` =  'ml' ";
+					$f_d_query .= " AND `tree`.`ORIGINAL_ALI` = 1 ";
+					$f_d_query .= " AND `tree`.`TREE_TYPE` =  'ml' ";
 					
 					
 					
-					//Add SourceList
-						
 					if ($ALL == "checked"){
 							
-						$f_d_query .= "AND  `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+						$f_d_query .= "AND  `ali`.`FROM_DATABASE` in " . "(" . $stringall. ")";
+						
 
 						}elseif(!empty($Source)){
 							
-							$f_d_query .= "AND `aa_alignments`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+							$f_d_query .= "AND `ali`.`FROM_DATABASE` in " . "(" . $stringsource. ")";
+							
 							
 						}
+					
 					
 					if($Alignment_Specs_Check == "TRUE"){	
 						
 						//Since we already inner joined in aa allignments we can collect the data 
 						
 						
-						
 						//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`SEQUENCES` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 							
 						}
@@ -1021,7 +1085,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`SEQUENCES` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -1030,14 +1094,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`COLUMNS` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`COLUMNS` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -1045,7 +1109,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `aa_trees`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -1053,8 +1117,30 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
+							
+						}
+
+						// fraction parsimony sies
+						if(!empty($parsimony_sites_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`PARSIMONY_INFORMATIVE_SITES` / `ali`.`COLUMNS` >= ? ';
+							$f_d_parameters[] =  $parsimony_sites_fraction;
+							
+						}
+						//fraction of patterns
+						if(!empty($distinct_patterns_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`DISTINCT_PATTERNS` / `ali`.`COLUMNS` >= ? ';
+							$f_d_parameters[] =  $distinct_patterns_fraction;
+							
+						}
+						//wildcard gaps
+						if(!empty($wildcard_gaps_fraction)){
+							
+							$f_d_conditions[] =  ' `ali`.`FRAC_WILDCARDS_GAPS` <= ? ';
+							$f_d_parameters[] =  $wildcard_gaps_fraction;
 							
 						}
 						
@@ -1069,102 +1155,66 @@ $first = false;
 						//Catch the Data 
 						if(!empty($tree_len)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` >= ? ';
 							$f_d_parameters[] =  $tree_len;
 							
 							}
 
 						if(!empty($Max_tree_len)){
-		
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_LENGTH` <= ? ';
+				
+							$f_d_conditions[] =  ' `tree`.`TREE_LENGTH` <= ? ';
 							$f_d_parameters[] =  $Max_tree_len;
 							
 							}
 							
 						if(!empty($tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` >= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` >= ? ';
 							$f_d_parameters[] =  $tree_dia;
 							
 						}
-
+						//max
 						if(!empty($Max_tree_dia)){
 							
-							$f_d_conditions[] =  ' `aa_trees`.`TREE_DIAMETER` <= ? ';
+							$f_d_conditions[] =  ' `tree`.`TREE_DIAMETER` <= ? ';
 							$f_d_parameters[] =  $Max_tree_dia;
 							
 						}
 						
-					}
-						
-						
-						/* Tree topology
-						if(!empty($mean_dis)){
-							
-							
-							$f_d_conditions[] =  ' `aa_trees`.`DIST_MEAN` = ? ';
-							$f_d_parameters[] =  $mean_dis;
-							
-							
-							
-						}
-						*/ 
-						
-					
-					
-					
-					// Check matrices
-					
-					
-					
-					
-		
-						
-					
-					
-				}
-		
-					
-					
-				}
-					
-				
-				
-				
+					}							
+				}	
+			}
 				//Dynamic Query ///////////
 				
-				
-				
-				
+		// check if sth got added to conditions if yes, add the SQL statemens together in the condition array anf form the string
 		if($f_d_conditions)
+
+		// implode function to convert array in string, delimter with AND and add the "Where" clause to the string
 		$f_d_query .= " AND ".implode(" AND ", $f_d_conditions);	
 					
-		//
-					
-					
+		// Bind the values of f_d_parameters array to the the SQL statements from the conditions array 								
 		$filter_query = $connect->prepare($f_d_query);
 		$filter_query->execute($f_d_parameters);
 
 		
 
-			
+		//fetch data
 		$filter_query_result = $filter_query->fetchAll(PDO::FETCH_ASSOC);
-		
-		
 
 			if($OPT_uOPT == " "){
 				
-				//Input here 
+				//Comes later maybe make 
 				header('Content-Type: text/tsv; charset=utf-8');
 				header('Content-Disposition: attachment; filename=modelparameters_modelfinder.tsv');
 				
 				
 			}
 				
-				
+		/// set headers for donwnloading the data			
 		header('Content-Type: text/tsv; charset=utf-8');
 		header('Content-Disposition: attachment; filename=modelparameters_modelfinder.tsv');
 		
+		//created file
 		$output_file = fopen("php://output", "w"); 
 		
 		$headers_printed = false; 
@@ -1172,14 +1222,16 @@ $first = false;
 		//$fasta = ">";
 		$date = "##".date('Y/m/d H:i:s')."\n";
 		$counter = 0;
+		//clear history 
 		ob_clean();
+
+		// loop throgh the data and write results
 		foreach ($filter_query_result as $list) {
 			 
 			
 			///download me 	
 			if(!$headers_printed){
-				echo $f_d_query;
-
+				
 			fwrite($output_file,"#############################\n");
 			fwrite($output_file,"##         EvoNAPS         ##\n");
 			fwrite($output_file,"#############################\n");
@@ -1191,7 +1243,7 @@ $first = false;
 	  
 				if(!empty($values)){
 				fwrite($output_file, "## ".$names.": ".$values	);
-				  //echo "<h3>".$values." "."</h3>";
+				 
 				  fwrite($output_file,"\n");
 			  }  
 			}
@@ -1202,216 +1254,22 @@ $first = false;
 			fputcsv($output_file,array('Alignment_ID', 'Base_Model','LOGL','BIC','weighted BIC'),"\t");
 			
 			$headers_printed = true;
-
-			
-			
-			
 			
 		
 			
 		}
 		// Write Results in Document 
-		//fwrite($output_file,"\n");
 		fputcsv($output_file,$list,"\t");
 		fpassthru($output_file);
+		// counter for testing activate if needed
 		$counter++;
 			
-			
-			
-			
-		
-		}
 
+		}
+		// for testing purposes if nr of hits =! number of download 
 		fwrite($output_file,"Nr of Hits:".$counter);
 			
-			
-			
-		
-		
-		
-		
-		
-				 
-				
-
-				
-				////////////////////
-				
-				 // Check if Statements 
-				 
-				 //echo ($f_d_query);
-			
-			/*
-				foreach($f_d_parameters as $f_d_list)
-				{
-					
-					echo '<br>' . $f_d_list;
-					//echo $AIC;
-					//echo $AICC;
-				}
-				
-				
-				*/
-				
-				
-				//echo $AIC;
-				
-				//echo $AICC;
-				
-				
-				
-				
-		
-		//work in progress
-		
-		
-		
-		
-		
-		
-		//$filter_query = $connect->query('SELECT * FROM `evonaps_try`.`dna_modelparameters` AS modelpara INNER JOIN `evonaps_try`.`dna_trees` AS tree ON (modelpara.`ALI_ID` = tree.`ALI_ID`)');
-		//$filter_query = $connect->query('SELECT * FROM `evonaps_try`.`dna_modelparameters` AS modelpara INNER JOIN `evonaps_try`.`dna_trees` AS tree');
-		//$filter_query = $connect->prepare('SELECT * FROM `evonaps_try`.`dna_modelparameters` AS modelpara INNER JOIN `evonaps_try`.`dna_trees` AS tree WHERE modelpara.`BASE_MODEL` = :modeld');
-		//$filter_query = $connect->prepare('SELECT * FROM `evonaps_try`.`dna_modelparameters` WHERE `BASE_MODEL` = :modeld');
-		
-		//////////////////////////////////////////works//////////////////////////////////////////////////////////////////////////////////////
-		
-		/*
-		$filter_query = $connect->prepare("SELECT * FROM `dna_modelparameters` INNER JOIN `dna_trees` ON (`dna_modelparameters`.`ALI_ID` = `dna_trees`.`ALI_ID` ) WHERE `dna_modelparameters`.`BASE_MODEL` = :modeld OR `dna_modelparameters`.`WEIGHTED_BIC` = :BIC");
-		$filter_query->execute(['modeld' => $modeld , 'BIC' => $BIC]);
-		$filter_query_result = $filter_query->fetchAll(PDO::FETCH_ASSOC);
-		
-		*/
-		/////////////////////////////////////////////////////Dynmaic Query/////////////////////////////////////////////////
-		//session_start();
-		//$filter_query = $connect->prepare($f_d_query);
-		//$filter_query->execute($f_d_parameters);
-		//session_start();
-		//$filter_query_result = $filter_query->fetchAll(PDO::FETCH_ASSOC);
-		//$filter_query_result_column = $filter_query->fetchAll(PDO::FETCH_COLUMN);
-		
-		//$filter_query_result_column_im = implode("\t",$filter_query_result_column);
-		
-		
-		//$filter_column_name = $filter_query_col->fetchAll(PDO::FETCH_COLUMN);
-		
-		
-		
-		
-		
-	
-		
-		
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		
-		
-		
-		
-		
-		
-		
-		///////////////Download me//////////////
-		
-		/*
-		
-		if(!$headers_printed)
-		{
-			$output .= join(',', array_keys($row)) ."\n";
-			$headers_printed = true;
-		}
-		
-		*/
-		
-		//////////////Old Download me ////////////////////////////////////
-		/*
-		header('Content-Type: text/csv; charset=utf-8');
-		header('Content-Disposition: attachment; filename=data.txt');
-		$output_file = fopen("php://output", "w"); 
-		
-		$headers_printed = True; 
-		$output = " ";
-		*/
-		
-
-		//////////////////////////////////////////////////////////////////
-		
-		
-		////////////////////// OutPut List /////////////////////////////
-		//$count = count($filter_query_result);
-		
-		
-		 /*
-		foreach ($filter_query_result as $list) {
-			
-			
-			
-			
-			///download me 
-			
-			if(!$headers_printed){
-				
-			$output = implode(" ", array_keys($list));
-			fputcsv($output_file, $output);
-			$headers_printed = true;
-		}
-		
-		//fputcsv($output_file,$list,"\t");
-		
-		
-			
-			
-			$hits ++;
-			
-			////////////////////// Check List/////////// output
-			
-		
-		echo "<br>" ;
-			
-		echo "<br> ". implode( "\t",$list);
-		echo "<br>";
-		
-	
-		// echo $list["ALI_ID"] . " " . $list["TIME_STAMP"] . " " . $list["MODEL_TYPE"] . " " . $list["MODEL"] . " " . $list["BASE_MODEL"] . " " . $list["BIC"];
-		echo "<br>";
-		
-		
-			//$connect = null;
-
-
-
-		
-			
-			
-		}
-		
-		*/
-		
-		
-		/* Check L8
-		echo " <br>";
-		echo " <br>";
-		 
-		 
-		echo '<a href="EvoNaps.php">Reset</a>';
-		
-		// echo "$modeld";
-		
-		echo " <br>";
-		
-		
-		*/ 
-		
-	
-		///////////////////////Output File Stuff/////////////////////
-		//fseek($output_file, 0);
-		//fpassthru($output_file);
-		
-		/////////////////////////////////////
-		
-		//$connect = null;
-		//echo "Anzahl der Hits prim. : ";
-		//echo $count;
+		//exception handlong
 		
 		}catch(PDOException $e) {
 				

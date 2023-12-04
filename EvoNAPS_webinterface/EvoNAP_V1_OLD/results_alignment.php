@@ -56,7 +56,7 @@
   <div class = "fix">
   <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
    
-   <a class="navbar-brand" href="index.php">
+   <a class="navbar-brand" href="indexx.php">
 	<img src="Logo_EvoNAPS_04.png" alt="Avatar Logo" style="width:350px;"> 
 	</a>
     <ul class="navbar-nav">
@@ -70,13 +70,13 @@
 	<ul class ="navbar-nav ms-auto">
 	
 	 <li class="nav-item">
-	 <a class="nav-link active" href="index.php"><h4>Home</h4></a>
+	 <a class="nav-link active" href="indexx.php"><h4>Home</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="index.php"><h4>Documentation</h4></a>
+	 <a class="nav-link active" href="indexx.php"><h4>Documentation</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="index.php"><h4>FAQ</h4></a>
+	 <a class="nav-link active" href="indexx.php"><h4>FAQ</h4></a>
 	 </li>
 	
 	</ul>

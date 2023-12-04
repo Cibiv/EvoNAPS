@@ -56,7 +56,7 @@
   <div class = "fix">
   <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
    
-   <a class="navbar-brand" href="index.php">
+   <a class="navbar-brand" href="indexx.php">
 	<img src="Logo_EvoNAPS_04.png" alt="Avatar Logo" style="width:350px;"> 
 	</a>
     <ul class="navbar-nav">
@@ -70,13 +70,13 @@
 	<ul class ="navbar-nav ms-auto">
 	
 	 <li class="nav-item">
-	 <a class="nav-link active" href="index.php"><h4>Home</h4></a>
+	 <a class="nav-link active" href="indexx.php"><h4>Home</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="index.php"><h4>Documentation</h4></a>
+	 <a class="nav-link active" href="indexx.php"><h4>Documentation</h4></a>
 	 </li>
 	 <li class="nav-item">
-	 <a class="nav-link active" href="index.php"><h4>FAQ</h4></a>
+	 <a class="nav-link active" href="indexx.php"><h4>FAQ</h4></a>
 	 </li>
 	
 	</ul>
@@ -87,20 +87,20 @@
       
 </nav>
 <?php
-
-
 	
-
-
-
-Include 'query_builder_alignment.php';
-
-echo '<div class ="center">';
-
-		//Download Button 
+	//////////Include DB connection with query result////////////////////
 		
 		
-		//Count 
+		Include 'query_builder_modelparameters.php';
+		Include "DB_credentials.php";
+		echo '<div class ="center">';
+		
+		
+		
+		
+		
+ ////////////////////////////////Filter Output //////////////////////////////
+
 		$filter_query = $connect->prepare($f_d_query);
 		$filter_query->execute($f_d_parameters);
 		//Preview
@@ -108,10 +108,10 @@ echo '<div class ="center">';
 		$filter_query_1->execute($f_d_parameters);
 		
 		$filter_query_result = $filter_query_1->fetchAll(PDO::FETCH_ASSOC);
-		$count = $filter_query -> fetchColumn();	
+		$count = $filter_query -> fetchColumn();
+		
 		
 			echo "<br>";
-			//echo "<hr>";
 			
 			echo "<h1> Number of hits in the database: ". " ". '<span class="badge bg-dark">'.$count.'</span>'.'</h1>';
 			
@@ -122,64 +122,53 @@ echo '<div class ="center">';
 			echo "<br>";
 
 	 echo "<hr>";
-
-   echo "<h3>Used search parameters: </h3>";
+	echo "<h3>Used search parameters: </h3>";
   
    echo "<br>";
-  foreach($_POST as $names => $values){
+  foreach($_SESSION as $names => $values){
 	  
 	  if(!empty($values)){
 	  echo "<h4>".$names.": "." ". " ".$values." "."</h4>";
-	  
-		//echo "<h4>".$values." "."</h4>";
+		//echo "<h3>".$values." "."</h3>";
 		//echo "<br>";
 	}  
 	 // echo "<br>".""."<hr>";
   }
 	echo "<br>";
 	echo "<hr>";
-
-	 
 	
-	echo '<h3> Download dataset:  <a href ="download_button.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected Data "> Download</a></h3> ';
+	
+	
+	echo '<h3> Download tree dataset:  <a href ="download_button_modelparameters.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected data of modelparameters! "> Download</a></h3> ';
 	echo "<br>";
-	echo '<h3>Refine your search: <a href ="alignment_refine.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with the search already filled in ">Refine </a> </h3> ';
-	echo "<br>";
-	echo '<h3><a href="alignment.php">Reset</a></h3>';
-
-	echo '<hr>';
-		echo "<br>" ;
-		echo "<h3> Preview of selected dataset (max 20 results): </h3>";
+	echo '<h3>Refine your search: <a href ="form_modelparameters_refine.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with search parameters already filled in ">Refine </a> </h3> ';
+	echo "<hr>";
+	
+	echo "<h3> Preview of selected dataset (max 20 results): </h3>";
 		foreach ($filter_query_result as $list) {		
+		echo "<br>" ;
+		
+		echo implode("\n", $list);
 		
 		echo "<br>";
-		
-		echo $list["SEQ_NAME"];
-		echo "<br>";
-		echo $list["SEQ"];
-			
-			
-		
-		}
-			
-			
-		
-			
-				
-			
-			
+	
+	
+	}
+	
+
 		
 		
 		// echo "$modeld";
 		
 		echo " <br>";
-			
 		echo' </div>';	
+			
+			
 		
 		
 		
 		
-		
+		//////////Footer////////////////////////
 		////////////////////////////////////////
 		
 			
@@ -191,20 +180,17 @@ echo '<div class ="center">';
 		
 		
 		$connect = null;
-		
-		
 
 
 
 ?>
-
 <script>
 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
   return new bootstrap.Popover(popoverTriggerEl)
 })
 </script>
-		 <section class="damn">
+<section class="damn">
   <!-- Footer -->
   <footer class="bg-secondary text-white text-center " >
     <!-- Grid container -->
@@ -233,4 +219,4 @@ var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
    
   </footer>
   <!-- Footer -->
-</section>	
+</section>

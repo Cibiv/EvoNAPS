@@ -52,24 +52,19 @@ include "DB_credentials.php";
 		
 
 		
+	+
 
 			//////////////////Setting Variables for source////////////
 	$Source = [];
 	if(isset($_SESSION['PANDIT'])){
 		$Pan = $_SESSION['PANDIT'];
 	}
-	if(isset($_SESSION['OrthoMaM_v10c'])){
-	$Ortho_v1 =$_SESSION['OrthoMaM_v10c'];
+	if(isset($_SESSION['OrthoMaM'])){
+	$Ortho =$_SESSION['OrthoMaM'];
 	}
-	if(isset($_SESSION['OrthoMaM_v12a'])){
-	$Ortho_v2 =$_SESSION['OrthoMaM_v12a'];
-		}
 	if(isset($_SESSION['Lanfear'])){
 	$Lanf =$_SESSION['Lanfear'];
 	}
-	if(isset($_SESSION['TreeBASE'])){
-	$TreeBASE =$_SESSION['TreeBASE'];
-		}
 	$ALL = $_SESSION['selectAll'];
 
 
@@ -83,19 +78,12 @@ include "DB_credentials.php";
 //////////////////////String Building Source ///////////////////////
 
 $stringsource = "";
-$stringall = "'PANDIT','Lanfear','TreeBASE', 'OrthoMaM_v10c', 'OrthoMaM_v12a'";
+$stringall = "'PANDIT','OrthoMaM','Lanfear'";
 
 if(!empty($Ortho)){
 			
-			$Source[] = $Ortho_v1;
+			$Source[] = $Ortho;
 		}
-
-
-if(!empty($Ortho)){
-			
-			$Source[] = $Ortho_v2;
-		}
-
 		
 		
 if(!empty($Pan)){
@@ -108,12 +96,6 @@ if(!empty($Lanf)){
 			$Source[] = $Lanf;
 			
 		}
-
-if(!empty($TreeBASE)){
-			
-			$Source[] = $TreeBASE;
-		}		
-
 
 //////////////Loop for String Source Building////////////////////////
 
@@ -188,7 +170,7 @@ $first = false;
 					//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`TAXA` >= ? ';
+							$f_d_conditions[] =  ' `dna_alignments`.`SEQUENCES` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 						
 						}
@@ -196,7 +178,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`TAXA` <= ? ';
+							$f_d_conditions[] =  ' `dna_alignments`.`SEQUENCES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -205,14 +187,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`SITES` >= ? ';
+							$f_d_conditions[] =  ' `dna_alignments`.`COLUMNS` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `dna_alignments`.`SITES` <= ? ';
+							$f_d_conditions[] =  ' `dna_alignments`.`COLUMNS` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -341,10 +323,10 @@ $first = false;
 							}
 							
 							//mean (max)
-						if(!empty($EBL_mean_max)){
+						if(!empty($EBL_mean_min)){
 							
 							$f_d_conditions[] =  ' `dna_trees`.`EBL_MEAN` <= ? ';
-							$f_d_parameters[] =  $EBL_mean_max;
+							$f_d_parameters[] =  $EBL_mean_min;
 							
 							}
 
@@ -380,7 +362,7 @@ $first = false;
 					//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`TAXA` >= ? ';
+							$f_d_conditions[] =  ' `aa_alignments`.`SEQUENCES` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 						
 						}
@@ -388,7 +370,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`TAXA` <= ? ';
+							$f_d_conditions[] =  ' `aa_alignments`.`SEQUENCES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -397,14 +379,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`SITES` >= ? ';
+							$f_d_conditions[] =  ' `aa_alignments`.`COLUMNS` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `aa_alignments`.`SITES` <= ? ';
+							$f_d_conditions[] =  ' `aa_alignments`.`COLUMNS` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
