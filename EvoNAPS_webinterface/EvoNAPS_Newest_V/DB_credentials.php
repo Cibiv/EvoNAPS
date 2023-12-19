@@ -1,17 +1,18 @@
 <?php
 /*
-	Before uploading change here to make it work on Sanger server
-		$hostname = xxxxx;
-		$dbname= xxxxx;
-		$username=xxxxx;
-		$password=xxxxx;
+		$hostname = 'localhost';
+		$dbname= 'try5';
+		$username='root';
+		$password='';
 		$dsn= "mysql:host=$hostname;dbname=$dbname";
+
 		
 		*/ 
 		
 		// For testing purposes this credentials are going to be deleted
+		
 		$hostname = 'localhost';
-		$dbname= 'try4';
+		$dbname= 'try5';
 		$username='root';
 		$password='';
 		$dsn= "mysql:host=$hostname;dbname=$dbname";
