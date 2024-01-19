@@ -139,11 +139,11 @@
 		  <div class="row g-3 align-items-center">
 		<div class = "Radio_DNA_Prot">
           <input type="radio" name="datatype" onclick = "show(0)" id="DNA_Radio" value="dna" checked>
-		    <label for = "DNA_Radio"> <h2>  DNA </h2></label>
+		    <label for = "DNA_Radio" id = "lb_DNA"> <h2>  DNA </h2></label>
        
 	   
 		  <input type="radio" name="datatype" onclick = "show(1)" id="Prot_Radio" value="aa">
-		    <label for = "Prot_Radio"> <h2>Proteins</h2> </label>
+		    <label for = "Prot_Radio" id = "lb_Prot"> <h2>Proteins</h2> </label>
 			
 			</div>
 			</div>
@@ -153,7 +153,7 @@
 		
 		
 		<br>
-		<label for = "Matrices_D" id = "Matrices_DNA_L" >  <h3>Matrices for DNA </h3></label>
+		<label for = "Matrices_DNA" id = "Matrices_DNA_L" >  <h3>Matrices for DNA </h3></label>
 		 <select name="DNA_model" id="Matrices_DNA">		 
 			<option value=""></option>
             <option value="JC">JC</option>
@@ -186,7 +186,7 @@
 			 <br>
 			 <div class = "Choose_Matrices_Prot">	
 		
-		<label for = "Matrices_P" id = "Matrices_Prot_L"> <h3>Matrices for proteins</h3></label> 
+		<label for = "Matrices_Prot" id = "Matrices_Prot_L" style= "visibility:hidden"> <h3>Matrices for proteins</h3></label> 
 		 <select name="Protein_model" id="Matrices_Prot" > 
 			<option value=""></option>
             <option value="cpREV">cpREV</option>
@@ -220,8 +220,8 @@
 			</select>
 			
 			
-			<input type="checkbox" name="+F" id="Matrices_+F" value="checked" sytle= "display:none">
-				<label class="btn btn-outline-dark-lg" for="Matrices_+F"> <h4>+F</h4> </label>
+			<input type="checkbox" name="+F" id="Matrices_+F" value="checked" style= "visibility:hidden">
+				<label class="btn btn-outline-dark-lg" for="Matrices_+F" id = "lb_Matrices_+F" style= "visibility:hidden"> <h4>+F</h4> </label>
 			
 			 </div>
 			 
@@ -479,7 +479,7 @@
 	  
 	  <section class="damn">
   <!-- Footer -->
-  <footer class="bg-secondary text-white text-center fixed-bottom" >
+  <footer class="bg-secondary text-white text-center" >
     <!-- Grid container -->
     <div class="container p-3">
       <!--Grid row-->

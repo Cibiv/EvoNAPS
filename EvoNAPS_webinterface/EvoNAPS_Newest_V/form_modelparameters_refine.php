@@ -335,7 +335,7 @@
 		<br>
 		
 		 <section class="Alignment_Specs">
-		<div class = "Alignment_Specs" id = "Ali_Specs" <?php if(isset($_SESSION['alignment_features'])){ echo "style = display : block";}else { echo "style = display : none";}?>>
+		<div class = "Alignment_Specs" id = "Ali_Specs" <?php if(isset($_SESSION['alignment_features'])){ echo 'style= "display:block"'; }else{ echo 'style= "display:none"';}?>>
           
 		  <label for="Nr_Seq"><h4>min number of sequences</h4></label> 
           <input type="number" name="number_of_sequences" id="Nr_Seq" step = "any" value = <?php echo $_SESSION['number_of_sequences']; ?>> <br>
@@ -402,7 +402,7 @@
 		  
 		  
 		  <section class="Tree_Specs">
-		<div class = "Tree_Specs" id = "Tree_Specs" <?php if(isset($_SESSION['tree_features'])){ echo "style = display : block"; }else { echo "style = display : none";} ?>>
+		<div class = "Tree_Specs" id = "Tree_Specs" <?php if(isset($_SESSION['tree_features'])){ echo 'style= "display:block"'; }else{ echo 'style= "display:none"';} ?>>
          
 		  <label for="tree_len"><h4>tree length: min </h4></label> 
           <input type="number" name="tree_length" id="tree_len" step = "any" <?php if(!empty($_SESSION['tree_length'])){ echo "value =".$_SESSION['tree_length'];} ?>> 

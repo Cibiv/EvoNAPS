@@ -771,7 +771,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -779,7 +779,7 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
@@ -933,7 +933,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -941,7 +941,7 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
@@ -1148,7 +1148,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -1156,7 +1156,7 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
@@ -1330,7 +1330,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -1338,7 +1338,7 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}

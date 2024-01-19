@@ -251,7 +251,7 @@
 		  <br>	
 		   <section class="damn">
   <!-- Footer -->
-  <footer class="bg-secondary text-white text-center fixed-bottom" >
+  <footer class="bg-secondary text-white text-centerEvoNAPS_Newest_V" >
     <!-- Grid container -->
     <div class="container p-3">
       <!--Grid row-->

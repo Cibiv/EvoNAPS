@@ -19,8 +19,13 @@ function show(x) {
 		
 		
 		document.getElementById('Matrices_DNA').style.visibility='visible';
+		document.getElementById('Matrices_DNA_L').style.visibility='visible';
+		
 		document.getElementById('Matrices_Prot').style.visibility='hidden';
+		document.getElementById('Matrices_Prot_L').style.visibility='hidden';
 		document.getElementById('Matrices_+F').style.visibility='hidden';
+		document.getElementById('lb_Matrices_+F').style.visibility='hidden';
+		
 		
 		
 		return;
@@ -37,9 +42,13 @@ function show(x) {
 		
 		*/
 		///////////////////////////Works///
-		document.getElementById('Matrices_Prot').style.visibility='visible';
 		document.getElementById('Matrices_DNA').style.visibility='hidden';
+		document.getElementById('Matrices_DNA_L').style.visibility='hidden';
+		
+		document.getElementById('Matrices_Prot').style.visibility='visible';
+		document.getElementById('Matrices_Prot_L').style.visibility='visible';
 		document.getElementById('Matrices_+F').style.visibility='visible';
+		document.getElementById('lb_Matrices_+F').style.visibility='visible';
 		
 		
 		
@@ -112,11 +121,13 @@ function checkkall(){
  cb3= document.getElementById('OrthoMaM_v12a');
  cb4= document.getElementById('all');
  cb5= document.getElementById('OrthoMaM_v10c');
+ cb6= document.getElementById('Treebase');
 if(cb4.checked == true){
 	document.getElementById('PANDIT').checked = false;
 	document.getElementById('Lanfear').checked = false;
-	document.getElementById('OrthoMaM_v10c');
-	document.getElementById('OrthoMaM_v12a');
+	document.getElementById('OrthoMaM_v10c').checked =false;
+	document.getElementById('OrthoMaM_v12a').checked = false;
+	document.getElementById('Treebase').checked = false;
 }
 if(cb1.checked == true){
 	cb4.checked = false;
@@ -131,6 +142,11 @@ if(cb3.checked == true){
 
 }
 if(cb5.checked == true){
+	cb4.checked = false;
+
+}
+
+if(cb6.checked == true){
 	cb4.checked = false;
 
 }

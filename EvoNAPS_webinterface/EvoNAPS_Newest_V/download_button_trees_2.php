@@ -85,13 +85,13 @@ include "DB_credentials.php";
 $stringsource = "";
 $stringall = "'PANDIT','Lanfear','TreeBASE', 'OrthoMaM_v10c', 'OrthoMaM_v12a'";
 
-if(!empty($Ortho)){
+if(!empty($Ortho_v1)){
 			
 			$Source[] = $Ortho_v1;
 		}
 
 
-if(!empty($Ortho)){
+if(!empty($Ortho_v2)){
 			
 			$Source[] = $Ortho_v2;
 		}
@@ -533,10 +533,10 @@ $first = false;
 							}
 							
 							//mean (max)
-						if(!empty($EBL_mean_min)){
+						if(!empty($EBL_mean_max)){
 							
 							$f_d_conditions[] =  ' `aa_trees`.`EBL_MEAN` <= ? ';
-							$f_d_parameters[] =  $EBL_mean_min;
+							$f_d_parameters[] =  $EBL_mean_max;
 							
 							}	
 							

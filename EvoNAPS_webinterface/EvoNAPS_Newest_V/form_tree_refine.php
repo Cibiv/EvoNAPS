@@ -91,18 +91,19 @@
 			
 			<hr>
 			<h4> allignment source </h4><br>
-			<label for = "all"> <h4> all </h4> </label> 
-		  <input type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" <?php if(isset($_SESSION['selectAll'])){ echo "checked"; }?>onchange = "checkkall()">
+		  <input class ="cb" type="checkbox" name="selectAll"  id="all" onclick = "selectall(this)" value="checked" onchange = "checkkall()"<?php if(isset($_SESSION['selectAll'])){ echo "checked"; }?>>
+		  <label for = "all"> <h4> all </h4> </label> 
+		  <input class ="cb" type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" onchange = "checkkall()" <?php if(isset($_SESSION['PANDIT'])){ echo "checked"; }?>>
 		  <label for = "PANDIT"> <h4> PANDIT </h4> </label>
-		  <input type="checkbox" name="PANDIT"  id="PANDIT"  value="PANDIT" <?php if(isset($_SESSION['PANDIT'])){ echo "checked"; }?>onchange = "checkkall()">
-		   <label for = "Lanfear"> <h4> Lanfear </h4> </label> 
-		  <input type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" <?php if(isset($_SESSION['Lanfear'])){ echo "checked"; }?>onchange = "checkkall()">
-		 <label for = "OrthoMaM_v10c"> <h4> OrthoMaM_v10c </h4> </label>
-		  <input type="checkbox" name="OrthoMaM_v10c"  id="OrthoMaM_v10c"  value="OrthoMaM_v10c" <?php if(isset($_SESSION['OrthoMaM_v10c'])){ echo "checked"; }?>onchange = "checkkall()">
+		  <input class ="cb" type="checkbox" name="Lanfear"  id="Lanfear"  value="Lanfear" onchange = "checkkall()" <?php if(isset($_SESSION['Lanfear'])){ echo "checked"; }?>>
+		  <label for = "Lanfear"> <h4> Lanfear </h4> </label> 
+		  <input class ="cb" type="checkbox" name="OrthoMaM_v10c"  id="OrthoMaM_v10c"  value="OrthoMaM_v10c" onchange = "checkkall()" <?php if(isset($_SESSION['OrthoMaM_v10c'])){ echo "checked"; }?>>
+		  <label for = "OrthoMaM_v10c"> <h4> OrthoMaM_v10c </h4> </label>
+		  <input class ="cb" type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" onchange = "checkkall()" <?php if(isset($_SESSION['OrthoMaM_v12a'])){ echo "checked"; }?>>
 		  <label for = "OrthoMaM_v12a"> <h4> OrthoMaM_v12a </h4> </label>
-		  <input type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" <?php if(isset($_SESSION['OrthoMaM_v12a'])){ echo "checked"; }?>onchange = "checkkall()">
-		  <label for = "Treebase"> <h4>TreeBASE</h4> </label> >
-		  <input class ="cb" type="checkbox" name="Treebase"  id="Treebase"  value="TreeBASE" <?php if(isset($_SESSION['TreeBASE'])){ echo "checked"; }?> onchange = "checkkall()">
+		  <input class ="cb" type="checkbox" name="Treebase"  id="Treebase"  value="TreeBASE" onchange = "checkkall()" <?php if(isset($_SESSION['TreeBASE'])){ echo "checked"; }?>>
+		  <label for = "Treebase"> <h4>TreeBASE</h4> </label> 
+		  
 		 
 			<hr>
 		  
@@ -112,7 +113,7 @@
 		
 		
 		<div class = "Trees_Specs_Check" >
-		 <input type="checkbox" name="tree_features" id="Trees_Specs_Check" onclick = "show4()" value="Checked"<?php if(isset($_SESSION['tree_features'])){ echo "checked"; }?>>
+		 <input type="checkbox" name="tree_features" id="Trees_Specs_Check" onclick = "show4()" value="TRUE"<?php if(isset($_SESSION['tree_features'])){ echo "checked"; }?>>
           <label for="Trees_Specs_Check"><h3>tree features </h3> </label> <hr>
 		  </div>
 		</section>
@@ -195,7 +196,7 @@
 		  <section class="Alignment_Specs_Check">	
 
 		<div class = "Alignment_Specs_Check" >
-		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="Checked"<?php if(isset($_SESSION['alignment_features'])){ echo "checked"; }?>>
+		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="TRUE"<?php if(isset($_SESSION['alignment_features'])){ echo "checked"; }?>>
           <label for="Alignment_Specs_Check"><h3>alignment features </h3> </label> <hr>
 		  </div>
 		  
@@ -203,7 +204,7 @@
 		  
 		  
 		  <section class="Ali_Specs ">
-		<div class = "Alignment_Specs" id = "Ali_Specs"<?php if(isset($_SESSION['alignment_features'])){ echo "style = display : block";}else { echo "style = display : none";}?>>
+		<div class = "Alignment_Specs" id = "Ali_Specs"<?php if(isset($_SESSION['alignment_features'])){ echo 'style = "display : block"';}else { echo 'style = "display : none"';}?>>
           
 		  
 		  <label for="Nr_Seq"><h4>number of sequences:</h4></label> 
@@ -251,7 +252,7 @@
 		<br>
 		 <section class="damn">
   <!-- Footer -->
-  <footer class="bg-secondary text-white text-center fixed-bottom" >
+  <footer class="bg-secondary text-white text-center " >
     <!-- Grid container -->
     <div class="container p-3">
       <!--Grid row-->

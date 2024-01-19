@@ -2,6 +2,7 @@
 
 //start session here in order to catch variables
 session_start();
+ini_set('memory_limit','-1');
 include "DB_credentials.php";
 
 // initialize variables for the filter
@@ -600,6 +601,7 @@ $first = false;
 		$filter_query = $connect->prepare($f_d_query);
 		$filter_query->execute($f_d_parameters);
 
+		//echo $f_d_query;
 			//fetch data
 		$filter_query_result = $filter_query->fetchAll(PDO::FETCH_ASSOC);
 		

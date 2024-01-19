@@ -141,9 +141,9 @@ echo '<div class ="center">';
 
 	 
 	
-	echo '<h3> Download dataset:  <a href ="download_button.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected Data "> Download</a></h3> ';
+	echo '<h3> Download dataset:  <a href ="download_button_alignment.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected Data "> Download</a></h3> ';
 	echo "<br>";
-	echo '<h3>Refine your search: <a href ="alignment_refine.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with the search already filled in ">Refine </a> </h3> ';
+	echo '<h3>Refine your search: <a href ="form_alignment_refine.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with the search already filled in ">Refine </a> </h3> ';
 	echo "<br>";
 	echo '<h3><a href="alignment.php">Reset</a></h3>';
 
@@ -154,7 +154,7 @@ echo '<div class ="center">';
 		
 		echo "<br>";
 		
-		echo $list["SEQ_NAME"];
+		echo ">".$list["SEQ_NAME"];
 		echo "<br>";
 		echo $list["SEQ"];
 			

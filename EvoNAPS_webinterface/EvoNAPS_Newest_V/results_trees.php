@@ -29,7 +29,7 @@
 <style>
 	 
 	 .center {
-		 margin-left: 180px;
+		 margin-left: 130px;
     margin-right: 180px;
 		margin-top: 30px;
 		margin-bottom: 80px;
@@ -150,6 +150,8 @@ echo '<div class ="center">';
 	echo "<hr>";
 	
 	echo "<h3> Preview of selected dataset (max 20 results): </h3>";
+
+	/* old
 		foreach ($filter_query_result as $list) {		
 		echo "<br>" ;
 		
@@ -159,6 +161,260 @@ echo '<div class ="center">';
 	
 	
 	}
+	*/ 
+	//new
+	echo '<table class="table table-striped table-sm">
+			<thead>
+			  <tr>
+			  	<th scope="col">Ali ID</th>
+				<th scope="col">TAXA</th>
+				<th scope="col">SITES</th>
+				<th scope="col">DISTINCT_PATTERNS</th>
+				<th scope="col">PARSIMONY_SITES</th>
+				<th scope="col">FRAC_WILDCARDS_GAPS</th>
+				<th scope="col">MODEL</th>
+				<th scope="col">BASE_MODEL</th>
+				<th scope="col">RHAS</th>
+				<th scope="col">LOGL</th>
+				 </tr>';
+		
+			  echo '</thead>';
+			echo '<tbody>';
+			foreach ($filter_query_result as $y){
+				 
+				echo '<tr>'; 
+				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<td>'.$y["TAXA"].'</th>';
+				echo '<td>'.$y["SITES"].'</th>';
+				echo '<td>'.$y["DISTINCT_PATTERNS"].'</th>';
+				echo '<td>'.$y["PARSIMONY_INFORMATIVE_SITES"].'</th>';
+				echo '<td>'.$y["FRAC_WILDCARDS_GAPS"].'</th>';
+				echo '<td>'.$y["MODEL"].'</th>';
+				echo '<td>'.$y["BASE_MODEL"].'</th>';
+				echo '<td>'.$y["RHAS_MODEL"].'</th>';
+				echo '<td>'.$y["LOGL"].'</th>';
+				echo '</tr>';
+				
+			}
+			
+			echo '</tbody>
+				</table>';
+
+
+				echo '<table class="table table-striped table-sm">
+			<thead>
+			  <tr>';
+			 if($DNA_Prot == "dna"){
+			  	echo '<th scope="col">Ali ID</th>
+				<th scope="col">FREQ_A</th>
+				<th scope="col">FREQ_C</th>
+				<th scope="col">FREQ_G</th>
+				<th scope="col">FREQ_T</th>
+				<th scope="col">RATE_AC</th>
+				<th scope="col">RATE_AG</th>
+				<th scope="col">RATE_AT</th>
+				<th scope="col">RATE_CG</th>
+				<th scope="col">RATE_CT</th>
+				<th scope="col">RATE_GT</th>';
+			 }else{
+				echo '<th scope="col">Ali ID</th>
+				<th scope="col">FREQ_A</th>
+				<th scope="col">FREQ_D</th>
+				<th scope="col">FREQ_E</th>
+				<th scope="col">FREQ_T</th>
+				<th scope="col">FREQ_I</th>
+				<th scope="col">FREQ_M</th>
+				<th scope="col">FREQ_S</th>
+				<th scope="col">FREQ_Y</th>
+				<th scope="col">FREQ_R</th>
+				<th scope="col">FREQ_C</th>
+				<th scope="col">FREQ_G</th>
+				<th scope="col">FREQ_L</th>
+				<th scope="col">FREQ_F</th>
+				<th scope="col">FREQ_T</th>
+				<th scope="col">FREQ_V</th>
+				<th scope="col">FREQ_N</th>
+				<th scope="col">FREQ_Q</th>
+				<th scope="col">FREQ_H</th>
+				<th scope="col">FREQ_K</th>
+				<th scope="col">FREQ_P</th>
+				<th scope="col">FREQ_W</th>';
+			 }
+			 echo '<th scope="col">ALPHA</th>
+			 <th scope="col">PROP_INVAR</th>';
+				
+			 echo' </tr>';
+		
+			  echo '</thead>';
+			echo '<tbody>';
+
+			if($DNA_Prot == "dna"){ 
+			foreach ($filter_query_result as $y){
+				 
+				echo '<tr>'; 
+				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<td>'.$y["FREQ_A"].'</th>';
+				echo '<td>'.$y["FREQ_C"].'</th>';
+				echo '<td>'.$y["FREQ_G"].'</th>';
+				echo '<td>'.$y["FREQ_T"].'</th>';
+				echo '<td>'.$y["RATE_AC"].'</th>';
+				echo '<td>'.$y["RATE_AG"].'</th>';
+				echo '<td>'.$y["RATE_AT"].'</th>';
+				echo '<td>'.$y["RATE_CG"].'</th>';
+				echo '<td>'.$y["RATE_CT"].'</th>';
+				echo '<td>'.$y["RATE_GT"].'</th>';
+				echo '<td>'.$y["ALPHA"].'</th>';
+				echo '<td>'.$y["PROP_INVAR"].'</th>';
+				echo '</tr>';
+				
+			}
+		}else{
+			foreach ($filter_query_result as $y){
+				 
+				echo '<tr>'; 
+				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<td>'.$y["FREQ_A"].'</th>';
+				echo '<td>'.$y["FREQ_D"].'</th>';
+				echo '<td>'.$y["FREQ_E"].'</th>';
+				echo '<td>'.$y["FREQ_T"].'</th>';
+				echo '<td>'.$y["FREQ_I"].'</th>';
+				echo '<td>'.$y["FREQ_M"].'</th>';
+				echo '<td>'.$y["FREQ_S"].'</th>';
+				echo '<td>'.$y["FREQ_Y"].'</th>';
+				echo '<td>'.$y["FREQ_R"].'</th>';
+				echo '<td>'.$y["FREQ_C"].'</th>';
+				echo '<td>'.$y["FREQ_G"].'</th>';
+				echo '<td>'.$y["FREQ_L"].'</th>';
+				echo '<td>'.$y["FREQ_F"].'</th>';
+				echo '<td>'.$y["FREQ_T"].'</th>';
+				echo '<td>'.$y["FREQ_V"].'</th>';
+				echo '<td>'.$y["FREQ_N"].'</th>';
+				echo '<td>'.$y["FREQ_Q"].'</th>';
+				echo '<td>'.$y["FREQ_H"].'</th>';
+				echo '<td>'.$y["FREQ_K"].'</th>';
+				echo '<td>'.$y["FREQ_P"].'</th>';
+				echo '<td>'.$y["FREQ_W"].'</th>';
+				echo '<td>'.$y["ALPHA"].'</th>';
+				echo '<td>'.$y["PROP_INVAR"].'</th>';
+				echo '</tr>';
+
+			}
+		}
+			
+			echo '</tbody>
+				</table>';
+
+				echo '<table class="table table-striped table-sm">
+			<thead>
+			  <tr>
+			  	<th scope="col">Ali ID</th>
+				<th scope="col">RATE_CAT_1</th>
+				<th scope="col">PROP_CAT_1</th>
+				<th scope="col">RATE_CAT_2</th>
+				<th scope="col">PROP_CAT_2</th>
+				<th scope="col">RATE_CAT_3</th>
+				<th scope="col">PROP_CAT_3</th>
+				<th scope="col">RATE_CAT_4</th>
+				<th scope="col">PROP_CAT_4</th>
+				<th scope="col">RATE_CAT_5</th>
+				<th scope="col">PROP_CAT_5</th>
+				
+			  </tr>';
+		
+			  echo '</thead>';
+			echo '<tbody>';
+			foreach ($filter_query_result as $y){
+				 
+				echo '<tr>'; 
+				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<td>'.$y["RATE_CAT_1"].'</th>';
+				echo '<td>'.$y["PROP_CAT_1"].'</th>';
+				echo '<td>'.$y["RATE_CAT_2"].'</th>';
+				echo '<td>'.$y["PROP_CAT_2"].'</th>';
+				echo '<td>'.$y["RATE_CAT_3"].'</th>';
+				echo '<td>'.$y["PROP_CAT_3"].'</th>';
+				echo '<td>'.$y["RATE_CAT_4"].'</th>';
+				echo '<td>'.$y["PROP_CAT_4"].'</th>';
+				echo '<td>'.$y["RATE_CAT_5"].'</th>';
+				echo '<td>'.$y["PROP_CAT_5"].'</th>';
+				echo '</tr>';
+				
+			}
+			
+			echo '</tbody>
+				</table>';
+
+				
+				echo '<table class="table table-striped table-sm">
+			<thead>
+			  <tr>
+			  	<th scope="col">Ali ID</th>
+				  <th scope="col">RATE_CAT_6</th>
+				  <th scope="col">PROP_CAT_6</th>
+				  <th scope="col">RATE_CAT_7</th>
+				  <th scope="col">PROP_CAT_7</th>
+				  <th scope="col">RATE_CAT_8</th>
+				  <th scope="col">PROP_CAT_8</th>
+				  <th scope="col">RATE_CAT_9</th>
+				  <th scope="col">PROP_CAT_9</th>
+				  <th scope="col">RATE_CAT_10</th>
+				  <th scope="col">PROP_CAT_10</th>
+				
+			  </tr>';
+		
+			  echo '</thead>';
+			echo '<tbody>';
+			foreach ($filter_query_result as $y){
+				 
+				echo '<tr>'; 
+				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<td>'.$y["RATE_CAT_6"].'</th>';
+				echo '<td>'.$y["PROP_CAT_6"].'</th>';
+				echo '<td>'.$y["RATE_CAT_7"].'</th>';
+				echo '<td>'.$y["PROP_CAT_7"].'</th>';
+				echo '<td>'.$y["RATE_CAT_8"].'</th>';
+				echo '<td>'.$y["PROP_CAT_8"].'</th>';
+				echo '<td>'.$y["RATE_CAT_9"].'</th>';
+				echo '<td>'.$y["PROP_CAT_9"].'</th>';
+				echo '<td>'.$y["RATE_CAT_10"].'</th>';
+				echo '<td>'.$y["PROP_CAT_10"].'</th>';
+				echo '</tr>';
+				
+			}
+			
+			echo '</tbody>
+				</table>';
+
+				echo '<table class="table table-striped table-sm">
+			<thead>
+			  <tr>
+			  	<th scope="col">Ali ID</th>
+				  <th scope="col">BL_MAX</th>
+				  <th scope="col">BL_MEAN</th>
+				  <th scope="col">IBL_MAX</th>
+				  <th scope="col">IBL_MEAN</th>
+				  <th scope="col">EBL_MAX</th>
+				  <th scope="col">EBL_MEAN</th>
+			  </tr>';
+		
+			  echo '</thead>';
+			echo '<tbody>';
+			foreach ($filter_query_result as $y){
+				 
+				echo '<tr>'; 
+				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<td>'.$y["BL_MAX"].'</th>';
+				echo '<td>'.$y["BL_MEAN"].'</th>';
+				echo '<td>'.$y["IBL_MAX"].'</th>';
+				echo '<td>'.$y["IBL_MEAN"].'</th>';
+				echo '<td>'.$y["EBL_MAX"].'</th>';
+				echo '<td>'.$y["EBL_MEAN"].'</th>';
+				echo '</tr>';
+				
+			}
+			
+			echo '</tbody>
+				</table>';
 	
 
 		

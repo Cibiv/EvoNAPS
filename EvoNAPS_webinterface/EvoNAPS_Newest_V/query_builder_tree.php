@@ -20,13 +20,13 @@ $stringall = "'PANDIT','Lanfear','TreeBASE', 'OrthoMaM_v10c', 'OrthoMaM_v12a'";
 
 if(!empty($Ortho_v1)){
 			
-			$Source[] = $OrthoM_v1;
+			$Source[] = $Ortho_v1;
 		}
 
 
 if(!empty($Ortho_v2)){
 			
-			$Source[] = $OrthoM_v2;
+			$Source[] = $Ortho_v2;
 		}
 
 
@@ -194,7 +194,7 @@ $first = false;
 					//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `ali`.`SEQUENCES` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`Taxa` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 						
 						}
@@ -202,7 +202,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `ali`.`SEQUENCES` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`Taxa` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -211,14 +211,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `ali`.`COLUMNS` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`Sites` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `ali`.`COLUMNS` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`Sites` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -348,10 +348,10 @@ $first = false;
 							}
 							
 							//mean (max)
-						if(!empty($EBL_mean_min)){
+						if(!empty($EBL_mean_max)){
 							
 							$f_d_conditions[] =  ' `tree`.`EBL_MEAN` <= ? ';
-							$f_d_parameters[] =  $EBL_mean_min;
+							$f_d_parameters[] =  $EBL_mean_max;
 							
 							}
 
@@ -392,7 +392,7 @@ $first = false;
 					//Min
 						if(!empty($Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `ali`.`SEQUENCES` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` >= ? ';
 							$f_d_parameters[] =  $Nr_Seq;
 						
 						}
@@ -400,7 +400,7 @@ $first = false;
 						//Max
 						if(!empty($Max_Nr_Seq)){
 							
-							$f_d_conditions[] =  ' `ali`.`SEQUENCES` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`TAXA` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_Seq;
 							
 						}
@@ -409,14 +409,14 @@ $first = false;
 						//Min	
 						if(!empty($Nr_sites)){
 							
-							$f_d_conditions[] =  ' `ali`.`COLUMNS` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` >= ? ';
 							$f_d_parameters[] =  $Nr_sites;
 							
 						}
 						//Max
 						if(!empty($Max_Nr_sites)){
 							
-							$f_d_conditions[] =  ' `ali`.`COLUMNS` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`SITES` <= ? ';
 							$f_d_parameters[] =  $Max_Nr_sites;
 							
 						}
@@ -575,7 +575,7 @@ $first = false;
 			}
 
 
-			echo $f_d_query;
+			//echo $f_d_query;
 			 
 			 
 			

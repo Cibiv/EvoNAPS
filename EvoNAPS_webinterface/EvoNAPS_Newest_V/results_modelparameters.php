@@ -28,7 +28,7 @@
 <style>
 	 
 	 .center {
-		 margin-left: 180px;
+		 margin-left: 130px;
     margin-right: 180px;
 		margin-top: 30px;
 		margin-bottom: 80px;

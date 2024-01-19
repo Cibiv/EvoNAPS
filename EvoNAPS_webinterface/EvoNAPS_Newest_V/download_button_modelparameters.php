@@ -349,7 +349,7 @@ $first = false;
 			
 					$select = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
 				`ali`.PARSIMONY_INFORMATIVE_SITES, `ali`.FRAC_WILDCARDS_GAPS, `ali`.DIST_MEAN,
-				`tree`.MODEL, `tree`.BASE_MODEL, `tree`.RHAS_MODEL, ROUND(`tree`.LOGL,4) AS LOGL,ROUND(`tree`.TREE_LENGTH,5) AS Tree_L, ROUND(`tree`.TREE_DIAMETER,5) AS Tree_D,
+				`tree`.MODEL, `tree`.BASE_MODEL, `tree`.RHAS_MODEL, ROUND(`tree`.LOGL,4) AS LOGL, ROUND(`tree`.TREE_LENGTH,5) AS Tree_L, ROUND(`tree`.TREE_DIAMETER,5) AS Tree_D,
 				ROUND(`tree`.FREQ_A,4) AS FREQ_A, ROUND(`tree`.FREQ_C,4) AS FREQ_C, ROUND(`tree`.FREQ_G,4) AS FREQ_G, ROUND(`tree`.FREQ_T,4) AS FREQ_T,
 				ROUND(`tree`.RATE_AC,4) AS RATE_AC, ROUND(`tree`.RATE_AG,4) AS RATE_AG, ROUND(`tree`.RATE_AT,4) AS RATE_AT, 
 				ROUND(`tree`.RATE_CG,4) AS RATE_CG, ROUND(`tree`.RATE_CT,4) AS RATE_CT, ROUND(`tree`.RATE_GT,4) AS RATE_GT,
@@ -618,7 +618,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -626,7 +626,7 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
@@ -771,7 +771,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -779,7 +779,7 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
@@ -973,7 +973,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -981,7 +981,7 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
@@ -1107,7 +1107,7 @@ $first = false;
 						if(!empty($mean_dis)){
 							
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` >= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` >= ? ';
 							$f_d_parameters[] =  $mean_dis;
 							
 								
@@ -1115,7 +1115,7 @@ $first = false;
 						//Max
 						if(!empty($Max_mean_dis)){
 							
-							$f_d_conditions[] =  ' `tree`.`DIST_MEAN` <= ? ';
+							$f_d_conditions[] =  ' `ali`.`DIST_MEAN` <= ? ';
 							$f_d_parameters[] =  $Max_mean_dis;
 							
 						}
