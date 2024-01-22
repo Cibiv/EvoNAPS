@@ -117,8 +117,8 @@
 		
 		<br>
 		<br>
-		<label for = "Matrices_D" id = "Matrices_DNA_L" >  <h3>Matrices for DNA </h3></label>
-		 <select name="DNA_model" id="Matrices_DNA" <?php if($_SESSION['DNA_Prot']== "dna"){ echo "style = visibility : visible";}?> >		 
+		<label for = "Matrices_D" id = "Matrices_DNA_L" <?php if($_SESSION['datatype']== "dna"){ echo "style = visibility : visible";}else{echo 'style = "visibility:hidden" ';}?>>  <h3>Matrices for DNA </h3></label>
+		 <select name="DNA_model" id="Matrices_DNA" <?php if($_SESSION['datatype']== "dna"){ echo "style = visibility : visible";}else{echo 'style = "visibility:hidden " ';}?> >		 
 			<option value=""></option>
             <option value="JC" <?php if($_SESSION['DNA_model']=="JC"){ echo "selected";} ?>>JC</option>
             <option value="K2P"<?php if($_SESSION['DNA_model']=="K2P"){ echo "selected";} ?>>K2P</option>
@@ -150,8 +150,8 @@
 			 <br>
 			 <div class = "Choose_Matrices_Prot">	
 		
-		<label for = "Matrices_P" id = "Matrices_Prot_L"> <h3>Matrices for proteins</h3></label>
-		 <select name="Protein_model" id="Matrices_Prot"  <?php if($_SESSION['DNA_Prot']== "aa"){ echo "style = visibility : visible";}?>>
+		<label for = "Matrices_P" id = "Matrices_Prot_L"<?php if($_SESSION['datatype']== "aa"){ echo "style = visibility : visible";}else{echo 'style = "visibility:hidden " ';}?>> <h3>Matrices for proteins</h3></label>
+		 <select name="Protein_model" id="Matrices_Prot"  <?php if($_SESSION['datatype']== "aa"){ echo "style = visibility : visible";}else{echo 'style = "visibility:hidden " ';}?>?>>
 			<option value=""></option>
             <option  value="Blosum62"<?php if($_SESSION['Protein_model']=="Blosum62"){ echo "selected";} ?>>Blosum62</option>
             <option value="cpREV"<?php if($_SESSION['Protein_model']=="cpREV"){ echo "selected";} ?>>cpREV</option>
@@ -184,8 +184,8 @@
 			
 			</select>
 			
-			<input type="checkbox" name="+F" id="Matrices_+F" value="checked"<?php if(isset($_SESSION['+F'])){ echo "checked"; }?>>
-				<label class="btn btn-outline-dark-lg" for="Matrices_+F"> <h4>+F</h4> </label>
+			<input type="checkbox" name="+F" id="Matrices_+F" value="checked"<?php if(isset($_SESSION['+F'])){ echo 'style = "visibility:visible " ';echo "checked"; }else{echo 'style = "visibility:hidden " ';}?>>
+				<label class="btn btn-outline-dark-lg" for="Matrices_+F" id = "lb_Matrices_+F" <?php if(isset($_SESSION['+F'])){ echo 'style = "visibility:visible " ';echo "checked"; }else{echo 'style = "visibility:hidden " ';}?> > <h4>+F</h4> </label>
 			
 			 </div>
 			
@@ -261,7 +261,7 @@
 		  <label for = "OrthoMaM_v12a"> <h4> OrthoMaM_v12a </h4> </label>
 		  <input type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" onchange = "checkkall()" <?php if(isset($_SESSION['OrthoMaM_v12a'])){ echo "checked"; }?>>
 		  <label for = "Treebase"> <h4>TreeBASE</h4> </label>
-		  <input class ="cb" type="checkbox" name="Treebase"  id="Treebase"  value="TreeBASE" onchange = "checkkall()" <?php if(isset($_SESSION['TreeBASE'])){ echo "checked"; }?>>
+		  <input class ="cb" type="checkbox" name="TreeBASE"  id="TreeBASE"  value="TreeBASE" onchange = "checkkall()" <?php if(isset($_SESSION['TreeBASE'])){ echo "checked"; }?>>
 
 
 		  

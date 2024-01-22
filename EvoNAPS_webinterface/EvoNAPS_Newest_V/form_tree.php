@@ -107,7 +107,7 @@
 		  <label for = "OrthoMaM_v10c"> <h4>OrthoMaM_v10c</h4> </label>
 		  <input class ="cb" type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" onchange = "checkkall()">
 		  <label for = "OrthoMaM_v12a"> <h4>OrthoMaM_v12a</h4> </label>
-		  <input class ="cb" type="checkbox" name="Treebase"  id="Treebase"  value="TreeBASE" onchange = "checkkall()">
+		  <input class ="cb" type="checkbox" name="TreeBASE"  id="Treebase"  value="TreeBASE" onchange = "checkkall()">
 		  <label for = "Treebase"> <h4>TreeBASE</h4> </label>
 		   <hr>
 		
@@ -251,9 +251,9 @@
 		  <br>	
 		   <section class="damn">
   <!-- Footer -->
-  <footer class="bg-secondary text-white text-centerEvoNAPS_Newest_V" >
+  <footer class="bg-secondary text-white text-center" >
     <!-- Grid container -->
-    <div class="container p-3">
+    <div class="container-fluid p-3">
       <!--Grid row-->
       <div class="row">
         <!--Grid column-->

@@ -101,7 +101,7 @@
 		  <label for = "OrthoMaM_v10c"> <h4> OrthoMaM_v10c </h4> </label>
 		  <input class ="cb" type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" onchange = "checkkall()" <?php if(isset($_SESSION['OrthoMaM_v12a'])){ echo "checked"; }?>>
 		  <label for = "OrthoMaM_v12a"> <h4> OrthoMaM_v12a </h4> </label>
-		  <input class ="cb" type="checkbox" name="Treebase"  id="Treebase"  value="TreeBASE" onchange = "checkkall()" <?php if(isset($_SESSION['TreeBASE'])){ echo "checked"; }?>>
+		  <input class ="cb" type="checkbox" name="TreeBASE"  id="Treebase"  value="TreeBASE" onchange = "checkkall()" <?php if(isset($_SESSION['TreeBASE'])){ echo "checked"; }?>>
 		  <label for = "Treebase"> <h4>TreeBASE</h4> </label> 
 		  
 		 
@@ -120,7 +120,7 @@
 		  
 		  
 		  <section class="Tree_Specs">
-		<div class = "Tree_Specs" id = "Tree_Specs"<?php if(isset($_SESSION['tree_features'])){ echo "style = display : block"; }else { echo "style = display : none";} ?>>
+		<div class = "Tree_Specs" id = "Tree_Specs"<?php if(isset($_SESSION['tree_features'])){ echo 'style = "display : block" '; }else { echo 'style = "display : none" ';} ?>>
 		 
 		  <label for="tree_len"><h4>tree length: min </h4></label> 
 		  
