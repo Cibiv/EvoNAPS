@@ -297,8 +297,8 @@
 		  <label for = "OrthoMaM_v10c"> <h4>OrthoMaM_v10c</h4> </label>
 		  <input class ="cb" type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" onchange = "checkkall()">
 		  <label for = "OrthoMaM_v12a"> <h4>OrthoMaM_v12a</h4> </label>
-		  <input class ="cb" type="checkbox" name="Treebase"  id="Treebase"  value="TreeBASE" onchange = "checkkall()">
-		  <label for = "Treebase"> <h4>TreeBASE</h4> </label>
+		  <input class ="cb" type="checkbox" name="TreeBASE"  id="TreeBASE"  value="TreeBASE" onchange = "checkkall()">
+		  <label for = "TreeBASE"> <h4>TreeBASE</h4> </label>
 		
 		 <hr>
 			

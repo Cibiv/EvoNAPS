@@ -260,7 +260,7 @@
 		  <input type="checkbox" name="OrthoMaM_v10c"  id="OrthoMaM_v10c"  value="OrthoMaM_v10c" onchange = "checkkall()" <?php if(isset($_SESSION['OrthoMaM_v10c'])){ echo "checked"; }?>>
 		  <label for = "OrthoMaM_v12a"> <h4> OrthoMaM_v12a </h4> </label>
 		  <input type="checkbox" name="OrthoMaM_v12a"  id="OrthoMaM_v12a"  value="OrthoMaM_v12a" onchange = "checkkall()" <?php if(isset($_SESSION['OrthoMaM_v12a'])){ echo "checked"; }?>>
-		  <label for = "Treebase"> <h4>TreeBASE</h4> </label>
+		  <label for = "TreeBASE"> <h4>TreeBASE</h4> </label>
 		  <input class ="cb" type="checkbox" name="TreeBASE"  id="TreeBASE"  value="TreeBASE" onchange = "checkkall()" <?php if(isset($_SESSION['TreeBASE'])){ echo "checked"; }?>>
 
 

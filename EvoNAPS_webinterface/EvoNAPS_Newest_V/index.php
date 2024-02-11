@@ -103,7 +103,9 @@
 	
 	<div class="card-group">
   <div class="card" >
+  <a href="form_modelparameters.php">
    <img class="card-img-top" src="parameters.png" alt="Card image">
+  </a>
     <div class="card-body">
       <h4 class="card-title">modelparameters</h4>
       <p class="card-text">Click conduct search down below in order to browse the EvoNAPS Database for parameters for sequence evolution. Filter for specific models, rate heterogenity, alginment/trees specifications and more.</p>
@@ -113,7 +115,9 @@
     </div>
   </div>
   <div class="card">
+  <a href="form_tree.php">
    <img class="card-img-top" src="tree_new.png" alt="Card image">
+  </a>
     <div class="card-body">
       <h4 class="card-title">trees</h4>
       <p class="card-text">Click conduct search down below in order to browse the EvoNAPS Database for species trees and their branches. Filter for differnt branch, alignment and tree specifications.</p>
@@ -122,7 +126,9 @@
     </div>
   </div>
   <div class="card">
-   <img class="card-img-top" src="alignments_final.png" alt="Card image">
+  <a href="form_alignment.php">
+   <img class="card-img-top" src="alignments_final.png" alt="Card image" >
+    </a>
     <div class="card-body">
       <h4 class="card-title">alignments</h4>
      <p class="card-text">Click conduct search down below in order to browse the EvoNAPS Database for DNA or Protein alignments. Restrict your search by filtering with the alignment ID. </p>

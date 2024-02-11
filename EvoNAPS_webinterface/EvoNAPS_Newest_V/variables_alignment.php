@@ -1,12 +1,12 @@
 <?php
 session_start();
-		if(isset($_POST['datatype'])){
-		$DNA_Prot = $_POST['datatype'];
+		if(isset($_GET['datatype'])){
+		$DNA_Prot = $_GET['datatype'];
 		$_SESSION['datatype']= $DNA_Prot; 
 		}
 	
-		if(isset($_POST['Alignment_ID'])){
-		$Ali_ID = $_POST['Alignment_ID'];
+		if(isset($_GET['Alignment_ID'])){
+		$Ali_ID = $_GET['Alignment_ID'];
 		$_SESSION['Alignment_ID']= $Ali_ID;
 		}
 	

@@ -94,6 +94,19 @@
 				$f_d_query .= " WHERE ".implode(" AND ", $f_d_conditions);
 				//Fuze conditions in 1 string for preview and limit it
 				$f_d_query_1 .= " WHERE ".implode(" AND ", $f_d_conditions)." LIMIT 20";
+
+
+			//Result query 
+
+			$result_query = "SELECT `a`.ALI_ID, `a`.FROM_DATABASE, `a`.DATA_URL,`b`.STUDY_URL, `b`.CITATION,
+			`a`.TAXA, `a`.SITES,`a`.DISTINCT_PATTERNS,`a`.PARSIMONY_INFORMATIVE_SITES,`a`.SINGLETON_SITES,
+			`a`.CONSTANT_SITES,`a`.FRAC_WILDCARDS_GAPS, ROUND(`a`.DIST_MEAN,4) AS AVG_PAIRWISE_DISTANCE
+			FROM `dna_alignments`AS `a`
+			INNER JOIN `studies` AS `b` USING (`STUDY_ID`)
+			WHERE `a`.ALI_ID=".'"'.$Ali_ID.'"';
+
+
+
 			
 		}catch(PDOException $e) {
 				

@@ -96,7 +96,6 @@
 Include 'query_builder_alignment.php';
 
 echo '<div class ="center">';
-
 		//Download Button 
 		
 		
@@ -109,9 +108,20 @@ echo '<div class ="center">';
 		
 		$filter_query_result = $filter_query_1->fetchAll(PDO::FETCH_ASSOC);
 		$count = $filter_query -> fetchColumn();	
+
+		$result_q = $connect->query($result_query);
+		$result_q_r = $result_q->fetchAll(PDO::FETCH_ASSOC);
+
+
 		
 			echo "<br>";
 			//echo "<hr>";
+			if($count == 0){
+				echo "No alignment found that matches the given
+				alignment ID";
+			}else{
+
+
 			
 			echo "<h1> Number of hits in the database: ". " ". '<span class="badge bg-dark">'.$count.'</span>'.'</h1>';
 			
@@ -126,7 +136,7 @@ echo '<div class ="center">';
    echo "<h3>Used search parameters: </h3>";
   
    echo "<br>";
-  foreach($_POST as $names => $values){
+  foreach($_GET as $names => $values){
 	  
 	  if(!empty($values)){
 	  echo "<h4>".$names.": "." ". " ".$values." "."</h4>";
@@ -139,11 +149,84 @@ echo '<div class ="center">';
 	echo "<br>";
 	echo "<hr>";
 
-	 
+	echo '<table class="table table-striped table-sm">
+	<thead>
+	  <tr>
+		<th scope="col"></th>
+		<th scope="col"></th>
+	  </tr>';
+		echo '</thead>';
+		echo '<tbody>';
+
+		foreach ($result_q_r as $y){
+
+			echo '<tr>'; 
+				echo '<td> Ali ID</th>';
+				echo '<td>'.$y["ALI_ID"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td>FROM_DATABASE</th>';
+				echo '<td>'.$y["FROM_DATABASE"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td>DATA_URL</th>';
+				echo '<td>'.$y["DATA_URL"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td> STUDY_URL</th>';
+				echo '<td>'.$y["STUDY_URL"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td>CITATION</th>';
+				echo '<td>'.$y["CITATION"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td>TAXA</th>';
+				echo '<td>'.$y["TAXA"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td> SITES</th>';
+				echo '<td>'.$y["SITES"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td>DISTINCT_PATTERNS</th>';
+				echo '<td>'.$y["DISTINCT_PATTERNS"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td>PARSIMONY_INFORMATIVE_SITES</th>';
+				echo '<td>'.$y["PARSIMONY_INFORMATIVE_SITES"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td> SINGLETON_SITES</th>';
+				echo '<td>'.$y["SINGLETON_SITES"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td>CONSTANT_SITES</th>';
+				echo '<td>'.$y["CONSTANT_SITES"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td>FRAC_WILDCARDS_GAPS</th>';
+				echo '<td>'.$y["FRAC_WILDCARDS_GAPS"].'</th>';
+			echo '</tr>';
+			echo '<tr>'; 
+				echo '<td> AVG_PAIRWISE_DISTANCE</th>';
+				echo '<td>'.$y["AVG_PAIRWISE_DISTANCE"].'</th>';
+			echo '</tr>';
+			echo '</tbody>
+				</table>';
+
+		}
+
 	
 	echo '<h3> Download dataset:  <a href ="download_button_alignment.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected Data "> Download</a></h3> ';
 	echo "<br>";
 	echo '<h3>Refine your search: <a href ="form_alignment_refine.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with the search already filled in ">Refine </a> </h3> ';
+	echo "<br>";
+	echo '<h3> Download taxonomy dataset:  <a href ="download_button_alignment_tax.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected Data "> Download</a></h3> ';
+	echo "<br>";
+	echo '<h3>Download model parameter dataset: <a href ="download_button_alignment_mp.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with the search already filled in ">Download </a> </h3> ';
+	echo "<br>";
+	echo '<h3><a href="alignment.php">Download tree dataset</a></h3>';
 	echo "<br>";
 	echo '<h3><a href="alignment.php">Reset</a></h3>';
 
@@ -161,6 +244,8 @@ echo '<div class ="center">';
 			
 		
 		}
+
+	}//else end
 			
 			
 		

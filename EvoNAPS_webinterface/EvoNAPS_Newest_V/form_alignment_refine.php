@@ -85,7 +85,7 @@
   
    <div class ="center">
   
-	<form action= "results_alignment.php" method="post" class="was-validated">
+	<form action= "results_alignment.php" method="get" class="was-validated">
 	
           <br>
 		<div class = "Radio_DNA_Prot">

@@ -109,10 +109,17 @@ echo '<div class ="center">';
 		$filter_query_1->execute($f_d_parameters);
 		
 		$filter_query_result = $filter_query_1->fetchAll(PDO::FETCH_ASSOC);
+		$filter_query_result_met = $filter_query->fetchAll(PDO::FETCH_ASSOC);
+		
+		foreach($filter_query_result_met as $x){
+
+			$count = $x["NR_HITS"];
+			break;
+
+		}
 		
 		
-		
-		$count = $filter_query -> fetchColumn();
+		//$count = $filter_query -> fetchColumn();
 		
 		
 			echo "<br>";
@@ -124,6 +131,191 @@ echo '<div class ="center">';
 			echo " <h4> If you are satisfied with your search you can downlod your result set down below.  </h4>";
 			
 			echo "<br>";
+
+
+			echo " <br>";
+			echo "<h2>Summary statistics of selected dataset</h2>";
+			echo " <hr>";
+			echo "<h3> Alignment / Tree statistics </h3>";
+			echo "<br>";
+			echo '<table class="table table-striped table-sm">
+			<thead>
+			  <tr>
+				<th scope="col">TAXA</th>
+				<th scope="col">SITES</th>
+				<th scope="col">DISTINCT_PATTERNS</th>
+				<th scope="col">PARSIMONY_INFORMATIVE_SITES</th>
+				<th scope="col">FRAC_WILDCARDS_GAPS</th>
+				<th scope="col">TREE_LENGTH</th>
+				<th scope="col">TREE_DIAMETER</th>
+			  </tr>';
+		
+			  echo '</thead>';
+			echo '<tbody>';
+			foreach ($filter_query_result_met as $y){
+				 
+				echo '<tr>'; 
+				echo '<th scope="row"> '.$y["AVG_TAXA"].' </th>';
+				echo '<td>'.$y["AVG_SITES"].'</th>';
+				echo '<td>'.$y["AVG_DISTINCT_PATTERNS"].'</th>';
+				echo '<td>'.$y["AVG_PARSIMONY_INFORMATIVE_SITES"].'</th>';
+				echo '<td>'.$y["AVG_FRAC_WILDCARDS_GAPS"].'</th>';
+				echo '<td>'.$y["Tree_L"].'</th>';
+				echo '<td>'.$y["Tree_D"].'</th>';
+				
+			}
+			echo '</tr>';
+			echo '</tbody>
+				</table>';
+			echo "<br>";
+
+			echo "<h3> Rates / Alpha / Proportion of invariable sites</h3>";
+			echo "<br>";
+
+			echo '<table class="table table-striped table-sm">
+			<thead>
+			  <tr>';
+		
+			  if($DNA_Prot == "dna"){
+		echo '<th scope="col">FREQ_A</th>
+			  <th scope="col">FREQ_C</th>
+			  <th scope="col">FREQ_G</th>
+			  <th scope="col">FREQ_T</th>
+			  <th scope="col">RATE_AC</th>
+			  <th scope="col">RATE_AG</th>
+			  <th scope="col">RATE_AT</th>
+			  <th scope="col">RATE_CG</th>
+			  <th scope="col">RATE_CT</th>
+			  <th scope="col">RATE_GT</th>';
+		   }else{
+			  echo '<th scope="col">FREQ_A</th>
+			  <th scope="col">FREQ_D</th>
+			  <th scope="col">FREQ_E</th>
+			  <th scope="col">FREQ_T</th>
+			  <th scope="col">FREQ_I</th>
+			  <th scope="col">FREQ_M</th>
+			  <th scope="col">FREQ_S</th>
+			  <th scope="col">FREQ_Y</th>
+			  <th scope="col">FREQ_R</th>
+			  <th scope="col">FREQ_C</th>
+			  <th scope="col">FREQ_G</th>
+			  <th scope="col">FREQ_L</th>
+			  <th scope="col">FREQ_F</th>
+			  <th scope="col">FREQ_T</th>
+			  <th scope="col">FREQ_V</th>
+			  <th scope="col">FREQ_N</th>
+			  <th scope="col">FREQ_Q</th>
+			  <th scope="col">FREQ_H</th>
+			  <th scope="col">FREQ_K</th>
+			  <th scope="col">FREQ_P</th>
+			  <th scope="col">FREQ_W</th>';
+		   }
+		   echo '<th scope="col">ALPHA</th>
+		   <th scope="col">PROP_INVAR</th>';
+			  
+		   echo' </tr>';
+		
+			  echo '</thead>';
+			echo '<tbody>';
+
+			if($DNA_Prot == "dna"){ 
+				foreach ($filter_query_result_met as $y){
+					 
+					echo '<tr>'; 
+					echo '<td>'.$y["AVG_FREQ_A"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_C"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_G"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_T"].'</th>';
+					echo '<td>'.$y["AVG_RATE_AC"].'</th>';
+					echo '<td>'.$y["AVG_RATE_AG"].'</th>';
+					echo '<td>'.$y["AVG_RATE_AT"].'</th>';
+					echo '<td>'.$y["AVG_RATE_CG"].'</th>';
+					echo '<td>'.$y["AVG_RATE_CT"].'</th>';
+					echo '<td>'.$y["AVG_RATE_GT"].'</th>';
+					echo '<td>'.$y["AVG_ALPHA"].'</th>';
+					echo '<td>'.$y["AVG_PROP_INVAR"].'</th>';
+					echo '</tr>';
+					
+				}
+			}else{
+				foreach ($filter_query_result_met as $y){
+					 
+					echo '<tr>'; 
+					echo '<td>'.$y["AVG_FREQ_A"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_D"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_E"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_T"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_I"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_M"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_S"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_Y"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_R"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_C"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_G"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_L"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_F"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_T"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_V"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_N"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_Q"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_H"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_K"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_P"].'</th>';
+					echo '<td>'.$y["AVG_FREQ_W"].'</th>';
+					echo '<td>'.$y["AVG_ALPHA"].'</th>';
+					echo '<td>'.$y["AVG_PROP_INVAR"].'</th>';
+					echo '</tr>';
+	
+				}
+			}
+			echo '</tr>';
+			echo '</tbody>
+				</table>';
+
+				echo "<br>";
+
+				//here
+			echo "<h3> Branch statistics </h3>";
+			echo "<br>";
+			echo '<table class="table table-striped table-sm">
+			<thead>
+			  <tr>
+				<th scope="col"> max branch length (avg)</th>
+				<th scope="col"> mean branch length (avg)</th>
+				<th scope="col">max internal branch length (avg)</th>
+				<th scope="col">mean internal branch length (avg)</th>
+				<th scope="col">max external branch length (avg)</th>
+				<th scope="col">mean external branch length (avg)</th>
+			  </tr>';
+		
+			  echo '</thead>';
+			echo '<tbody>';
+			foreach ($filter_query_result_met as $y){
+				 
+				echo '<tr>'; 
+				echo '<td>'.$y["AVG_BL_MAX"].'</th>';
+				echo '<td>'.$y["AVG_BL_MEAN"].'</th>';
+				echo '<td>'.$y["AVG_IBL_MAX"].'</th>';
+				echo '<td>'.$y["AVG_IBL_MEAN"].'</th>';
+				echo '<td>'.$y["AVG_EBL_MAX"].'</th>';
+				echo '<td>'.$y["AVG_EBL_MEAN"].'</th>';
+				
+			}
+			echo '</tr>';
+			echo '</tbody>
+				</table>';
+
+
+
+
+
+
+
+
+
+
+
+
 
 	 echo "<hr>";
 	echo "<h3>Used search parameters: </h3>";

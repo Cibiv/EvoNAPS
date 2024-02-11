@@ -121,13 +121,13 @@ function checkkall(){
  cb3= document.getElementById('OrthoMaM_v12a');
  cb4= document.getElementById('all');
  cb5= document.getElementById('OrthoMaM_v10c');
- cb6= document.getElementById('Treebase');
+ cb6= document.getElementById('TreeBASE');
 if(cb4.checked == true){
 	document.getElementById('PANDIT').checked = false;
 	document.getElementById('Lanfear').checked = false;
 	document.getElementById('OrthoMaM_v10c').checked =false;
 	document.getElementById('OrthoMaM_v12a').checked = false;
-	document.getElementById('Treebase').checked = false;
+	document.getElementById('TreeBASE').checked = false;
 }
 if(cb1.checked == true){
 	cb4.checked = false;
