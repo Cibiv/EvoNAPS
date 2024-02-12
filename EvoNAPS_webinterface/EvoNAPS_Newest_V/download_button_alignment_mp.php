@@ -255,14 +255,20 @@ include "DB_credentials.php";
                 /*}else{
 
                     fputcsv($output_file,array('Alignment_ID', 'TAXA','SITES','Distinct_PATTERNS','PARSIMONY_INFORMATIVE_SITES',
-                'FRAC_WILDCARDS_GAPS', 'DIST_MEAN','MODEL','BASE_MODEL','RHAS','LOGL','Tree_L','Tree_D','FREQ_A', 'FREQ_R', 'FREQ_N', 
+                'FRAC_WILDCARDS_GAPS','MODEL','BASE_MODEL','RHAS','LOGL','FREQ_A', 'FREQ_R', 'FREQ_N', 
                 'FREQ_D', 'FREQ_C', 'FREQ_Q', 'FREQ_E', 'FREQ_G','FREQ_H','FREQ_I','FREQ_L','FREQ_K', 'FREQ_M','FREQ_F','FREQ_P', 
-                'FREQ_S','FREQ_T', 'FREQ_W', 'FREQ_Y', 'FREQ_V','ALPHA','PROP_INVAR','RATE_AC',
+                'FREQ_S','FREQ_T', 'FREQ_W', 'FREQ_Y', 'FREQ_V','ALPHA','PROP_INVAR',
                 'RATE_CAT_1','PROP_CAT_1','RATE_CAT_2','PROP_CAT_2','RATE_CAT_3','PROP_CAT_3','RATE_CAT_4','PROP_CAT_4',
                 'RATE_CAT_5','PROP_CAT_5','RATE_CAT_6','PROP_CAT_6','RATE_CAT_7','PROP_CAT_7','RATE_CAT_8','PROP_CAT_8',
-                'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10','NEWICK_STRING'),"\t");
+                'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10','BL_MAX','BL_MEAN','IBL_MAX','IBL_MEAN','EBL_MAX','EBL_MEAN','NEWICK_STRING'),"\t");
                 $headers_printed = true;
                 }
+
+
+
+                ROUND(`tree`.BL_MAX,5) AS , ROUND(`tree`.BL_MEAN,5) AS , 
+			ROUND(`tree`.IBL_MAX,5) AS IBL_MAX, ROUND(`tree`.IBL_MEAN,5) AS IBL_MEAN,
+			ROUND(`tree`.EBL_MAX,5) AS EBL_MAX, ROUND(`tree`.EBL_MEAN,5) AS EBL_MEAN,
                 */
             }
 			

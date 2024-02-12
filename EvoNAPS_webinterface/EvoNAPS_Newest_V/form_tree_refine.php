@@ -114,7 +114,7 @@
 		
 		<div class = "Trees_Specs_Check" >
 		 <input type="checkbox" name="tree_features" id="Trees_Specs_Check" onclick = "show4()" value="TRUE"<?php if(isset($_SESSION['tree_features'])){ echo "checked"; }?>>
-          <label for="Trees_Specs_Check"><h3>tree features </h3> </label> <hr>
+          <label for="Trees_Specs_Check"><h3>set tree features </h3> </label> <hr>
 		  </div>
 		</section>
 		  
@@ -197,7 +197,7 @@
 
 		<div class = "Alignment_Specs_Check" >
 		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="TRUE"<?php if(isset($_SESSION['alignment_features'])){ echo "checked"; }?>>
-          <label for="Alignment_Specs_Check"><h3>alignment features </h3> </label> <hr>
+          <label for="Alignment_Specs_Check"><h3>set alignment features </h3> </label> <hr>
 		  </div>
 		  
 		  </section>

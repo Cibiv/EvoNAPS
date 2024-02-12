@@ -117,7 +117,7 @@
 		
 		<div class = "Trees_Specs_Check"  >
 		 <input type="checkbox" name="tree features" id="Trees_Specs_Check" onclick = "show4()" value="TRUE" checked>
-          <label for="Trees_Specs_Check"><h3>tree features </h3> </label> <hr>
+          <label for="Trees_Specs_Check"><h3>set tree features </h3> </label> <hr>
 		  </div>
 		</section>
 		
@@ -196,7 +196,7 @@
 
 		<div class = "Alignment_Specs_Check" >
 		 <input type="checkbox" name="alignment_features" id="Alignment_Specs_Check" onclick = "show3()" value="TRUE">
-          <label for="Alignment_Specs_Check"><h3>alignment features </h3> </label> <hr>
+          <label for="Alignment_Specs_Check"><h3>set alignment features </h3> </label> <hr>
 		  </div>
 		  
 		  </section>

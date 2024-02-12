@@ -3,6 +3,7 @@
 ini_set('memory_limit','-1');
  //start session here in order to catch variables
 session_start();
+error_reporting(0);
 include "DB_credentials.php";
 			
 //initalize variables			
@@ -566,7 +567,7 @@ $first = false;
 		
 			/// set headers for donwnloading the data	
 		header('Content-Type: text/csv; charset=utf-8');
-		header('Content-Disposition: attachment; filename=trees.txt');
+		header('Content-Disposition: attachment; filename=trees_branches.tsv');
 		$output_file = fopen("php://output", "w"); 
 		
 		$headers_printed = false; 
@@ -580,7 +581,7 @@ $first = false;
 			if(!$headers_printed){
 				
 			fwrite($output_file,"\n");
-			fputcsv($output_file,array('Alignment Key ','Branch Key'));
+			fputcsv($output_file,array('Alignment Key ','Tree Key','Branch Key','Alignment ID','Tree Type','Branch Index','Branch Type','SEQ Name','BL','Split Size'),"\t");
 			$headers_printed = true;
 			
 			

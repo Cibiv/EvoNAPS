@@ -607,7 +607,7 @@ $first = false;
 		
 			/// set headers for donwnloading the data
 		header('Content-Type: text/csv; charset=utf-8');
-		header('Content-Disposition: attachment; filename=trees.txt');
+		header('Content-Disposition: attachment; filename=trees.tsv');
 		$output_file = fopen("php://output", "w"); 
 
 		
@@ -622,9 +622,30 @@ $first = false;
 			///download headder titles 	
 			if(!$headers_printed){
 				
-			fwrite($output_file,"\n");
-			fputcsv($output_file,array("Alignment ID","Newick String","Prop Invar"),"\t");
-			$headers_printed = true;
+				if($DNA_Prot == "dna"){
+
+
+					fputcsv($output_file,array('Alignment_ID', 'TAXA','SITES','Distinct_PATTERNS','PARSIMONY_INFORMATIVE_SITES',
+						'FRAC_WILDCARDS_GAPS','MODEL','BASE_MODEL','RHAS','LOGL','FREQ_A','FREQ_C','FREQ_G','FREQ_T',
+						'RATE_AC', 'RATE_AG','RATE_AT','RATE_CG','RATE_CT','RATE_GT','ALPHA','PROP_INVAR',
+						'RATE_CAT_1','PROP_CAT_1','RATE_CAT_2','PROP_CAT_2','RATE_CAT_3','PROP_CAT_3','RATE_CAT_4','PROP_CAT_4',
+						'RATE_CAT_5','PROP_CAT_5','RATE_CAT_6','PROP_CAT_6','RATE_CAT_7','PROP_CAT_7','RATE_CAT_8','PROP_CAT_8',
+						'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10','BL_MAX','BL_MEAN','IBL_MAX','IBL_MEAN','EBL_MAX','EBL_MEAN','NEWICK_STRING'),"\t");
+						$headers_printed = true;
+		
+		
+				} else{
+		
+					fputcsv($output_file,array('Alignment_ID', 'TAXA','SITES','Distinct_PATTERNS','PARSIMONY_INFORMATIVE_SITES',
+					'FRAC_WILDCARDS_GAPS','MODEL','BASE_MODEL','RHAS','LOGL','FREQ_A', 'FREQ_R', 'FREQ_N', 
+					'FREQ_D', 'FREQ_C', 'FREQ_Q', 'FREQ_E', 'FREQ_G','FREQ_H','FREQ_I','FREQ_L','FREQ_K', 'FREQ_M','FREQ_F','FREQ_P', 
+					'FREQ_S','FREQ_T', 'FREQ_W', 'FREQ_Y', 'FREQ_V','ALPHA','PROP_INVAR',
+					'RATE_CAT_1','PROP_CAT_1','RATE_CAT_2','PROP_CAT_2','RATE_CAT_3','PROP_CAT_3','RATE_CAT_4','PROP_CAT_4',
+					'RATE_CAT_5','PROP_CAT_5','RATE_CAT_6','PROP_CAT_6','RATE_CAT_7','PROP_CAT_7','RATE_CAT_8','PROP_CAT_8',
+					'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10','BL_MAX','BL_MEAN','IBL_MAX','IBL_MEAN','EBL_MAX','EBL_MEAN','NEWICK_STRING'),"\t");
+					$headers_printed = true;
+					
+				}
 			
 			
 		}
