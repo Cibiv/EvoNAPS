@@ -38,7 +38,7 @@ include "DB_credentials.php";
 				ROUND(`mod`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`mod`.PROP_CAT_7,5) AS PROP_CAT_7, 
 				ROUND(`mod`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`mod`.PROP_CAT_8,5) AS PROP_CAT_8, 
 				ROUND(`mod`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`mod`.PROP_CAT_9,5) AS PROP_CAT_9,
-				ROUND(`mod`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`mod`.PROP_CAT_10,5) AS PROP_CAT_10";
+				ROUND(`mod`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`mod`.PROP_CAT_10,5) AS PROP_CAT_10,`tree`.TREE_TYPE";
                 //DNA w Tree
             //}else{
                 $select1 = "`ali`.ALI_ID, `ali`.TAXA, `ali`.SITES, `ali`.DISTINCT_PATTERNS, 
@@ -57,7 +57,7 @@ include "DB_credentials.php";
                 ROUND(`tree`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`tree`.PROP_CAT_7,5) AS PROP_CAT_7, 
                 ROUND(`tree`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`tree`.PROP_CAT_8,5) AS PROP_CAT_8, 
                 ROUND(`tree`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`tree`.PROP_CAT_9,5) AS PROP_CAT_9,
-                ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10";
+                ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10,`tree`.TREE_TYPE";
 
 
             //deactivate here -> }
@@ -91,7 +91,7 @@ include "DB_credentials.php";
                 ROUND(`mod`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`mod`.PROP_CAT_7,5) AS PROP_CAT_7, 
                 ROUND(`mod`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`mod`.PROP_CAT_8,5) AS PROP_CAT_8, 
                 ROUND(`mod`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`mod`.PROP_CAT_9,5) AS PROP_CAT_9,
-                ROUND(`mod`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`mod`.PROP_CAT_10,5) AS PROP_CAT_10";
+                ROUND(`mod`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`mod`.PROP_CAT_10,5) AS PROP_CAT_10,`tree`.TREE_TYPE";
 
                 
                 //Aa w tree
@@ -117,7 +117,7 @@ include "DB_credentials.php";
                 ROUND(`tree`.REL_RATE_CAT_7,5) AS RATE_CAT_7, ROUND(`tree`.PROP_CAT_7,5) AS PROP_CAT_7, 
                 ROUND(`tree`.REL_RATE_CAT_8,5) AS RATE_CAT_8, ROUND(`tree`.PROP_CAT_8,5) AS PROP_CAT_8, 
                 ROUND(`tree`.REL_RATE_CAT_9,5) AS RATE_CAT_9, ROUND(`tree`.PROP_CAT_9,5) AS PROP_CAT_9,
-                ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10";
+                ROUND(`tree`.REL_RATE_CAT_10,5) AS RATE_CAT_10, ROUND(`tree`.PROP_CAT_10,5) AS PROP_CAT_10,`tree`.TREE_TYPE";
 
 
 
@@ -197,11 +197,11 @@ include "DB_credentials.php";
 
     fwrite($output_file,"\n");
 
-    fwrite($output_file,"Modelfinder model parameters");
+    fwrite($output_file,"##Modelfinder model parameters");
 
     fwrite($output_file,"\n");
 
-    fwrite($output_file,"--------------------------------------------------------------------------------------------------------------------------------------------------------");
+    fwrite($output_file,"##--------------------------------------------------------------------------------------------------------------------------------------------------------");
 
     fwrite($output_file,"\n");
 
@@ -222,7 +222,7 @@ include "DB_credentials.php";
 				'RATE_AC', 'RATE_AG','RATE_AT','RATE_CG','RATE_CT','RATE_GT','ALPHA','PROP_INVAR',
 				'RATE_CAT_1','PROP_CAT_1','RATE_CAT_2','PROP_CAT_2','RATE_CAT_3','PROP_CAT_3','RATE_CAT_4','PROP_CAT_4',
 				'RATE_CAT_5','PROP_CAT_5','RATE_CAT_6','PROP_CAT_6','RATE_CAT_7','PROP_CAT_7','RATE_CAT_8','PROP_CAT_8',
-				'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10'),"\t");
+				'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10','Tree_Type'),"\t");
 				$headers_printed = true;
                     /*
                 }else{
@@ -248,7 +248,7 @@ include "DB_credentials.php";
 				'FREQ_S','FREQ_T', 'FREQ_W', 'FREQ_Y', 'FREQ_V','ALPHA','PROP_INVAR',
 				'RATE_CAT_1','PROP_CAT_1','RATE_CAT_2','PROP_CAT_2','RATE_CAT_3','PROP_CAT_3','RATE_CAT_4','PROP_CAT_4',
 				'RATE_CAT_5','PROP_CAT_5','RATE_CAT_6','PROP_CAT_6','RATE_CAT_7','PROP_CAT_7','RATE_CAT_8','PROP_CAT_8',
-				'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10'),"\t");
+				'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10','Tree_Type'),"\t");
 				$headers_printed = true;
 
 
@@ -285,15 +285,15 @@ include "DB_credentials.php";
 
     fwrite($output_file,"\n");
 
-    fwrite($output_file," --------------------------------------------------------------------------------------------------------------------------------------------------------");
+    fwrite($output_file,"## --------------------------------------------------------------------------------------------------------------------------------------------------------");
 
     fwrite($output_file,"\n");
 
-    fwrite($output_file," ML tree model parameters");
+    fwrite($output_file,"## ML tree model parameters");
 
     fwrite($output_file,"\n");
 
-    fwrite($output_file," --------------------------------------------------------------------------------------------------------------------------------------------------------");
+    fwrite($output_file,"## --------------------------------------------------------------------------------------------------------------------------------------------------------");
 
     fwrite($output_file,"\n");
 
@@ -328,7 +328,7 @@ include "DB_credentials.php";
             'RATE_AC', 'RATE_AG','RATE_AT','RATE_CG','RATE_CT','RATE_GT','ALPHA','PROP_INVAR',
             'RATE_CAT_1','PROP_CAT_1','RATE_CAT_2','PROP_CAT_2','RATE_CAT_3','PROP_CAT_3','RATE_CAT_4','PROP_CAT_4',
             'RATE_CAT_5','PROP_CAT_5','RATE_CAT_6','PROP_CAT_6','RATE_CAT_7','PROP_CAT_7','RATE_CAT_8','PROP_CAT_8',
-            'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10'),"\t");
+            'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10','Tree_Type'),"\t");
             $headers_printed1 = true;
             }else{
 
@@ -353,7 +353,7 @@ include "DB_credentials.php";
             'FREQ_S','FREQ_T', 'FREQ_W', 'FREQ_Y', 'FREQ_V','ALPHA','PROP_INVAR',
             'RATE_CAT_1','PROP_CAT_1','RATE_CAT_2','PROP_CAT_2','RATE_CAT_3','PROP_CAT_3','RATE_CAT_4','PROP_CAT_4',
             'RATE_CAT_5','PROP_CAT_5','RATE_CAT_6','PROP_CAT_6','RATE_CAT_7','PROP_CAT_7','RATE_CAT_8','PROP_CAT_8',
-            'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10'),"\t");
+            'RATE_CAT_9','PROP_CAT_9','RATE_CAT_10','PROP_CAT_10','Tree_Type'),"\t");
             $headers_printed1 = true;
             }
             

@@ -97,13 +97,28 @@
 
 
 			//Result query 
+			if($usedna== true){
 
-			$result_query = "SELECT `a`.ALI_ID, `a`.FROM_DATABASE, `a`.DATA_URL,`b`.STUDY_URL, `b`.CITATION,
+				$result_query = "SELECT `a`.ALI_ID, `a`.FROM_DATABASE, `a`.DATA_URL,`b`.STUDY_URL, `b`.CITATION,
 			`a`.TAXA, `a`.SITES,`a`.DISTINCT_PATTERNS,`a`.PARSIMONY_INFORMATIVE_SITES,`a`.SINGLETON_SITES,
 			`a`.CONSTANT_SITES,`a`.FRAC_WILDCARDS_GAPS, ROUND(`a`.DIST_MEAN,4) AS AVG_PAIRWISE_DISTANCE
 			FROM `dna_alignments`AS `a`
 			INNER JOIN `studies` AS `b` USING (`STUDY_ID`)
 			WHERE `a`.ALI_ID=".'"'.$Ali_ID.'"';
+
+			}else{
+
+				$result_query = "SELECT `a`.ALI_ID, `a`.FROM_DATABASE, `a`.DATA_URL,`b`.STUDY_URL, `b`.CITATION,
+			`a`.TAXA, `a`.SITES,`a`.DISTINCT_PATTERNS,`a`.PARSIMONY_INFORMATIVE_SITES,`a`.SINGLETON_SITES,
+			`a`.CONSTANT_SITES,`a`.FRAC_WILDCARDS_GAPS, ROUND(`a`.DIST_MEAN,4) AS AVG_PAIRWISE_DISTANCE
+			FROM `aa_alignments`AS `a`
+			INNER JOIN `studies` AS `b` USING (`STUDY_ID`)
+			WHERE `a`.ALI_ID=".'"'.$Ali_ID.'"';
+
+
+
+			}
+			
 
 
 

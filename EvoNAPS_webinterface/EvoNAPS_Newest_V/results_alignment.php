@@ -215,12 +215,12 @@ echo '<div class ="center">';
 			echo '</tbody>
 				</table>';
 
+
 		}
 
-	
-	echo '<h3> Download alignment:  <a href ="download_button_alignment.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected Data "> Download</a></h3> ';
-	echo "<br>";
 	echo '<h3>Refine your search: <a href ="form_alignment_refine.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with the search already filled in ">Refine </a> </h3> ';
+	echo "<br>";
+	echo '<h3> Download alignment:  <a href ="download_button_alignment.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected Data "> Download</a></h3> ';
 	echo "<br>";
 	echo '<h3> Download taxonomy dataset:  <a href ="download_button_alignment_tax.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Here you can download your collected Data "> Download</a></h3> ';
 	echo "<br>";
@@ -228,7 +228,6 @@ echo '<div class ="center">';
 	echo "<br>";
 	echo '<h3>Download tree dataset: <a href ="download_button_alignment_tree.php" title = "Note!" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content=" Here you can go back to the orignal form with the search already filled in ">Download </a> </h3> ';
 	echo "<br>";
-	echo '<h3><a href="form_alignment.php">Reset</a></h3>';
 
 	echo '<hr>';
 		echo "<br>" ;

@@ -650,14 +650,13 @@ $first = false;
 			
 		}
 		// Write Results in Document 
-		fwrite($output_file,"\n");
 		fputcsv($output_file,$list,"\t");
 		fpassthru($output_file);
 			$counter++;
 			
 		
 		}
-		echo "Nr of Hits".$counter;
+		echo "##Nr of Hits".$counter;
 		
 		$connect = null;
 			

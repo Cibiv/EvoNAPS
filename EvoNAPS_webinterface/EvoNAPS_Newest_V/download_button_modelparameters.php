@@ -1377,7 +1377,7 @@ $first = false;
 
 		}
 		// for testing purposes if nr of hits =! number of download 
-		fwrite($output_file,"Nr of Hits:".$counter);
+		fwrite($output_file,"##Nr of Hits:".$counter);
 			
 		//exception handlong
 		

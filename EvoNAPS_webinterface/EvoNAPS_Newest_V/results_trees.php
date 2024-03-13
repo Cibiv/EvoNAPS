@@ -136,7 +136,7 @@ echo '<div class ="center">';
 			echo " <br>";
 			echo "<h2>Summary statistics of selected dataset</h2>";
 			echo " <hr>";
-			echo "<h3> Alignment / Tree statistics </h3>";
+			echo "<h3> alignment / tree statistics </h3>";
 			echo "<br>";
 			echo '<table class="table table-striped table-sm">
 			<thead>
@@ -169,7 +169,7 @@ echo '<div class ="center">';
 				</table>';
 			echo "<br>";
 
-			echo "<h3> Rates / Alpha / Proportion of invariable sites</h3>";
+			echo "<h3> Rates / alpha / proportion of invariable sites</h3>";
 			echo "<br>";
 
 			echo '<table class="table table-striped table-sm">
@@ -275,17 +275,17 @@ echo '<div class ="center">';
 				echo "<br>";
 
 				//here
-			echo "<h3> Branch statistics </h3>";
+			echo "<h3> avg branch statistics </h3>";
 			echo "<br>";
 			echo '<table class="table table-striped table-sm">
 			<thead>
 			  <tr>
-				<th scope="col"> max branch length (avg)</th>
-				<th scope="col"> mean branch length (avg)</th>
-				<th scope="col">max internal branch length (avg)</th>
-				<th scope="col">mean internal branch length (avg)</th>
-				<th scope="col">max external branch length (avg)</th>
-				<th scope="col">mean external branch length (avg)</th>
+				<th scope="col"> max branch length</th>
+				<th scope="col"> mean branch length</th>
+				<th scope="col">max internal branch length </th>
+				<th scope="col">mean internal branch length </th>
+				<th scope="col">max external branch length </th>
+				<th scope="col">mean external branch length )</th>
 			  </tr>';
 		
 			  echo '</thead>';
@@ -375,7 +375,7 @@ echo '<div class ="center">';
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["TAXA"].'</th>';
 				echo '<td>'.$y["SITES"].'</th>';
 				echo '<td>'.$y["DISTINCT_PATTERNS"].'</th>';
@@ -444,7 +444,7 @@ echo '<div class ="center">';
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["FREQ_A"].'</th>';
 				echo '<td>'.$y["FREQ_C"].'</th>';
 				echo '<td>'.$y["FREQ_G"].'</th>';
@@ -464,7 +464,7 @@ echo '<div class ="center">';
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["FREQ_A"].'</th>';
 				echo '<td>'.$y["FREQ_D"].'</th>';
 				echo '<td>'.$y["FREQ_E"].'</th>';
@@ -518,7 +518,7 @@ echo '<div class ="center">';
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["RATE_CAT_1"].'</th>';
 				echo '<td>'.$y["PROP_CAT_1"].'</th>';
 				echo '<td>'.$y["RATE_CAT_2"].'</th>';
@@ -559,7 +559,7 @@ echo '<div class ="center">';
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["RATE_CAT_6"].'</th>';
 				echo '<td>'.$y["PROP_CAT_6"].'</th>';
 				echo '<td>'.$y["RATE_CAT_7"].'</th>';
@@ -594,7 +594,7 @@ echo '<div class ="center">';
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.$y["ALI_ID"].' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["BL_MAX"].'</th>';
 				echo '<td>'.$y["BL_MEAN"].'</th>';
 				echo '<td>'.$y["IBL_MAX"].'</th>';

@@ -469,7 +469,7 @@
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.'<a href = "http://localhost/EvoNAPS_Newest_V/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["TAXA"].'</th>';
 				echo '<td>'.$y["SITES"].'</th>';
 				echo '<td>'.$y["DISTINCT_PATTERNS"].'</th>';
@@ -549,7 +549,7 @@
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.'<a href = "http://localhost/EvoNAPS_Newest_V/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["FREQ_A"].'</th>';
 				echo '<td>'.$y["FREQ_C"].'</th>';
 				echo '<td>'.$y["FREQ_G"].'</th>';
@@ -569,7 +569,7 @@
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.'<a href = "http://localhost/EvoNAPS_Newest_V/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["FREQ_A"].'</th>';
 				echo '<td>'.$y["FREQ_D"].'</th>';
 				echo '<td>'.$y["FREQ_E"].'</th>';
@@ -623,7 +623,7 @@
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.'<a href = "http://localhost/EvoNAPS_Newest_V/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["RATE_CAT_1"].'</th>';
 				echo '<td>'.$y["PROP_CAT_1"].'</th>';
 				echo '<td>'.$y["RATE_CAT_2"].'</th>';
@@ -664,7 +664,7 @@
 			foreach ($filter_query_result as $y){
 				 
 				echo '<tr>'; 
-				echo '<th scope="row"> '.'<a href = "http://localhost/EvoNAPS_Newest_V/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
+				echo '<th scope="row"> '.'<a href = "http://evonaps.cibiv.univie.ac.at/results_alignment.php?datatype='.$DNA_Prot.'&Alignment_ID='.$y["ALI_ID"].'" target="_blank">'.$y["ALI_ID"].'</a>'.' </th>';
 				echo '<td>'.$y["RATE_CAT_6"].'</th>';
 				echo '<td>'.$y["PROP_CAT_6"].'</th>';
 				echo '<td>'.$y["RATE_CAT_7"].'</th>';
