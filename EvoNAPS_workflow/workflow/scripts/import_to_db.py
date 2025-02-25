@@ -166,19 +166,20 @@ def run_query(data:Data, query, params, cleanup = True):
 def import_data(data:Data):
 
     for key, file in data.file_dict.items():
-        if data.seq_type=='DNA':
-            table = f'{data.seq_type.lower()}_{key}'
-            query = data.import_commands[table].replace("'FILE_NAME'", "%s").replace("'custom_ali_id'", f"%s")
-            print(query)
-            params = (file, data.ali_id)
-            if key == 'alignments':
-                if 'SOURCE' in data.info.keys():
-                    query = query.replace("'SOURCE'", f"'{data.info['DOURCE']}'")
-                else:
-                    query = query.replace("'SOURCE'", "'misc'")
+        table = f'{data.seq_type.lower()}_{key}'
+        query = data.import_commands[table].replace("'FILE_NAME'", "%s").replace("'custom_ali_id'", f"%s")
+        params = [file, data.ali_id]
+        
+        if key == 'alignments':
+            query = query.replace("'SOURCE'", f"%s")
+            if 'FROM_DATABASE' in data.info.keys():
+                source = data.info['FROM_DATABASE']
+            else:
+                source = 'misc' 
+            params.append(source)
 
-            qprint(f'Inserting file {file} into table {table}....', quiet=data.quiet)
-            run_query(data, query, params)
+        qprint(f'Inserting file {file} into table {table}....', quiet=data.quiet)
+        run_query(data, query, tuple(params))
 
 def update_data(data:Data):
 

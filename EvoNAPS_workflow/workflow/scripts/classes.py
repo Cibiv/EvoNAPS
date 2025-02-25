@@ -366,7 +366,7 @@ class Data:
     def check_ali_type(self):
         '''
         Function that checks if the underlying alignment that has been run through the workflow is a DNA or protein alignment.
-        It will update the variable "type".
+        Returns data type of alignment.
         '''
         
         type = None
@@ -392,7 +392,7 @@ class Data:
             if self.log[i][:len('Alignment most likely contains ')] == 'Alignment most likely contains ':
                 if 'DNA' in self.log[i]:
                     type = 'DNA'
-                elif 'protein' in self.og[i]:
+                elif 'protein' in self.log[i]:
                     type = 'AA'
         
         qprint(f'Alignment type is {type}', quiet=self.quiet)

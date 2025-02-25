@@ -156,7 +156,7 @@ def check_sequences_chi_square_test(data:Data, results:Results, j:int):
                 if len(row) >= 1:
                     # Set taxon ID for sequence
                     results.seq_para.at[index, 'TAX_ID'] = int(data.tax_file.at[row[0], 'TAX_ID'])
-                    # If TAX_CHECK and/or ACC_NR is non-empty, set it to corresponding number, 3 otherwise.
+                    # If TAX_CHECK and/or ACC_NR is non-empty, set it to corresponding number, 3 or None otherwise.
                     if pd.isna(data.tax_file.at[row[0], 'TAX_CHECK']):
                         results.seq_para.at[index, 'TAX_CHECK'] = 3
                     else:
@@ -166,6 +166,10 @@ def check_sequences_chi_square_test(data:Data, results:Results, j:int):
                 else: 
                     results.seq_para.at[index, 'TAX_ID'] = int(1)
                     results.seq_para.at[index, 'TAX_CHECK'] = int(0)
+
+            else: 
+                results.seq_para.at[index, 'TAX_ID'] = int(1)
+                results.seq_para.at[index, 'TAX_CHECK'] = int(0)
 
         elif len(indices) > 1: 
             print('Warning: Duplicate sequences with the same name: '+tmp_name+'.')
