@@ -3,13 +3,4 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - pandas
-  - biopython
-  - lightgbm >= 4.4
-  - numpy >= 2.0
-  - shap >= 0.41
-  - matplotlib
-  - loguru
-  - pip
-  - pip:
-    - pypythia==1.1.4
+  - pypythia=1.1.4

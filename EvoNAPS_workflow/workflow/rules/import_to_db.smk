@@ -20,10 +20,17 @@ rule import_to_db:
             info_file="{input.prefix}.info"
         fi;
 
-        pythia_score=$(echo {input.pythia_file})
-        echo "PYTHIA_SCORE="$pythia_score >> {input.prefix}.info
+        pythia_score=$(less {input.pythia_file})
         
-        python workflow/scripts/import_to_db.py \
-        -p {input.prefix} -db {input.credentials} \
-        -c {input.import_commands} -i {input.prefix}.info
+        if [ -f $info_file ]; then
+            python workflow/scripts/import_to_db.py \
+            -p {input.prefix} -db {input.credentials} \
+            -c {input.import_commands} -i {input.prefix}.info \
+            -py $pythia_score
+        else
+            python workflow/scripts/import_to_db.py \
+            -p {input.prefix} -db {input.credentials} \
+            -c {input.import_commands} \
+            -py $pythia_score
+        fi;
         """

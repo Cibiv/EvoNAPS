@@ -5,17 +5,21 @@ import sys
 import mysql.connector as mysql
 import pandas as pd
 import logging
+
 from update_alignment_taxonomy import get_alignment_taxonomy
 
 class Data:
-
-    def __init__(self, prefix, db, info, import_commands, output = None, quiet = False):
+        
+    def __init__(self, prefix, credentials, import_commands,
+                 info = None, pythia = None, 
+                 output = None, quiet = False):
 
         self.prefix = prefix
         self.output = output
         self.quiet = quiet
+        self.pythia = pythia
 
-        self.read_db_credentials(db)
+        self.read_db_credentials(credentials)
         self.read_import_commands(import_commands)
         self.info = self.read_info_file(info) if info else {}
         self.check_files()
@@ -111,7 +115,7 @@ def qprint(line, quiet = False):
     if quiet is False:
         print(line)
 
-def run_query(data:Data, query, cleanup = True):
+def run_query(data:Data, query, params, cleanup = True):
 
     # Configure logging
     logging.basicConfig(filename=data.output, level=logging.INFO, 
@@ -128,7 +132,7 @@ def run_query(data:Data, query, cleanup = True):
         cursor.execute("SET GLOBAL local_infile = 1;")
 
         # Execute the query
-        cursor.execute(query)
+        cursor.execute(query, params)
         
         # Fetch warnings
         cursor.execute("SHOW WARNINGS;")
@@ -164,8 +168,9 @@ def import_data(data:Data):
     for key, file in data.file_dict.items():
         if data.seq_type=='DNA':
             table = f'{data.seq_type.lower()}_{key}'
-            query = data.import_commands[table].replace("'FILE_NAME'", f"'{file}'").replace("'custom_ali_id'", f"'{data.ali_id}'")
-
+            query = data.import_commands[table].replace("'FILE_NAME'", "%s").replace("'custom_ali_id'", f"%s")
+            print(query)
+            params = (file, data.ali_id)
             if key == 'alignments':
                 if 'SOURCE' in data.info.keys():
                     query = query.replace("'SOURCE'", f"'{data.info['DOURCE']}'")
@@ -173,36 +178,45 @@ def import_data(data:Data):
                     query = query.replace("'SOURCE'", "'misc'")
 
             qprint(f'Inserting file {file} into table {table}....', quiet=data.quiet)
-            run_query(data, query)
+            run_query(data, query, params)
 
 def update_data(data:Data):
 
+    if data.pythia:
+        query = f"UPDATE {data.seq_type.lower()}_alignments SET PYTHIA_SCORE=%s where ALI_ID=%s;"
+        params = (data.pythia, data.ali_id)
+        qprint(f'Updating {data.seq_type.lower()}_alignments with Pythia score...', quiet=data.quiet)
+        run_query(data, query, params, cleanup=True)
+
     # Update alignments table with data stored in the info table
     if all(key in data.info.keys() for key in ["STUDY_ID", "STUDY_URL", "CITATION"]):
-        query = f"INSERT IGNORE INTO studies (STUDY_ID, STUDY_URL, YEAR, CITATION) VALUES \
-            ('{data.info['STUDY_ID']}', '{data.info['STUDY_URL']}', '{data.info['YEAR']}', '{data.info['CITATION']}');"
+        query = f"INSERT IGNORE INTO studies (STUDY_ID, STUDY_URL, YEAR, CITATION) VALUES (%s, %s, %s, %s);"
+        params = (data.info['STUDY_ID'], data.info['STUDY_URL'], data.info['YEAR'], data.info['CITATION'])
         qprint(f'Inserting study {data.info['STUDY_ID']} into table studies....', quiet=data.quiet)
-        run_query(data, query)
+        run_query(data, query, params)
 
     if 'STUDY_ID' in data.info.keys():
-        query = f"UPDATE {data.seq_type.lower()}_alignments SET STUDY_ID='{data.info['STUDY_ID']}' where ALI_ID='{data.ali_id}';"
+        query = f"UPDATE {data.seq_type.lower()}_alignments SET STUDY_ID=%s where ALI_ID=%s;"
+        params = (data.info['STUDY_ID'], data.ali_id)
         qprint(f'Updating {data.seq_type.lower()}_alignments with study ID {data.info['STUDY_ID']}...', quiet=data.quiet)
-        run_query(data, query)
+        run_query(data, query, params)
 
     if 'DATA_URL' in data.info.keys():
-        query = f"UPDATE {data.seq_type.lower()}_alignments SET DATA_URL='{data.info['DATA_URL']}' where ALI_ID='{data.ali_id}';"
+        query = f"UPDATE {data.seq_type.lower()}_alignments SET DATA_URL=%s where ALI_ID=%s;"
+        params = (data.info['DATA_URL'], data.ali_id)
         qprint(f'Updating {data.seq_type.lower()}_alignments with data URL {data.info['DATA_URL']}...', quiet=data.quiet)
-        run_query(data, query)
+        run_query(data, query, params)
 
     if 'DESCRIPTION' in data.info.keys():
-        query = f"UPDATE {data.seq_type.lower()}_alignments SET DESCRIPTION='{data.info['DESCRIPTION']}' where ALI_ID='{data.ali_id}';"
+        query = f"UPDATE {data.seq_type.lower()}_alignments SET DESCRIPTION=%s where ALI_ID=%s;"
+        params = (data.info['DESCRIPTION'], data.ali_id)
         qprint(f'Updating {data.seq_type.lower()}_alignments with DESCRIPTION...', quiet=data.quiet)
-        run_query(data, query)
+        run_query(data, query, params)
 
-    insert_query, _ = get_alignment_taxonomy(data.ali_id, data.seq_type, data.db_config)
+    insert_query, params = get_alignment_taxonomy(data.ali_id, data.seq_type, data.db_config)
     qprint(f'Updating {data.seq_type.lower()}_alignments_taxonomy...', quiet=data.quiet)
     print(insert_query)
-    #run_query(data, insert_query, cleanup=False)
+    run_query(data, insert_query, params, cleanup=False)
 
 def main():
 
@@ -227,6 +241,8 @@ def main():
                             that is to be imported into the EvoNAPS database.')
     parser.add_argument('-q', '--quiet', action='store_true',
                         help='Quiet mode will print minimal information.')
+    parser.add_argument('-py', '--pythia', type=str, action='store', default=None,
+                        help='Option to provide the Pythia difficulty score for the alignment.')
     
     args = parser.parse_args()
 
@@ -235,7 +251,10 @@ def main():
     if not args.output:
         args.output = f'{args.prefix}_importlog.txt'
 
-    data = Data(args.prefix, args.db_credentials, args.info, args.import_commands, output = args.output, quiet = args.quiet)
+    data = Data(args.prefix, args.db_credentials, args.import_commands,
+                info = args.info, pythia=args.pythia, 
+                output = args.output, quiet = args.quiet)
+    
     import_data(data)
     update_data(data)
     

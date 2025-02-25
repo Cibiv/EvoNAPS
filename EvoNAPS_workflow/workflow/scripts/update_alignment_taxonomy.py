@@ -98,23 +98,21 @@ def get_lca(new_row:dict, seqs_tax:dict, tax_rank_dict:dict) -> dict:
 
 def create_query(tax_dict:dict, seq_type:str) -> tuple[str, str]:
 
-    update_query = f"UPDATE {seq_type.lower()}_alignments_taxonomy SET "
-
     column_string = "("
     value_string = "("
+    values = []
 
     for key,item in tax_dict.items():
         column_string += f"{key}, "
-        value_string += f"{item}, "
-        update_query += f"{key}={item}, "
+        value_string += f"%s, "
+        values.append(tax_dict[key])
 
     column_string = column_string[:-2]+')'
     value_string = value_string[:-2]+')'
 
-    update_query = f"{update_query[:-2]} WHERE ALI_ID='{tax_dict['ALI_ID']}';"
     insert_query = f"INSERT IGNORE INTO {seq_type.lower()}_alignments_taxonomy {column_string} VALUES {value_string};"
 
-    return insert_query, update_query
+    return insert_query, tuple(values)
 
 def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict) -> tuple[str, str]:
     
@@ -127,51 +125,51 @@ def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict) -> tuple[st
                                         'forma': 37, 'serogroup': 38, 'serotype': 39, 'strain': 40, 'isolate': 41}
     
     new_row = {'ALI_ID': ali_id,
-            'TAX_RESOLVED': '',
-            'LCA_TAX_ID': '',
-            'LCA_RANK_NR': '',
-            'LCA_RANK_NAME': '',
-            '1_superkingdom': '',
-            '2_kingdom': '',
-            '3_subkingdom': '',
-            '4_superphylum': '',
-            '5_phylum': '',
-            '6_subphylum': '',
-            '7_infraphylum': '',
-            '8_superclass': '',
-            '9_class': '',
-            '10_subclass': '',
-            '11_infraclass': '',
-            '12_cohort': '',
-            '13_subcohort': '',
-            '14_superorder': '',
-            '15_order': '',
-            '16_suborder': '',
-            '17_infraorder': '',
-            '18_parvorder': '',
-            '19_superfamily': '',
-            '20_family': '',
-            '21_subfamily': '',
-            '22_tribe': '',
-            '23_subtribe': '',
-            '24_genus': '',
-            '25_subgenus': '',
-            '26_section': '',
-            '27_subsection': '',
-            '28_series': '',
-            '29_subseries': '',
-            '30_species_group': '',
-            '31_species_subgroup': '',
-            '32_species': '',
-            '33_forma_specialis': '',
-            '34_subspecies': '',
-            '35_varietas': '',
-            '36_subvariety': '',
-            '37_forma': '',
-            '38_serogroup': '',
-            '39_serotype': '',
-            '40_strain': '',
-            '41_isolate': ''}
+            'TAX_RESOLVED': None,
+            'LCA_TAX_ID': None,
+            'LCA_RANK_NR': None,
+            'LCA_RANK_NAME': None,
+            '1_superkingdom': None,
+            '2_kingdom': None,
+            '3_subkingdom': None,
+            '4_superphylum': None,
+            '5_phylum': None,
+            '6_subphylum': None,
+            '7_infraphylum': None,
+            '8_superclass': None,
+            '9_class': None,
+            '10_subclass': None,
+            '11_infraclass': None,
+            '12_cohort': None,
+            '13_subcohort': None,
+            '14_superorder': None,
+            '15_order': None,
+            '16_suborder': None,
+            '17_infraorder': None,
+            '18_parvorder': None,
+            '19_superfamily': None,
+            '20_family': None,
+            '21_subfamily': None,
+            '22_tribe': None,
+            '23_subtribe': None,
+            '24_genus': None,
+            '25_subgenus': None,
+            '26_section': None,
+            '27_subsection': None,
+            '28_series': None,
+            '29_subseries': None,
+            '30_species_group': None,
+            '31_species_subgroup': None,
+            '32_species': None,
+            '33_forma_specialis': None,
+            '34_subspecies': None,
+            '35_varietas': None,
+            '36_subvariety': None,
+            '37_forma': None,
+            '38_serogroup': None,
+            '39_serotype': None,
+            '40_strain': None,
+            '41_isolate': None}
 
     seqs = get_tax_ids(db_config, ali_id, seq_type)
 

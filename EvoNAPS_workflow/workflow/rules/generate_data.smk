@@ -1,4 +1,4 @@
-rule TestModelsAndTreeSearch:
+rule test_models_and_tree_search:
     """
     The TestModelsAndTreeSearch rule starts the model selection and tree search using the alignment file as input.
     """
@@ -55,7 +55,7 @@ rule parse_parameters:
         fi;
         """
 
-rule caculate_pythia_score:
+rule calculate_pythia_score:
     output:
         "{ali_id}.pythia"
     input:
