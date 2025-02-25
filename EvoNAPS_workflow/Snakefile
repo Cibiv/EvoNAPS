@@ -1,0 +1,27 @@
+"""
+This Snakefile inlcudes all rules neccessary to run the EvoNAPS worklow on an DNA alignemnt with the name {alignment_ID}. 
+To start the worklow type: 
+
+    snakemake --snakefile /path/to/snakefile/EvpoNAPS_snakefile_dna.smk results/{alignment_ID}_tree_parameters.tsv. 
+
+The goal file *tree_parameter.tsv is one of the files generated in the last rule in the workflow, making sure that all previous 
+rules have already run. Replace {alignment_ID} with the name of the alignment file to be investiagted. 
+
+Created: August 2022
+Author: Franziska Reden
+
+Updated: 18.02.2025
+    - updated to new workflow
+"""
+
+include: "workflow/rules/generate_data.smk"
+include: "workflow/rules/import_to_db.smk"
+
+rule all: 
+    input: 
+        "{ali_id}_ali_parameters.tsv", 
+        "{ali_id}_seq_parameters.tsv",
+        "{ali_id}_model_parameters.tsv",
+        "{ali_id}_branch_parameters.tsv",
+        "{ali_id}_tree_parameters.tsv",
+        "{ali_id}_importlog.txt"

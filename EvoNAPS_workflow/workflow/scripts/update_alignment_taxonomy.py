@@ -1,0 +1,197 @@
+import pandas as pd
+import mysql.connector as mysql
+
+def get_taxonomy(db_config:dict) -> pd.DataFrame:
+
+    mydb = mysql.connect(**db_config)
+
+    mycursor = mydb.cursor()
+    query = "SELECT TAX_ID, PARENT_TAX_ID, TAX_NAME, TAX_RANK from taxonomy;"
+
+    mycursor.execute(query)
+    myresult = mycursor.fetchall()
+
+    taxonomy = pd.DataFrame(myresult, columns = ['TAX_ID', 'PARENT_TAX_ID', 'TAX_NAME', 'TAX_RANK'])
+
+    # Reindex taxonomy table to allow for faster lookups.
+    return taxonomy.set_index('TAX_ID')
+
+def taxonomic_hierarchy_per_sequence(tax_id:str, taxonomy_db:pd.DataFrame) -> dict:
+
+    # Initailize dictionary, set current tax_id to input tax_id.
+    lineage_tax_ids = []
+    lineage_names = []
+    lineage_ranks = []
+    current_tax_id = tax_id
+
+    # For each TAX_ID get the name and the rank (e.g., genus) of the clade.
+    while True: 
+        
+        # Upate dict with the taxanomic rank and ID as key and item.
+        lineage_tax_ids.append(current_tax_id) 
+        lineage_names.append(taxonomy_db['TAX_NAME'][current_tax_id])
+        lineage_ranks.append(taxonomy_db['TAX_RANK'][current_tax_id])
+
+        # Once the root is reached, stop.
+        if current_tax_id == 1 and taxonomy_db['PARENT_TAX_ID'][current_tax_id] == 1: 
+            break
+        
+        # Continue with parent tax ID
+        current_tax_id = taxonomy_db['PARENT_TAX_ID'][current_tax_id]
+
+    lineage_tax_ids.reverse()
+    lineage_names.reverse()
+    lineage_ranks.reverse()
+
+    return {'TAX_ID':lineage_tax_ids, 'TAX_RANK': lineage_ranks, 'TAX_NAME': lineage_names}
+
+def get_tax_ids(db_config:dict, ali_id:str, seq_type:str) -> pd.DataFrame:
+
+    mydb = mysql.connect(**db_config)
+
+    mycursor = mydb.cursor()
+    query = f"SELECT TAX_ID, TAX_CHECK from {seq_type.lower()}_sequences where ALI_ID='{ali_id}';"
+
+    mycursor.execute(query)
+    myresult = mycursor.fetchall()
+
+    seqs = pd.DataFrame(myresult, columns = ['TAX_ID', 'TAX_CHECK'])
+
+    return seqs
+
+def get_lca(new_row:dict, seqs_tax:dict, tax_rank_dict:dict) -> dict:
+
+    # Get lineage of first entry in sequence dictionary to use it as comparison
+    first_key = next(iter(seqs_tax))
+    prime_tax_ids = seqs_tax[first_key]['TAX_ID']
+    prime_ranks = seqs_tax[first_key]['TAX_RANK']
+    #print(prime_ranks, prime_tax_ids)
+
+    # Set LCA index to lengt of lineage
+    index = len(prime_tax_ids)-1
+
+    # Iterate over all sequences to find overlap in the lineage
+    # Update the index if overlap moves closer to the root
+    for key, item in seqs_tax.items():
+        if index > len(item['TAX_ID'])-1:
+            index = len(item['TAX_ID'])-1
+        while index >= 0 and item['TAX_ID'][index] != prime_tax_ids[index]:
+            index -= 1
+        if index == 0:
+            break
+    
+    # Set LCA TAX_ID to the one we found
+    new_row['LCA_TAX_ID'] = prime_tax_ids[index]
+
+    # Set the RANk to the first linnean rank found in the lineage
+    while prime_ranks[index] not in tax_rank_dict.keys():
+        index -= 1
+    new_row['LCA_RANK_NR'] = tax_rank_dict[prime_ranks[index]]
+    new_row['LCA_RANK_NAME'] = prime_ranks[index]
+
+    # Update new_row with lineage tax_ids starting with index (lca)
+    for i in range (index, -1, -1):
+        if prime_ranks[i] in tax_rank_dict.keys():
+            new_row[f"{tax_rank_dict[prime_ranks[i]]}_{prime_ranks[i]}"] = prime_tax_ids[i]
+
+    return new_row
+
+def create_query(tax_dict:dict, seq_type:str) -> tuple[str, str]:
+
+    update_query = f"UPDATE {seq_type.lower()}_alignments_taxonomy SET "
+
+    column_string = "("
+    value_string = "("
+
+    for key,item in tax_dict.items():
+        column_string += f"{key}, "
+        value_string += f"{item}, "
+        update_query += f"{key}={item}, "
+
+    column_string = column_string[:-2]+')'
+    value_string = value_string[:-2]+')'
+
+    update_query = f"{update_query[:-2]} WHERE ALI_ID='{tax_dict['ALI_ID']}';"
+    insert_query = f"INSERT IGNORE INTO {seq_type.lower()}_alignments_taxonomy {column_string} VALUES {value_string};"
+
+    return insert_query, update_query
+
+def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict) -> tuple[str, str]:
+    
+    tax_rank_dict = {'superkingdom': 1, 'kingdom': 2, 'subkingdom': 3, 'superphylum': 4, 'phylum': 5, 'subphylum': 6, \
+                    'infraphylum': 7, 'superclass': 8, 'class': 9, 'subclass': 10, 'infraclass': 11, 'cohort': 12, 'subcohort': 13,\
+                        'superorder': 14, 'order': 15, 'suborder': 16, 'infraorder': 17, 'parvorder': 18, 'superfamily': 19, \
+                            'family': 20, 'subfamily': 21, 'tribe': 22, 'subtribe': 23, 'genus': 24, 'subgenus': 25, 'section': 26, \
+                                'subsection': 27, 'series': 28, 'subseries': 29, 'species group': 30, 'species subgroup': 31, \
+                                    'species': 32, 'forma specialis': 33, 'subspecies': 34, 'varietas': 35, 'subvariety': 36, \
+                                        'forma': 37, 'serogroup': 38, 'serotype': 39, 'strain': 40, 'isolate': 41}
+    
+    new_row = {'ALI_ID': ali_id,
+            'TAX_RESOLVED': '',
+            'LCA_TAX_ID': '',
+            'LCA_RANK_NR': '',
+            'LCA_RANK_NAME': '',
+            '1_superkingdom': '',
+            '2_kingdom': '',
+            '3_subkingdom': '',
+            '4_superphylum': '',
+            '5_phylum': '',
+            '6_subphylum': '',
+            '7_infraphylum': '',
+            '8_superclass': '',
+            '9_class': '',
+            '10_subclass': '',
+            '11_infraclass': '',
+            '12_cohort': '',
+            '13_subcohort': '',
+            '14_superorder': '',
+            '15_order': '',
+            '16_suborder': '',
+            '17_infraorder': '',
+            '18_parvorder': '',
+            '19_superfamily': '',
+            '20_family': '',
+            '21_subfamily': '',
+            '22_tribe': '',
+            '23_subtribe': '',
+            '24_genus': '',
+            '25_subgenus': '',
+            '26_section': '',
+            '27_subsection': '',
+            '28_series': '',
+            '29_subseries': '',
+            '30_species_group': '',
+            '31_species_subgroup': '',
+            '32_species': '',
+            '33_forma_specialis': '',
+            '34_subspecies': '',
+            '35_varietas': '',
+            '36_subvariety': '',
+            '37_forma': '',
+            '38_serogroup': '',
+            '39_serotype': '',
+            '40_strain': '',
+            '41_isolate': ''}
+
+    seqs = get_tax_ids(db_config, ali_id, seq_type)
+
+    # Check if any taxon ID is unresolved, set taxonomy for alignment accordingly.
+    new_row['TAX_RESOLVED'] = 0 if (seqs['TAX_CHECK'] == 0).any() else 1
+    
+    # Also check if any sequence has tax id of 0, to save computational time:
+    if (seqs['TAX_ID'] == 1).any():
+        new_row['LCA_TAX_ID'] = 1
+        new_row['LCA_RANK_NR'] = 0
+        new_row['LCA_RANK_NAME'] = 'root'
+
+        return create_query(new_row, seq_type)
+    
+    # Get all sequences and caculate the LCA:
+    seqs_tax = {}
+    taxonomy_db = get_taxonomy(db_config)
+    for tax_id in seqs['TAX_ID'].unique():
+        seqs_tax[tax_id] = taxonomic_hierarchy_per_sequence(tax_id, taxonomy_db)
+
+    new_row = get_lca(new_row, seqs_tax, tax_rank_dict)
+
+    return create_query(new_row, seq_type)
