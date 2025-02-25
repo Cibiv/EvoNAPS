@@ -1,6 +1,6 @@
 # Results used for testing (all files ending in *tsv)
 *.tsv
-*_credentials.txt
+EvoNAPS_credentials.cnf
 .snakemake
 EvoNAPS_database/scripts
 EvoNAPS_workflow/test

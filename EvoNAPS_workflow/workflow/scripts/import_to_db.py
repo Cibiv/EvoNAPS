@@ -226,9 +226,9 @@ def main():
     
     parser.add_argument('-p', '--prefix', type=str, action='store', required = True,
                     help='Mandatory argument. Declares the path to and prefix the files to be imported into the EvoNAPS database.')
-    parser.add_argument('-db', '--db_credentials', type=pathlib.Path, action='store', default=f'{current_dir}/EvoNAPS_credentials.txt',
+    parser.add_argument('-db', '--db_credentials', type=pathlib.Path, action='store', default=f'{current_dir}/EvoNAPS_credentials.cnf',
                         help='Option to declare file that contains the credentials for the EvoNAPS database.\
-                            Per default script will look for file with name \'EvoNAPS_credentials.txt\' in the same directory as \
+                            Per default script will look for file with name \'EvoNAPS_credentials.cnf\' in the same directory as \
                                 this Python script.')
     parser.add_argument('-c', '--import_commands', type=pathlib.Path, action='store', default=f'{current_dir}/EvoNAPS_import_statements.sql',
                         help='Option to declare file that contains the import commands. \

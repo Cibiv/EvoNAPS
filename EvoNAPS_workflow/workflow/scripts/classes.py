@@ -110,7 +110,7 @@ class Results:
     
         if self.type == 'DNA':
 
-            self.seq_para = pd.DataFrame(columns = ['ALI_ID', 'SEQ_INDEX', 'SEQ_NAME', 'TAX_ID', 'TAX_CHECK', 'FRAC_WILDCARDS_GAPS', \
+            self.seq_para = pd.DataFrame(columns = ['ALI_ID', 'SEQ_INDEX', 'SEQ_NAME', 'TAX_ID', 'TAX_CHECK', 'ACC_NR','FRAC_WILDCARDS_GAPS', \
                                                     'CHI2_P_VALUE', 'CHI2_PASSED', 'EXCLUDED', 'IDENTICAL_TO', 'FREQ_A', 'FREQ_C', 'FREQ_G', 'FREQ_T', 'SEQ'])
 
             self.ali_para = pd.DataFrame(columns = ['ALI_ID', 'IQTREE_VERSION', 'RANDOM_SEED', 'TIME_STAMP', 'SEQ_TYPE',\
@@ -145,7 +145,7 @@ class Results:
 
         elif self.type == 'AA': 
 
-            self.seq_para = pd.DataFrame(columns = ['ALI_ID', 'SEQ_INDEX', 'SEQ_NAME', 'TAX_ID', 'TAX_CHECK', 'FRAC_WILDCARDS_GAPS', 'CHI2_P_VALUE', \
+            self.seq_para = pd.DataFrame(columns = ['ALI_ID', 'SEQ_INDEX', 'SEQ_NAME', 'TAX_ID', 'TAX_CHECK', 'ACC_NR','FRAC_WILDCARDS_GAPS', 'CHI2_P_VALUE', \
                 'CHI2_PASSED', 'EXCLUDED', 'IDENTICAL_TO', 'FREQ_A', 'FREQ_R','FREQ_N',\
                 'FREQ_D','FREQ_C','FREQ_Q','FREQ_E','FREQ_G','FREQ_H','FREQ_I','FREQ_L','FREQ_K','FREQ_M','FREQ_F',\
                     'FREQ_P','FREQ_S','FREQ_T','FREQ_W', 'FREQ_Y', 'FREQ_V', 'SEQ'])
@@ -360,13 +360,13 @@ class Data:
                 self.check_keep = [x.decode('utf8').strip() for x in t.readlines()]
         
         if self.tax_file:
-            self.tax_file = pd.read_csv(self.tax_file, encoding='utf-8', usecols=[0,1,3], \
-                                    comment="#", header=None, names=['SEQ_NAME', 'TAX_ID', 'TAX_CHECK'])
+            self.tax_file = pd.read_csv(self.tax_file, encoding='utf-8', usecols=[0,1,2,3], \
+                                    comment="#", header=None, names=['SEQ_NAME', 'TAX_ID', 'TAX_CHECK', 'ACC_NR'])
 
     def check_ali_type(self):
         '''
         Function that checks if the underlying alignment that has been run through the workflow is a DNA or protein alignment.
-        It will update the global variable "type".
+        It will update the variable "type".
         '''
         
         type = None

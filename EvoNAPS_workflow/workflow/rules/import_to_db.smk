@@ -7,7 +7,7 @@ rule import_to_db:
         branch_file = "{ali_id}_branch_parameters.tsv",
         tree_file = "{ali_id}_tree_parameters.tsv",
         pythia_file = "{ali_id}.pythia",
-        credentials = "config/EvoNAPS_credentials.txt",
+        credentials = "config/EvoNAPS_credentials.cnf",
         import_commands = "config/EvoNAPS_import_statements.sql"
     output: "{ali_id}_importlog.txt"
     conda: "../envs/evonaps_env.yaml"

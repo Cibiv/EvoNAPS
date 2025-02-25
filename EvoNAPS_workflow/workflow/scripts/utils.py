@@ -151,12 +151,21 @@ def check_sequences_chi_square_test(data:Data, results:Results, j:int):
             
             # Set tax id as found in the tax_file DataFrame (if available)
             if data.tax_file is not None: 
-                row = data.tax_file[data.tax_file['SEQ_NAME'] == tmp_name].index.values[0]
-                results.seq_para.at[index, 'TAX_ID'] = int(data.tax_file.at[row, 'TAX_ID'])
-                results.seq_para.at[index, 'TAX_CHECK'] = int(data.tax_file.at[row, 'TAX_CHECK'])
-            else: 
-                results.seq_para.at[index, 'TAX_ID'] = int(1)
-                results.seq_para.at[index, 'TAX_CHECK'] = int(0)
+                row = data.tax_file[data.tax_file['SEQ_NAME'] == tmp_name].index.values
+                # If there is a hit, add info to DataFrame
+                if len(row) >= 1:
+                    # Set taxon ID for sequence
+                    results.seq_para.at[index, 'TAX_ID'] = int(data.tax_file.at[row[0], 'TAX_ID'])
+                    # If TAX_CHECK and/or ACC_NR is non-empty, set it to corresponding number, 3 otherwise.
+                    if pd.isna(data.tax_file.at[row[0], 'TAX_CHECK']):
+                        results.seq_para.at[index, 'TAX_CHECK'] = 3
+                    else:
+                        results.seq_para.at[index, 'TAX_CHECK'] = int(data.tax_file.at[row[0], 'TAX_CHECK'])
+                    if not pd.isna(data.tax_file.at[row[0], 'ACC_NR']):
+                        results.seq_para.at[index, 'TAX_CHECK'] = data.tax_file.at[row[0], 'ACC_NR']
+                else: 
+                    results.seq_para.at[index, 'TAX_ID'] = int(1)
+                    results.seq_para.at[index, 'TAX_CHECK'] = int(0)
 
         elif len(indices) > 1: 
             print('Warning: Duplicate sequences with the same name: '+tmp_name+'.')
