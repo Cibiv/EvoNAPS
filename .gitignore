@@ -4,6 +4,7 @@
 .snakemake
 EvoNAPS_database/scripts
 EvoNAPS_workflow/test
+*.ipyp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
