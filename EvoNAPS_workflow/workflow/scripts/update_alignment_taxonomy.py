@@ -102,10 +102,10 @@ def create_query(tax_dict:dict, seq_type:str) -> tuple[str, str]:
     value_string = "("
     values = []
 
-    for key,item in tax_dict.items():
+    for key, item in tax_dict.items():
         column_string += f"{key}, "
         value_string += f"%s, "
-        values.append(tax_dict[key])
+        values.append(item)
 
     column_string = column_string[:-2]+')'
     value_string = value_string[:-2]+')'
@@ -114,66 +114,129 @@ def create_query(tax_dict:dict, seq_type:str) -> tuple[str, str]:
 
     return insert_query, tuple(values)
 
-def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict) -> tuple[str, str]:
+def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict) -> tuple[str, tuple]:
+    """    
+    Parameters
+    --------
+    ali_id : str
+        The alignmentd ID as it appears in the alignment
+    seq_type : str
+        The type of alignemntd (DNA or AA), which determines in which table in the EvoNAPS
+        database to search.
+    db_config : dict
+        Credentials to access the database (hostname, user name, etc.)
     
-    tax_rank_dict = {'superkingdom': 1, 'kingdom': 2, 'subkingdom': 3, 'superphylum': 4, 'phylum': 5, 'subphylum': 6, \
-                    'infraphylum': 7, 'superclass': 8, 'class': 9, 'subclass': 10, 'infraclass': 11, 'cohort': 12, 'subcohort': 13,\
-                        'superorder': 14, 'order': 15, 'suborder': 16, 'infraorder': 17, 'parvorder': 18, 'superfamily': 19, \
-                            'family': 20, 'subfamily': 21, 'tribe': 22, 'subtribe': 23, 'genus': 24, 'subgenus': 25, 'section': 26, \
-                                'subsection': 27, 'series': 28, 'subseries': 29, 'species group': 30, 'species subgroup': 31, \
-                                    'species': 32, 'forma specialis': 33, 'subspecies': 34, 'varietas': 35, 'subvariety': 36, \
-                                        'forma': 37, 'serogroup': 38, 'serotype': 39, 'strain': 40, 'isolate': 41}
+    Returns
+    --------
+    query : str
+        A query that can be used to insert a new line into the 
+        alignments_taxonomy table of the EvoNAPS database.
+    parameters : tuple[str]
+        A set of parameters that will replace the correponding spots in the query.
     
-    new_row = {'ALI_ID': ali_id,
-            'TAX_RESOLVED': None,
-            'LCA_TAX_ID': None,
-            'LCA_RANK_NR': None,
-            'LCA_RANK_NAME': None,
-            '1_superkingdom': None,
-            '2_kingdom': None,
-            '3_subkingdom': None,
-            '4_superphylum': None,
-            '5_phylum': None,
-            '6_subphylum': None,
-            '7_infraphylum': None,
-            '8_superclass': None,
-            '9_class': None,
-            '10_subclass': None,
-            '11_infraclass': None,
-            '12_cohort': None,
-            '13_subcohort': None,
-            '14_superorder': None,
-            '15_order': None,
-            '16_suborder': None,
-            '17_infraorder': None,
-            '18_parvorder': None,
-            '19_superfamily': None,
-            '20_family': None,
-            '21_subfamily': None,
-            '22_tribe': None,
-            '23_subtribe': None,
-            '24_genus': None,
-            '25_subgenus': None,
-            '26_section': None,
-            '27_subsection': None,
-            '28_series': None,
-            '29_subseries': None,
-            '30_species_group': None,
-            '31_species_subgroup': None,
-            '32_species': None,
-            '33_forma_specialis': None,
-            '34_subspecies': None,
-            '35_varietas': None,
-            '36_subvariety': None,
-            '37_forma': None,
-            '38_serogroup': None,
-            '39_serotype': None,
-            '40_strain': None,
-            '41_isolate': None}
+    Description
+    ----------
+    Function to retrieve the taxon IDs of an alignemnt from the EvoNAPS database.
+    The taxon ID and rank of last common ancestor (LCA) of the sequences is caculated.
+    """
 
+    tax_rank_dict = {'superkingdom': 1,
+        'kingdom': 2,
+        'subkingdom': 3,
+        'superphylum': 4,
+        'subphylum': 5,
+        'phylum': 6,
+        'superclass': 7,
+        'class': 8,
+        'subclass': 9,
+        'infraclass': 10,
+        'cohort': 11,
+        'subcohort': 12,
+        'superorder': 13,
+        'order': 14,
+        'suborder': 15,
+        'infraorder': 16,
+        'parvorder': 17,
+        'superfamily': 18,
+        'family': 19,
+        'subfamily': 20,
+        'genus': 21,
+        'subgenus': 22,
+        'species group': 23,
+        'species subgroup': 24,
+        'species': 25,
+        'subspecies': 26,
+        'tribe': 27,
+        'subtribe': 28,
+        'forma': 29,
+        'varietas': 30,
+        'strain': 320,
+        'section': 330,
+        'subsection': 340,
+        'pathogroup': 350,
+        'subvariety': 360,
+        'genotype': 370,
+        'serotype': 380,
+        'isolate': 390,
+        'morph': 400,
+        'series': 410,
+        'forma specialis': 420,
+        'serogroup': 430,
+        'biotype': 440}
+    
+    new_row = {'ALI_ID': None, 
+        'TAX_RESOLVED': None, 
+        'LCA_TAX_ID': None, 
+        'LCA_RANK_NR': None, 
+        'LCA_RANK_NAME': None, 
+        'superkingdom': None, 
+        'kingdom': None, 
+        'subkingdom': None, 
+        'superphylum': None, 
+        'subphylum': None, 
+        'phylum': None, 
+        'superclass': None, 
+        'class': None, 
+        'subclass': None, 
+        'infraclass': None, 
+        'cohort': None, 
+        'subcohort': None, 
+        'superorder': None, 
+        'order': None, 
+        'suborder': None, 
+        'infraorder': None, 
+        'parvorder': None, 
+        'superfamily': None, 
+        'family': None, 
+        'subfamily': None, 
+        'genus': None, 
+        'subgenus': None, 
+        'species_group': None, 
+        'species_subgroup': None, 
+        'species': None, 
+        'subspecies': None, 
+        'tribe': None, 
+        'subtribe': None, 
+        'forma': None, 
+        'varietas': None, 
+        'strain': None, 
+        'section': None, 
+        'subsection': None, 
+        'pathogroup': None, 
+        'subvariety': None, 
+        'genotype': None, 
+        'serotype': None, 
+        'isolate': None, 
+        'morph': None, 
+        'series': None, 
+        'forma_specialis': None, 
+        'serogroup': None, 
+        'biotype': None}
+
+    #Get all tax IDs for the alignment
     seqs = get_tax_ids(db_config, ali_id, seq_type)
 
-    # Check if any taxon ID is unresolved, set taxonomy for alignment accordingly.
+    # Check if any taxon ID is unresolved, set TAX_RESOLVED for alignment accordingly.
     new_row['TAX_RESOLVED'] = 0 if (seqs['TAX_CHECK'] == 0).any() else 1
     
     # Also check if any sequence has tax id of 0, to save computational time:
@@ -184,7 +247,7 @@ def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict) -> tuple[st
 
         return create_query(new_row, seq_type)
     
-    # Get all sequences and caculate the LCA:
+    # Get all sequences and calculate the LCA:
     seqs_tax = {}
     taxonomy_db = get_taxonomy(db_config)
     for tax_id in seqs['TAX_ID'].unique():

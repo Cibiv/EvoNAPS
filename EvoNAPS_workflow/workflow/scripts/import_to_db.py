@@ -225,24 +225,47 @@ def main():
 
     parser = argparse.ArgumentParser(description='**Script to import files into EvoNAPS database.**')
     
-    parser.add_argument('-p', '--prefix', type=str, action='store', required = True,
-                    help='Mandatory argument. Declares the path to and prefix the files to be imported into the EvoNAPS database.')
-    parser.add_argument('-db', '--db_credentials', type=pathlib.Path, action='store', default=f'{current_dir}/EvoNAPS_credentials.cnf',
+    parser.add_argument('-p', '--prefix',
+                        type=str, action='store',
+                        required = True,
+                        help='Mandatory argument. Declares the path to and prefix the \
+                            files to be imported into the EvoNAPS database.')
+    
+    parser.add_argument('-db', '--db_credentials',
+                        type=pathlib.Path,
+                        action='store',
+                        default=f'{current_dir}/EvoNAPS_credentials.cnf',
                         help='Option to declare file that contains the credentials for the EvoNAPS database.\
                             Per default script will look for file with name \'EvoNAPS_credentials.cnf\' in the same directory as \
-                                this Python script.')
-    parser.add_argument('-c', '--import_commands', type=pathlib.Path, action='store', default=f'{current_dir}/EvoNAPS_import_statements.sql',
+                            this Python script.')
+    
+    parser.add_argument('-c', '--import_commands',
+                        type=pathlib.Path,
+                        action='store',
+                        default=f'{current_dir}/EvoNAPS_import_statements.sql',
                         help='Option to declare file that contains the import commands. \
-                            Per default script will look for file with name \'EvoNAPS_import_statements.sql\' in the same directory as \
-                                this Python script.')
-    parser.add_argument('-o', '--output', type=str, action='store',
+                            Per default script will look for file with name \
+                            \'EvoNAPS_import_statements.sql\' in the same directory as \
+                            this Python script.')
+    
+    parser.add_argument('-o', '--output',
+                        type=str, action='store',
                         help='Option to declare the prefix of the output log file. Default will be prefix from --prefix.')
-    parser.add_argument('-i', '--info', type=pathlib.Path, action='store',
+    
+    parser.add_argument('-i', '--info',
+                        type=pathlib.Path,
+                        action='store',
                         help='Option to declare a file that contains additional information regarding the alignment \
                             that is to be imported into the EvoNAPS database.')
-    parser.add_argument('-q', '--quiet', action='store_true',
+    
+    parser.add_argument('-q', '--quiet',
+                        action='store_true',
                         help='Quiet mode will print minimal information.')
-    parser.add_argument('-py', '--pythia', type=str, action='store', default=None,
+    
+    parser.add_argument('-py', '--pythia',
+                        type=str,
+                        action='store',
+                        default=None,
                         help='Option to provide the Pythia difficulty score for the alignment.')
     
     args = parser.parse_args()

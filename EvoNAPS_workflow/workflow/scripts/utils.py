@@ -56,7 +56,7 @@ def get_freq_per_seq(line: str, states: list) -> dict:
 def caculate_selection_criteria(logL, k, no_col): 
     '''
     Function that calculates the selection criteria (BIC, AIC, AICC) for given input. 
-    Input: Number of columns (no_col), log Likelihood (logL), number of parameters of model (no_model_para) 
+    Input: log Likelihood (logL), number of free parameters (k), number of columns (no_col)
     as well as the global variabel branch_number depicting the number of branches in the tree.
     Returns: AIC, AICC, BIC
     '''
@@ -134,7 +134,7 @@ def check_removed_sequences(data:Data, results:Results, j:int, identical:int, ex
 
     return identical, excluded
 
-def check_sequences_chi_square_test(data:Data, results:Results, j:int):
+def check_each_sequence(data:Data, results:Results, j:int):
 
     while data.log[j][:len('****  TOTAL')] != '****  TOTAL':
         seq_line = list(filter(None, data.log[j].split(' ')))
@@ -202,7 +202,7 @@ def parse_ali_parameters_log(data:Data, results:Results) -> tuple[int, int]:
 
         # Parse through log file until encountering sequence features 
         if data.log[i][:len('Analyzing sequences: done in ')] == 'Analyzing sequences: done in ': 
-            check_sequences_chi_square_test(data, results, i+1)
+            check_each_sequence(data, results, i+1)
 
         if data.log[i][:len('****  TOTAL')] == '****  TOTAL':
             numbers = parse_number(data.log[i])
@@ -593,4 +593,3 @@ def write_newick_file(newick, params, quiet = False):
     qprint(f'...parsed initial tree was written into file {file_name}.', quiet=quiet)
 
     return file_name
-
