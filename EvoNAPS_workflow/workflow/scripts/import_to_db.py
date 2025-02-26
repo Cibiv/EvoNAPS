@@ -15,7 +15,9 @@ class Data:
                  output = None, quiet = False):
 
         self.prefix = prefix
-        self.output = output
+        output = prefix if output is None else output
+        self.log_file = f'{output}_import.log'
+        self.target_file = f'{output}_summary.txt'
         self.quiet = quiet
         self.pythia = pythia
 
@@ -115,10 +117,12 @@ def qprint(line, quiet = False):
     if quiet is False:
         print(line)
 
-def run_query(data:Data, query, params, cleanup = True):
+def run_query(data:Data, query, params, cleanup = True, ):
+
+    duplicate_tmp = 0
 
     # Configure logging
-    logging.basicConfig(filename=data.output, level=logging.INFO, 
+    logging.basicConfig(filename=data.log_file, level=logging.INFO, 
                         format="%(asctime)s - %(levelname)s - %(message)s")
     
     logging.info(query)
@@ -144,6 +148,8 @@ def run_query(data:Data, query, params, cleanup = True):
                 log_msg = f"{warning}"
                 logging.warning(log_msg)
                 qprint(log_msg, quiet=data.quiet)
+                if log_msg[:len("('Warning', 1062, \"Duplicate entry")] == "('Warning', 1062, \"Duplicate entry":
+                    duplicate_tmp = 1
 
         # Commit changes
         conn.commit()
@@ -153,7 +159,9 @@ def run_query(data:Data, query, params, cleanup = True):
         logging.error(log_msg)
         print(log_msg)
         if cleanup is True:
-            run_query(data, data.cleanup_ali, cleanup = False)   
+            _ = run_query(data, data.cleanup_ali, cleanup = False)
+            with open(data.target_file, 'a') as w:
+                w.write(f'WARNING: Alignment with ALI_ID {data.ali_id} was removed from database!')   
         sys.exit(2)
 
     finally:
@@ -162,6 +170,8 @@ def run_query(data:Data, query, params, cleanup = True):
             cursor.close()
         if 'conn' in locals() and conn:
             conn.close()
+
+    return duplicate_tmp
 
 def import_data(data:Data):
 
@@ -178,46 +188,94 @@ def import_data(data:Data):
                 source = 'misc' 
             params.append(source)
 
-        qprint(f'Inserting file {file} into table {table}....', quiet=data.quiet)
-        run_query(data, query, tuple(params))
+        message = f'Inserting file {file} into table {table}....'
+        qprint(message, quiet=data.quiet)
+        with open(data.target_file, 'a') as w:
+                w.write(f'{message}\n')
+        
+        # Run query
+        check_tmp = run_query(data, query, tuple(params))
+
+        # Check if there was a duplicate warning.
+        # Stop inserts if there was and return.
+        if check_tmp == 1 and key == 'alignments':
+            message = f'Alignment with ID {data.ali_id} already exists in the database! \
+You can manually set an alignment ID using the info file: \
+simply set ALI_ID=unique_name in the info file. The info file can be provided to the script using \
+the --info option. Use --help for more information.'
+            qprint(message, data.quiet)
+            with open(data.target_file, 'a') as w:
+                w.write(f'{message}\n')
+            return 1
+        
+    return 0
 
 def update_data(data:Data):
 
+    # Update alignments table with Pythia score, delete alignment if not possible.
     if data.pythia:
         query = f"UPDATE {data.seq_type.lower()}_alignments SET PYTHIA_SCORE=%s where ALI_ID=%s;"
         params = (data.pythia, data.ali_id)
-        qprint(f'Updating {data.seq_type.lower()}_alignments with Pythia score...', quiet=data.quiet)
-        run_query(data, query, params, cleanup=True)
+        message = f'Updating {data.seq_type.lower()}_alignments with Pythia score...'
+        
+        qprint(message, quiet=data.quiet)
+        with open(data.target_file, 'a') as w:
+            w.write(f'{message}\n') 
+        _ = run_query(data, query, params, cleanup=True)
 
     # Update alignments table with data stored in the info table
     if all(key in data.info.keys() for key in ["STUDY_ID", "STUDY_URL", "CITATION"]):
         query = f"INSERT IGNORE INTO studies (STUDY_ID, STUDY_URL, YEAR, CITATION) VALUES (%s, %s, %s, %s);"
         params = (data.info['STUDY_ID'], data.info['STUDY_URL'], data.info['YEAR'], data.info['CITATION'])
-        qprint(f'Inserting study {data.info['STUDY_ID']} into table studies....', quiet=data.quiet)
-        run_query(data, query, params)
+
+        message = f'Inserting study {data.info['STUDY_ID']} into table studies....'
+        qprint(message, quiet=data.quiet)
+        with open(data.target_file, 'a') as w:
+            w.write(f'{message}\n')
+        _ = run_query(data, query, params)
 
     if 'STUDY_ID' in data.info.keys():
         query = f"UPDATE {data.seq_type.lower()}_alignments SET STUDY_ID=%s where ALI_ID=%s;"
         params = (data.info['STUDY_ID'], data.ali_id)
-        qprint(f'Updating {data.seq_type.lower()}_alignments with study ID {data.info['STUDY_ID']}...', quiet=data.quiet)
-        run_query(data, query, params)
+        
+        message = f'Updating {data.seq_type.lower()}_alignments with study ID {data.info['STUDY_ID']}...' 
+        qprint(message, quiet=data.quiet)
+        with open(data.target_file, 'a') as w:
+            w.write(f'{message}\n') 
+
+        _ = run_query(data, query, params)
 
     if 'DATA_URL' in data.info.keys():
         query = f"UPDATE {data.seq_type.lower()}_alignments SET DATA_URL=%s where ALI_ID=%s;"
         params = (data.info['DATA_URL'], data.ali_id)
-        qprint(f'Updating {data.seq_type.lower()}_alignments with data URL {data.info['DATA_URL']}...', quiet=data.quiet)
-        run_query(data, query, params)
+
+        message = f'Updating {data.seq_type.lower()}_alignments with data URL {data.info['DATA_URL']}...'
+        qprint(message, quiet=data.quiet)
+        with open(data.target_file, 'a') as w:
+            w.write(f'{message}\n') 
+
+        _ = run_query(data, query, params)
 
     if 'DESCRIPTION' in data.info.keys():
         query = f"UPDATE {data.seq_type.lower()}_alignments SET DESCRIPTION=%s where ALI_ID=%s;"
         params = (data.info['DESCRIPTION'], data.ali_id)
-        qprint(f'Updating {data.seq_type.lower()}_alignments with DESCRIPTION...', quiet=data.quiet)
-        run_query(data, query, params)
+        
+        message = f'Updating {data.seq_type.lower()}_alignments with DESCRIPTION...'
+        qprint(message, quiet=data.quiet)
+        with open(data.target_file, 'a') as w:
+            w.write(f'{message}\n') 
+
+        _ = run_query(data, query, params)
 
     insert_query, params = get_alignment_taxonomy(data.ali_id, data.seq_type, data.db_config)
-    qprint(f'Updating {data.seq_type.lower()}_alignments_taxonomy...', quiet=data.quiet)
-    print(insert_query)
-    run_query(data, insert_query, params, cleanup=False)
+
+    # Calculate the LCA of the alignment and update the corresponding alignments_taxonomy table.
+    message = f'Updating {data.seq_type.lower()}_alignments_taxonomy...'
+    qprint(message, quiet=data.quiet)
+    with open(data.target_file, 'a') as w:
+        w.write(f'{message}\n') 
+
+    _ = run_query(data, insert_query, params, cleanup=False)
 
 def main():
 
@@ -273,13 +331,19 @@ def main():
     qprint(parser.description, quiet = args.quiet)
 
     if not args.output:
-        args.output = f'{args.prefix}_importlog.txt'
+        args.output = f'{args.prefix}'
 
+    # Initilize data object (holds all neccessary information.)
     data = Data(args.prefix, args.db_credentials, args.import_commands,
-                info = args.info, pythia=args.pythia, 
+                info = args.info, pythia = args.pythia, 
                 output = args.output, quiet = args.quiet)
     
-    import_data(data)
+    # Import date
+    dup_check = import_data(data)
+    # If not successful (duplicate entry), return. 
+    if dup_check == 1:
+        return 0
+    # Otherwise, further update entry
     update_data(data)
     
     return 0

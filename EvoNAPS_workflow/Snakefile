@@ -24,4 +24,4 @@ rule all:
         "{ali_id}_model_parameters.tsv",
         "{ali_id}_branch_parameters.tsv",
         "{ali_id}_tree_parameters.tsv",
-        "{ali_id}_importlog.txt"
+        "{ali_id}_summary.txt"

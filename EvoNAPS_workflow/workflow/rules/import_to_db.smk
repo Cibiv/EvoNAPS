@@ -9,7 +9,7 @@ rule import_to_db:
         pythia_file = "{ali_id}.pythia",
         credentials = "config/EvoNAPS_credentials.cnf",
         import_commands = "config/EvoNAPS_import_statements.sql"
-    output: "{ali_id}_importlog.txt"
+    output: "{ali_id}_summary.txt"
     conda: "../envs/evonaps_env.yaml"
     shell: """
         if [ -f "{input.prefix}.info" ]; then 
@@ -26,11 +26,11 @@ rule import_to_db:
             python workflow/scripts/import_to_db.py \
             -p {input.prefix} -db {input.credentials} \
             -c {input.import_commands} -i {input.prefix}.info \
-            -py $pythia_score
+            -py $pythia_score -q
         else
             python workflow/scripts/import_to_db.py \
             -p {input.prefix} -db {input.credentials} \
             -c {input.import_commands} \
-            -py $pythia_score
+            -py $pythia_score -q
         fi;
         """

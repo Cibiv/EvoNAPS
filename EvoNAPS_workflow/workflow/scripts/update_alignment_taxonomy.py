@@ -184,7 +184,7 @@ def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict) -> tuple[st
         'serogroup': 430,
         'biotype': 440}
     
-    new_row = {'ALI_ID': None, 
+    new_row = {'ALI_ID': ali_id, 
         'TAX_RESOLVED': None, 
         'LCA_TAX_ID': None, 
         'LCA_RANK_NR': None, 
@@ -202,7 +202,7 @@ def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict) -> tuple[st
         'cohort': None, 
         'subcohort': None, 
         'superorder': None, 
-        'order': None, 
+        '`order`': None, 
         'suborder': None, 
         'infraorder': None, 
         'parvorder': None, 
