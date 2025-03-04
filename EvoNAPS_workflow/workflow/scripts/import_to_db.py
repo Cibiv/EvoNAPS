@@ -10,7 +10,7 @@ from update_alignment_taxonomy import get_alignment_taxonomy
 
 class Data:
         
-    def __init__(self, prefix, credentials, import_commands,
+    def __init__(self, prefix, credentials, import_commands, tables,
                  info = None, pythia = None, 
                  output = None, quiet = False):
 
@@ -20,6 +20,7 @@ class Data:
         self.target_file = f'{output}_summary.txt'
         self.quiet = quiet
         self.pythia = pythia
+        self.tables = tables
 
         self.read_db_credentials(credentials)
         self.read_import_commands(import_commands)
@@ -117,7 +118,7 @@ def qprint(line, quiet = False):
     if quiet is False:
         print(line)
 
-def run_query(data:Data, query, params, cleanup = True, ):
+def run_query(data:Data, query, params, cleanup = True):
 
     duplicate_tmp = 0
 
@@ -267,7 +268,7 @@ def update_data(data:Data):
 
         _ = run_query(data, query, params)
 
-    insert_query, params = get_alignment_taxonomy(data.ali_id, data.seq_type, data.db_config)
+    insert_query, params = get_alignment_taxonomy(data.ali_id, data.seq_type, data.db_config, data.tables)
 
     # Calculate the LCA of the alignment and update the corresponding alignments_taxonomy table.
     message = f'Updating {data.seq_type.lower()}_alignments_taxonomy...'
@@ -295,6 +296,14 @@ def main():
                         default=f'{current_dir}/EvoNAPS_credentials.cnf',
                         help='Option to declare file that contains the credentials for the EvoNAPS database.\
                             Per default script will look for file with name \'EvoNAPS_credentials.cnf\' in the same directory as \
+                            this Python script.')
+    
+    parser.add_argument('-t', '--tables',
+                        type=pathlib.Path,
+                        action='store',
+                        default=f'{current_dir}/taxonomy_table.json',
+                        help='Option to declare the path and name of the file containing the column names of the alignmebts_taxonomy tables.\
+                            Per default script will look for file with name \'taxonomy_table.json\' in the same directory as \
                             this Python script.')
     
     parser.add_argument('-c', '--import_commands',
@@ -334,7 +343,7 @@ def main():
         args.output = f'{args.prefix}'
 
     # Initilize data object (holds all neccessary information.)
-    data = Data(args.prefix, args.db_credentials, args.import_commands,
+    data = Data(args.prefix, args.db_credentials, args.import_commands, args.tables,
                 info = args.info, pythia = args.pythia, 
                 output = args.output, quiet = args.quiet)
     

@@ -8,7 +8,8 @@ rule import_to_db:
         tree_file = "{ali_id}_tree_parameters.tsv",
         pythia_file = "{ali_id}.pythia",
         credentials = "config/EvoNAPS_credentials.cnf",
-        import_commands = "config/EvoNAPS_import_statements.sql"
+        import_commands = "config/EvoNAPS_import_statements.sql",
+        tables = "config/taxonomy_table.json"
     output: "{ali_id}_summary.txt"
     conda: "../envs/evonaps_env.yaml"
     shell: """
@@ -24,12 +25,12 @@ rule import_to_db:
         
         if [ -f $info_file ]; then
             python workflow/scripts/import_to_db.py \
-            -p {input.prefix} -db {input.credentials} \
+            -p {input.prefix} -db {input.credentials} -t {input.tables} \
             -c {input.import_commands} -i {input.prefix}.info \
             -py $pythia_score -q
         else
             python workflow/scripts/import_to_db.py \
-            -p {input.prefix} -db {input.credentials} \
+            -p {input.prefix} -db {input.credentials} -t {input.tables} \
             -c {input.import_commands} \
             -py $pythia_score -q
         fi;
