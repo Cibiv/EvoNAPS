@@ -6,6 +6,7 @@ import mysql.connector as mysql
 import pandas as pd
 import logging
 import numpy as np
+import tqdm
 
 from update_alignment_taxonomy import get_taxonomy, taxonomic_hierarchy_per_sequence
 from update_all_alignments_taxonomy import update_alignment_taxonomy_tables
@@ -78,7 +79,7 @@ class Data:
         qprint(f'Comparing old and new database...', quiet=self.quiet)
         self.merged_tax['TO_DO'] = 'nothing'
 
-        for index, row in self.merged_tax.iterrows():
+        for index, row in tqdm(self.merged_tax.iterrows(), disable=self.quiet):
             if np.isnan(row['PARENT_TAX_ID_old']):
                 self.merged_tax.at[index, 'TO_DO'] = 'insert'
 
@@ -193,7 +194,7 @@ TAX_ID, PARENT_TAX_ID, TAX_NAME, TAX_RANK);"
 def update_tax(data:Data):
 
     qprint(f'Updating existing enrties in the taxonomy table....', quiet=data.quiet)
-    for idx, row in data.merged_tax[data.merged_tax['TO_DO']=='update'].iterrows():
+    for idx, row in tqdm(data.merged_tax[data.merged_tax['TO_DO']=='update'].iterrows(), disable=data.quiet):
         query = f'UPDATE taxonomy SET PARENT_TAX_ID=%s, TAX_NAME=%s, TAX_RANK=%s WHERE TAX_ID=%s;'
         params = (row['PARENT_TAX_ID_new'], row['TAX_NAME_new'], row['TAX_RANK_new'], row['TAX_ID'])
         run_query(data, query, params)
@@ -202,7 +203,7 @@ def merge_and_check(data:Data):
 
     qprint(f'Merging old tax_ids in sequences tables...', quiet=data.quiet)
     affected_tax_ids = []
-    for idx, row in data.merged_tax[data.merged_tax['TO_DO']=='delete'].iterrows():
+    for idx, row in tqdm(data.merged_tax[data.merged_tax['TO_DO']=='delete'].iterrows(), disable=data.quiet):
         old_id = row['TAX_ID']
 
         # Check if the tax_id is present in a sequence table
@@ -258,7 +259,7 @@ def delete_tax(data:Data) -> None:
         run_query(data, query, None)
 
     qprint(f'Delete deprecated tax_ids from the taxonomy table...', quiet=data.quiet)
-    for idx, row in data.merged_tax[data.merged_tax['TO_DO']=='delete'].iterrows():
+    for idx, row in tqdm(data.merged_tax[data.merged_tax['TO_DO']=='delete'].iterrows(), disable=data.quiet):
         old_id = row['TAX_ID']
         query = f'DELETE FROM taxonomy where TAX_ID=%s;'
         params = (int(old_id),)
@@ -276,17 +277,19 @@ def update_evonpas_taxonomy(data):
     
     # Write rows to be inserted in a new file
     new_data = data.merged_tax[data.merged_tax['TO_DO']=='insert']
-    insert_file = f'{data.output}_insert.tsv'
-    with open(insert_file, 'w') as w:
-        w.write('TAX_ID\tPARENT_TAX_ID\tTAX_NAME\tTAX_RANK\n')
-        for idx in new_data.index:
-            w.write(f'{new_data.at[idx, 'TAX_ID']}\t')
-            w.write(f'{new_data.at[idx, 'PARENT_TAX_ID_new']}\t')
-            w.write(f'{new_data.at[idx, 'TAX_NAME_new']}\t')
-            w.write(f'{new_data.at[idx, 'TAX_RANK_new']}\n')
+    if not new_data.empty:
+        insert_file = f'{data.output}_insert.tsv'
+        with open(insert_file, 'w') as w:
+            w.write('TAX_ID\tPARENT_TAX_ID\tTAX_NAME\tTAX_RANK\n')
+            for idx in new_data.index:
+                w.write(f'{new_data.at[idx, 'TAX_ID']}\t')
+                w.write(f'{new_data.at[idx, 'PARENT_TAX_ID_new']}\t')
+                w.write(f'{new_data.at[idx, 'TAX_NAME_new']}\t')
+                w.write(f'{new_data.at[idx, 'TAX_RANK_new']}\n')
 
-    # Insert file into the EvoNAPS database
-    insert_new(data, os.path.join(data.folder, insert_file))
+        # Insert file into the EvoNAPS database
+        insert_new(data, os.path.join(data.folder, insert_file))
+    
     # Update taxonomy table in the EvoNAPS database
     update_tax(data)
     # Update the sequences tables in the EvoNAPS database
