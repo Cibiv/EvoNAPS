@@ -114,7 +114,7 @@ def run_query(data:Data, query, params):
         logging.info("Successfully connected to the database!")
 
         # Enable local infile if needed
-        cursor.execute("SET GLOBAL local_infile = 1;")
+        #cursor.execute("SET GLOBAL local_infile = 1;")
         logging.info("Successfully set local_infile query!")
 
         # Execute the query
