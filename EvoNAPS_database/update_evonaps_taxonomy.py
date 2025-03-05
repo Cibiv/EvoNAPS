@@ -6,7 +6,7 @@ import mysql.connector as mysql
 import pandas as pd
 import logging
 import numpy as np
-import tqdm
+from tqdm import tqdm
 
 from update_alignment_taxonomy import get_taxonomy, taxonomic_hierarchy_per_sequence
 from update_all_alignments_taxonomy import update_alignment_taxonomy_tables
