@@ -80,15 +80,15 @@ class Data:
         qprint(f'Comparing old and new database...', quiet=self.quiet)
         self.merged_tax['TO_DO'] = 'nothing'
 
-        for index, row in tqdm(self.merged_tax.iterrows(), disable=self.quiet):
-            if np.isnan(row['PARENT_TAX_ID_old']):
-                self.merged_tax.at[index, 'TO_DO'] = 'insert'
+        for idx in tqdm(self.merged_tax.index, disable=self.quiet):
+            if np.isnan(self.merged_tax.at[idx, 'PARENT_TAX_ID_old']):
+                self.merged_tax.at[idx, 'TO_DO'] = 'insert'
 
-            elif not np.isnan(row['PARENT_TAX_ID_new']) and self._compare_row(row) is False:
-                self.merged_tax.at[index, 'TO_DO'] = 'update'
+            elif not np.isnan(self.merged_tax.at[idx, 'PARENT_TAX_ID_new']) and self._compare_row(self.merged_tax.loc[idx]) is False:
+                self.merged_tax.at[idx, 'TO_DO'] = 'update'
 
-            elif np.isnan(row['PARENT_TAX_ID_new']):
-                self.merged_tax.at[index, 'TO_DO'] = 'delete'
+            elif np.isnan(self.merged_tax.at[idx, 'PARENT_TAX_ID_new']):
+                self.merged_tax.at[idx, 'TO_DO'] = 'delete'
 
 def qprint(comment:str, quiet = False) -> None:
     if quiet is False:
@@ -195,21 +195,23 @@ TAX_ID, PARENT_TAX_ID, TAX_NAME, TAX_RANK);"
 def update_tax(data:Data):
 
     qprint(f'Updating existing enrties in the taxonomy table....', quiet=data.quiet)
-    for idx, row in tqdm(data.merged_tax[data.merged_tax['TO_DO']=='update'].iterrows(), disable=data.quiet):
+    sub_df = data.merged_tax[data.merged_tax['TO_DO']=='update']
+    for idx in tqdm(sub_df.index, disable=data.quiet):
         query = f'UPDATE taxonomy SET PARENT_TAX_ID=%s, TAX_NAME=%s, TAX_RANK=%s WHERE TAX_ID=%s;'
-        params = (row['PARENT_TAX_ID_new'], row['TAX_NAME_new'], row['TAX_RANK_new'], row['TAX_ID'])
+        params = (sub_df.at[idx, 'PARENT_TAX_ID_new'], sub_df.at[idx, 'TAX_NAME_new'], sub_df.at[idx,'TAX_RANK_new'], sub_df.at[idx,'TAX_ID'])
         run_query(data, query, params)
 
 def merge_and_check(data:Data):
 
     qprint(f'Merging old tax_ids in sequences tables...', quiet=data.quiet)
     affected_tax_ids = []
-    for idx, row in tqdm(data.merged_tax[data.merged_tax['TO_DO']=='delete'].iterrows(), disable=data.quiet):
-        old_id = row['TAX_ID']
+    sub_df = data.merged_tax[data.merged_tax['TO_DO']=='delete']
+    for idx in tqdm(sub_df.index, disable=data.quiet):
+        old_id = sub_df.at[idx, 'TAX_ID']
 
         # Check if the tax_id is present in a sequence table
         for seq_type in ['dna', 'aa']:
-            seq_df = check_sequences(data, row['TAX_ID'], seq_type=seq_type)
+            seq_df = check_sequences(data, sub_df.at[idx, 'TAX_ID'], seq_type=seq_type)
             if len(seq_df) > 0:
                 # If can be merged, update sequence table
                 if old_id in data.merged_dict.keys():
@@ -260,8 +262,9 @@ def delete_tax(data:Data) -> None:
         run_query(data, query, None)
 
     qprint(f'Delete deprecated tax_ids from the taxonomy table...', quiet=data.quiet)
-    for idx, row in tqdm(data.merged_tax[data.merged_tax['TO_DO']=='delete'].iterrows(), disable=data.quiet):
-        old_id = row['TAX_ID']
+    sub_df = data.merged_tax[data.merged_tax['TO_DO']=='delete']
+    for idx in tqdm(sub_df.index, disable=data.quiet):
+        old_id = sub_df.at[idx, 'TAX_ID']
         query = f'DELETE FROM taxonomy where TAX_ID=%s;'
         params = (int(old_id),)
         run_query(data, query, params)
