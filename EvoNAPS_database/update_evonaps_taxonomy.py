@@ -1,6 +1,6 @@
 import argparse
 import pathlib
-from os import path
+import os
 import sys
 import mysql.connector as mysql
 import pandas as pd
@@ -18,6 +18,7 @@ class Data:
         self.log_file = output+'.log'
         self.output = output
         self.quiet = quiet
+        self.folder = os.getcwd()
 
     def merge_taxon_ids(self, ncbi:pathlib.Path):
 
@@ -37,7 +38,7 @@ class Data:
         '''Reads in credentials file and returns dictionary holding the credentials.'''
 
         credentials = {}
-        if path.exists(file) == False:
+        if os.path.exists(file) == False:
             print(f'ERROR: Could not find db credentials file: {file}!')
             sys.exit(2)
 
@@ -185,7 +186,7 @@ def insert_new(data:Data, file_name):
 
     qprint(f'Inserting new entries into the taxonomy database...', quiet=data.quiet)
     query = f"LOAD DATA LOCAL INFILE '{file_name}' IGNORE INTO TABLE taxonomy FIELDS \
-TERMINATED BY '\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n' IGNORE 1 LINES (\
+TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n' IGNORE 1 LINES (\
 TAX_ID, PARENT_TAX_ID, TAX_NAME, TAX_RANK);"
     run_query(data, query, None)
 
@@ -285,7 +286,7 @@ def update_evonpas_taxonomy(data):
             w.write(f'{new_data.at[idx, 'TAX_RANK_new']}\n')
 
     # Insert file into the EvoNAPS database
-    insert_new(data, 'to_insert.tsv')
+    insert_new(data, os.path.join(data.folder, insert_file))
     # Update taxonomy table in the EvoNAPS database
     update_tax(data)
     # Update the sequences tables in the EvoNAPS database
@@ -304,7 +305,7 @@ def update_alignment_taxonomy(data:Data, db_credentials):
 
 def main():
 
-    current_dir = path.dirname(path.abspath(__file__))
+    current_dir = os.path.dirname(os.path.abspath(__file__))
 
     parser = argparse.ArgumentParser(description='**Script to update the EvoNAPS taxonomy table.**')
     

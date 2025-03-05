@@ -109,10 +109,12 @@ class Data:
             'branches': f'{self.prefix}_branch_parameters.tsv'
             }
 
-        for _, item in self.file_dict.items():
+        for key, item in self.file_dict.items():
             if path.exists(item) == False:
                 print(f'ERROR: Could not find file {item}!')
                 sys.exit(2)
+            else:
+                self.file_dict[key] = path.abspath(item)
 
 def qprint(line, quiet = False):
     if quiet is False:

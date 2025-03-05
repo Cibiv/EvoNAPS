@@ -87,12 +87,14 @@ def update_tables(data:Data):
     taxonomy_per_seq = {}
     queries = []
 
+    current_foler = os.getcwd()
     for seq_type in ['dna', 'aa']:
         # declare output_file name and create inport query
         output_file_name = f'{data.output}_{seq_type}_alignments_taxonomy.tsv'
 
-        query = f"LOAD DATA LOCAL INFILE '{output_file_name}' \
-IGNORE INTO TABLE {seq_type}_alignments_taxonomy FIELDS TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n' IGNORE 1 LINES ("
+        query = f"LOAD DATA LOCAL INFILE '{os.path.join(current_foler, output_file_name)}' \
+IGNORE INTO TABLE {seq_type}_alignments_taxonomy FIELDS TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY \
+'\"' LINES TERMINATED BY '\\n' IGNORE 1 LINES ("
         for key in new_row.keys():
             if key in ["ALI_ID", "TAX_RESOLVED", "LCA_TAX_ID", "LCA_RANK_NR", "LCA_RANK_NAME"]:	
                 query += f"{key}, "
