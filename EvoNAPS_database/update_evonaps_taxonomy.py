@@ -59,7 +59,8 @@ class Data:
             "user": credentials['user'],
             "password": credentials['password'],
             "database": credentials['database'], 
-            "allow_local_infile": True 
+            "allow_local_infile": True,
+            "use_pure": True
         }
 
     def _compare_row(self, row):
