@@ -111,10 +111,11 @@ def run_query(data:Data, query, params):
         conn.autocommit = True
         cursor = conn.cursor(buffered=True)
 
-        print("Successfully connected to the database!")
+        logging.info("Successfully connected to the database!")
 
         # Enable local infile if needed
         cursor.execute("SET GLOBAL local_infile = 1;")
+        logging.info("Successfully set local_infile query!")
 
         # Execute the query
         if params:
@@ -122,7 +123,7 @@ def run_query(data:Data, query, params):
         else:
             cursor.execute(query)
 
-        print("Successfully executed query!")
+        logging.info("Successfully executed query!")
 
         # Log affected rows
         info['affected'] = cursor.rowcount
