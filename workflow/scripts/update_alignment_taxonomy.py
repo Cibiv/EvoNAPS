@@ -3,6 +3,7 @@ import mysql.connector as mysql
 import json
 
 def get_taxonomy(db_config:dict) -> pd.DataFrame:
+    '''Function to retrieve the taxonomy table from the EvoNAPS database.'''
 
     mydb = mysql.connect(**db_config)
 
@@ -18,6 +19,10 @@ def get_taxonomy(db_config:dict) -> pd.DataFrame:
     return taxonomy.set_index('TAX_ID')
 
 def taxonomic_hierarchy_per_sequence(tax_id:str, taxonomy_db:pd.DataFrame) -> dict:
+    '''
+    Function to retrieve the taxonomic hierarchy of a given taxon ID.
+    The function returns a dictionary with the taxon IDs, names, and ranks of the lineage.
+    '''
 
     # Initailize dictionary, set current tax_id to input tax_id.
     lineage_tax_ids = []
@@ -47,6 +52,7 @@ def taxonomic_hierarchy_per_sequence(tax_id:str, taxonomy_db:pd.DataFrame) -> di
     return {'TAX_ID':lineage_tax_ids, 'TAX_RANK': lineage_ranks, 'TAX_NAME': lineage_names}
 
 def get_tax_ids(db_config:dict, ali_id:str, seq_type:str) -> pd.DataFrame:
+    '''Function to retrieve the taxon IDs of an alignemnt from the EvoNAPS database.'''
 
     mydb = mysql.connect(**db_config)
 
@@ -61,6 +67,13 @@ def get_tax_ids(db_config:dict, ali_id:str, seq_type:str) -> pd.DataFrame:
     return seqs
 
 def get_lca(new_row:dict, seqs_tax:dict, tax_rank_dict:dict) -> dict:
+    '''
+    Function to calculate the last common ancestor (LCA) of a set of sequences.
+    The LCA is defined as the lowest taxonomic rank that is shared by all sequences.
+    The function returns a dictionary with the LCA taxon ID and rank.
+    The dictionary also contains the taxon IDs of the lineage of the LCA
+    and is designed as a new row for the alignments_taxonomy tables in the EvoNAPS database.
+    '''
 
     # Get lineage of first entry in sequence dictionary to use it as comparison
     first_key = next(iter(seqs_tax))
@@ -106,6 +119,12 @@ def get_lca(new_row:dict, seqs_tax:dict, tax_rank_dict:dict) -> dict:
     return new_row
 
 def create_query(tax_dict:dict, seq_type:str) -> tuple[str, str]:
+    '''
+    Function to create a query that can be used to insert a new line into the
+    alignments_taxonomy table of the EvoNAPS database.
+    The function returns a tuple with the query and the parameters that will 
+    replace the correponding spots in the query.
+    '''
 
     column_string = "("
     value_string = "("
@@ -155,6 +174,9 @@ def get_alignment_taxonomy(ali_id:str, seq_type:str, db_config:dict, file:str) -
 
     tax_rank_dict = taxonomy_table[0]
     new_row = taxonomy_table[1]
+
+    # Set alignment ID in new row
+    new_row['ALI_ID'] = ali_id
 
     #Get all tax IDs for the alignment
     seqs = get_tax_ids(db_config, ali_id, seq_type)

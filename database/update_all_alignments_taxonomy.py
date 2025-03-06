@@ -10,14 +10,16 @@ import os
 from update_alignment_taxonomy import get_taxonomy, get_lca, taxonomic_hierarchy_per_sequence
 
 class Data:
+    '''Class to hold the data needed for the update_alignment_taxonomy_tables function.'''
 
-    def __init__(self, db_config, output, quiet = False):
+    def __init__(self, db_config, output, table, quiet = False):
         self.read_db_credentials(db_config)
         self.output = output
         self.quiet = quiet
+        self.table = table
         self.nodes = get_taxonomy(self.db_config)
         
-    def read_db_credentials(self, file:pathlib.Path):
+    def read_db_credentials(self, file:pathlib.Path) -> None:
         '''Reads in credentials file and returns dictionary holding the credentials.'''
 
         credentials = {}
@@ -44,7 +46,8 @@ class Data:
             "allow_local_infile": True 
         }
 
-def get_all_seq(db_config, seq_type = 'dna'):
+def get_all_seq(db_config, seq_type = 'dna') -> list:
+    '''Fetches all unique tax_ids from the EvoNAPS database.'''
 
     mydb = mysql.connect(**db_config)
 
@@ -58,7 +61,8 @@ def get_all_seq(db_config, seq_type = 'dna'):
 
     return unique_tax_ids['TAX_ID'].to_list()
 
-def get_all_alis(db_config, seq_type = 'dna'):
+def get_all_alis(db_config, seq_type = 'dna') -> pd.DataFrame:
+    '''Fetches all unique alignment ids from the EvoNAPS database.'''
     
     mydb = mysql.connect(**db_config)
 
@@ -73,11 +77,18 @@ def get_all_alis(db_config, seq_type = 'dna'):
     # Reindex taxonomy table to allow for faster lookups.
     return ali_ids
 
-def update_tables(data:Data):
+def update_tables(data:Data) -> list:
+    '''
+    Update the taxonomy tables for both DNA and AA alignments.
+    1. Get all unique tax_ids from the EvoNAPS database.
+    2. Get the taxonomic hierarchy for each tax_id.
+    3. For each alignment, get the LCA.
+    4. Write the results to a file.
+    5. Return the queries to be executed
+    '''
 
     # Read in taxonomy table from JSON file.
-    file = "taxonomy_table.json"
-    with open(file, 'r') as f:
+    with open(data.table, 'r') as f:
         taxonomy_table = json.load(f)
 
     tax_rank_dict = taxonomy_table[0]
@@ -164,19 +175,16 @@ IGNORE INTO TABLE {seq_type}_alignments_taxonomy FIELDS TERMINATED BY '\\t' OPTI
     
     return queries
 
-def update_alignment_taxonomy_tables(db_config, output, quiet):
+def update_alignment_taxonomy_tables(db_config, output, table, quiet) -> list:
+    '''
+    Update the taxonomy tables for both DNA and AA alignments.
+    1. Get all unique tax_ids from the EvoNAPS database.
+    2. Get the taxonomic hierarchy for each tax_id.
+    3. For each alignment, get the LCA.
+    4. Write the results to a file.
+    5. Return the queries to be executed
+    '''
 
-    data = Data(db_config, output, quiet=quiet)
+    data = Data(db_config, output, table, quiet=quiet)
     queries = update_tables(data)
     return queries
-
-def main():
-    output = 'alignments_taxonomy'
-    db_config = 'EvoNAPS_credentials.cnf'
-    nodes = '/home/frareden/.ncbi_tax/nodes.tsv'
-
-    data = Data(db_config, nodes, output)
-    update_tables(data)
-
-if __name__ == "__main__":
-    main()

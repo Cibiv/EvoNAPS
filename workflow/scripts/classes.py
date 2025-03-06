@@ -69,6 +69,16 @@ class ConstantVariabels:
                     i+=1
 
 class Results:
+    """
+    Results class holds the results of the workflow.
+    The class holds the following dataframes:
+    - ali_para: alignment parameters
+    - seq_para: sequence parameters
+    - model_para: model parameters
+    - tree_para: tree parameters
+    - branch_para: branch parameters
+    that are to be filled with the results of the workflow.
+    """
 
     def __init__(self, prefix, out_prefix, config_folder, quiet = False, type = 'DNA'):
 
@@ -102,6 +112,10 @@ class Results:
         self.branch_number_keep = None
 
     def initialize_df(self):
+        '''
+        Function to initialize the dataframes for the results.
+        The dataframes are initialized as empty dataframes and saved to files.
+        '''
 
         self.branch_para = pd.DataFrame(columns = ['ALI_ID', 'IQTREE_VERSION', 'RANDOM_SEED', 'TIME_STAMP', \
                 'TREE_TYPE', 'BRANCH_INDEX', 'BRANCH_TYPE', 'BL', 'SPLIT_SIZE', \
@@ -194,10 +208,18 @@ class Results:
         self.model_para.to_csv(self.file_name_dict['model_para'], encoding='utf-8', index = False, sep = '\t')
 
     def write_to_df(self, df, name): 
+        '''
+        Function to write data into a dataframe.
+        Input:
+        - df: dataframe to be written into
+        - name: name of the dataframe
+        '''
+
         df.to_csv(self.file_name_dict[name], encoding='utf-8', mode = 'a', sep  ='\t', index = False, header = False)
         qprint('...parameters were written into file '+self.file_name_dict[name], self.quiet)
 
     def load_dfs(self):
+        ''''Function to load the dataframes from the files.'''
 
         self.seq_para = pd.read_csv(self.file_name_dict['seq_para'], sep='\t')
         self.ali_para = pd.read_csv(self.file_name_dict['ali_para'], sep='\t')
@@ -206,6 +228,7 @@ class Results:
         self.model_para = pd.read_csv(self.file_name_dict['model_para'], sep='\t')
 
     def update_dfs(self):
+        ''''Function to update the dataframes with the results of the workflow.'''
         
         row = self.tree_para[(self.tree_para['ORIGINAL_ALI'] == 1) & (self.tree_para['TREE_TYPE'] == 'ml')].iloc[0]
         column_names = ['DIST_MIN', 'DIST_MAX', 'DIST_MEAN', 'DIST_MEDIAN', 'DIST_VAR']
@@ -219,6 +242,7 @@ class Results:
         seq_para.to_csv(self.file_name_dict['seq_para'], encoding='utf-8', sep  ='\t', index = False)
 
     def round_dfs(self):
+        '''Function to round the dataframes to the number of decimal places specified in the config file.'''
 
         self.load_dfs()
 
@@ -255,7 +279,21 @@ class Results:
 
         return
 
-class Data: 
+class Data:
+    """
+    Data class holds the data of the workflow to be combed for important information.
+    The class holds the following files:
+    - iqtree: IQTree output
+    - log: IQTree log output
+    - mldist: IQTree model distance output
+    - check: IQTree model check output
+    Should the alignment have been run with --keep-ident, the class also holds the following files:
+    - iqtree_keep: IQTree output of the alignment with keep-ident
+    - log_keep: IQTree log output of the alignment with keep-ident
+    - mldist_keep: IQTree model distance output of the alignment with keep-ident
+    - check_keep: IQTree model check output of the alignment with keep-ident
+    that are to be filled with the results of the workflow.
+    """
 
     def __init__(self, prefix, quiet = False, ali_file = None, tax_file = None):
 
@@ -285,7 +323,10 @@ class Data:
         self.check_keep = None
 
     def check_files(self):
-        '''Check if all relevent files with the given prefix can be found. Should one of the files be missing, the program is being exited.'''
+        '''
+        Check if all relevent files with the given prefix can be found. 
+        Should one of the files be missing, the program is being exited.
+        '''
 
         ctrl = 0
 
@@ -327,6 +368,7 @@ class Data:
             sys.exit(2)
 
     def open_files(self):
+        '''Open all files with the given prefix and save them as lists or dataframes.'''
 
         with open(self.prefix+'.iqtree', encoding='utf-8') as t:
             self.iqtree = t.readlines()
@@ -363,7 +405,7 @@ class Data:
             self.tax_file = pd.read_csv(self.tax_file, encoding='utf-8', usecols=[0,1,2,3], \
                                     comment="#", header=None, names=['SEQ_NAME', 'TAX_ID', 'TAX_CHECK', 'ACC_NR'])
 
-    def check_ali_type(self):
+    def check_ali_type(self) -> str:
         '''
         Function that checks if the underlying alignment that has been run through the workflow is a DNA or protein alignment.
         Returns data type of alignment.

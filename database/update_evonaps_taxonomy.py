@@ -8,20 +8,25 @@ import logging
 import numpy as np
 from tqdm import tqdm
 
+sys.path.append('../workflow/scripts')
+
 from update_alignment_taxonomy import get_taxonomy, taxonomic_hierarchy_per_sequence
 from update_all_alignments_taxonomy import update_alignment_taxonomy_tables
 
 class Data:
+    '''Class to hold all the data needed for the update.'''
 
-    def __init__(self, db_credentials:pathlib.Path, output:str, quiet = False):
+    def __init__(self, db_credentials:pathlib.Path, output:str, table:str, quiet = False):
         
         self.read_db_credentials(db_credentials)
         self.log_file = output+'.log'
         self.output = output
         self.quiet = quiet
+        self.table = table
         self.folder = os.getcwd()
 
     def merge_taxon_ids(self, ncbi:pathlib.Path):
+        '''Function to merge the old and new taxon IDs.'''
 
         qprint(f'Reading in new database...', quiet=self.quiet)
         nodes = pd.read_csv(ncbi, sep='\t')
@@ -60,10 +65,11 @@ class Data:
             "password": credentials['password'],
             "database": credentials['database'], 
             "allow_local_infile": True,
-            "use_pure": True
         }
 
     def _compare_row(self, row):
+        '''Function to compare two rows of the merged database.'''
+
         if int(row['PARENT_TAX_ID_old']) != int(row['PARENT_TAX_ID_new']):
             #print(f'{int(row['PARENT_TAX_ID_old'])}, {int(row['PARENT_TAX_ID_new'])}')
             return False
@@ -76,11 +82,12 @@ class Data:
         return True
 
     def compare(self):
+        '''Function to compare the old and new database and determine what needs to be done.'''
 
         qprint(f'Comparing old and new database...', quiet=self.quiet)
         self.merged_tax['TO_DO'] = 'nothing'
 
-        for row in tqdm(self.merged_tax.itertuples(index=True,name='Pandas'), disable=self.quiet):
+        for row in tqdm(self.merged_tax.itertuples(index=True,name='Pandas'), total=len(self.merged_tax), disable=self.quiet):
             if np.isnan(row.PARENT_TAX_ID_old):
                 self.merged_tax.at[row.Index, 'TO_DO'] = 'insert'
 
@@ -91,11 +98,13 @@ class Data:
                 self.merged_tax.at[row.Index, 'TO_DO'] = 'delete'
 
 def qprint(comment:str, quiet = False) -> None:
+    '''Function to print a comment if quiet is False.'''
     if quiet is False:
         print(comment)
     return
 
 def run_query(data:Data, query, params):
+    '''Function to run a query on the MySQL database.'''
 
     info = {}
     
@@ -108,22 +117,26 @@ def run_query(data:Data, query, params):
     # MySQL connection
     try:
         conn = mysql.connect(**data.db_config)
-        conn.autocommit = True
         cursor = conn.cursor(buffered=True)
 
-        logging.info("Successfully connected to the database!")
-
-        # Enable local infile if needed
-        #cursor.execute("SET GLOBAL local_infile = 1;")
-        logging.info("Successfully set local_infile query!")
+        # Check if local_infile is enabled
+        cursor.execute("SHOW VARIABLES LIKE 'local_infile';")
+        results = cursor.fetchall()
+        if results[0][1] == 'OFF':
+            try:
+                cursor.execute("SET GLOBAL local_infile = 1;")
+                conn.commit()
+            except mysql.Error as err:
+                log_msg = f"{err}"
+                logging.error(log_msg)
+                print(log_msg)
+                sys.exit(2)
 
         # Execute the query
         if params:
             cursor.execute(query, params)
         else:
             cursor.execute(query)
-
-        logging.info("Successfully executed query!")
 
         # Log affected rows
         info['affected'] = cursor.rowcount
@@ -144,7 +157,7 @@ def run_query(data:Data, query, params):
 Number of Warnings: {info['warning']}")
 
         # Commit changes
-        #conn.commit()
+        conn.commit()
 
     except mysql.Error as err:
         log_msg = f"{err}"
@@ -159,7 +172,8 @@ Number of Warnings: {info['warning']}")
         if 'conn' in locals() and conn:
             conn.close()
 
-def read_merged_file(merged):
+def read_merged_file(merged:str) -> dict:
+    '''Function to read in the merged file and return a dictionary.'''
 
     with open(merged) as t:
         lines = t.readlines()
@@ -175,7 +189,8 @@ def read_merged_file(merged):
 
     return merged_dict
 
-def check_sequences(data:Data, tax_id, seq_type = 'DNA'):
+def check_sequences(data:Data, tax_id, seq_type = 'DNA') -> list:
+    '''Function to check if a tax_id is present in a sequences table.'''
     
     mydb = mysql.connect(**data.db_config)
 
@@ -190,7 +205,8 @@ def check_sequences(data:Data, tax_id, seq_type = 'DNA'):
     # Reindex taxonomy table to allow for faster lookups.
     return list(df['ALI_ID'])
 
-def insert_new(data:Data, file_name):
+def insert_new(data:Data, file_name) -> None:
+    '''Function to insert new entries into the taxonomy table.'''
 
     qprint(f'Inserting new entries into the taxonomy database...', quiet=data.quiet)
     query = f"LOAD DATA LOCAL INFILE '{file_name}' IGNORE INTO TABLE taxonomy FIELDS \
@@ -199,20 +215,26 @@ TAX_ID, PARENT_TAX_ID, TAX_NAME, TAX_RANK);"
     run_query(data, query, None)
 
 def update_tax(data:Data):
+    '''Function to update the existing entries in the taxonomy table in the EvoNAPS database.'''
 
     qprint(f'Updating existing enrties in the taxonomy table....', quiet=data.quiet)
     sub_df = data.merged_tax[data.merged_tax['TO_DO']=='update']
-    for row in tqdm(sub_df.itertuples(index=True,name='Pandas'), disable=data.quiet):
+    for row in tqdm(sub_df.itertuples(index=True,name='Pandas'), total=len(sub_df), disable=data.quiet):
         query = f'UPDATE taxonomy SET PARENT_TAX_ID=%s, TAX_NAME=%s, TAX_RANK=%s WHERE TAX_ID=%s;'
         params = (row.PARENT_TAX_ID_new, row.TAX_NAME_new, row.TAX_RANK_new, row.TAX_ID)
         run_query(data, query, params)
 
-def merge_and_check(data:Data):
+def merge_and_check(data:Data) -> list:
+    '''
+    Function to merge old tax_ids (that are to be deleted) in the sequences tables should it the present
+    in the merged dictionary. The tax_ids that are to be delted but cannot be merged, are returned as 
+    a list
+    '''
 
     qprint(f'Merging old tax_ids in sequences tables...', quiet=data.quiet)
     affected_tax_ids = []
     sub_df = data.merged_tax[data.merged_tax['TO_DO']=='delete']
-    for row in tqdm(sub_df.itertuples(index=True,name='Pandas'), disable=data.quiet):
+    for row in tqdm(sub_df.itertuples(index=True,name='Pandas'), total=len(sub_df), disable=data.quiet):
         old_id = row.TAX_ID
 
         # Check if the tax_id is present in a sequence table
@@ -232,6 +254,10 @@ def merge_and_check(data:Data):
     return affected_tax_ids
 
 def find_tax_id(data:Data, tax_ids:list) -> None:
+    '''
+    Function to find a tax_id (depper in the lineage) for a tax_id 
+    that is to be deleted but could not be merged.
+    '''
 
     qprint(f'Update sequences tables for non-mergable tax_ids...', quiet=data.quiet)
     taxonomy_tbl = get_taxonomy(data.db_config)
@@ -261,6 +287,10 @@ def find_tax_id(data:Data, tax_ids:list) -> None:
                 run_query(data, query, params)
 
 def delete_tax(data:Data) -> None:
+    '''
+    Function to delete entries from the taxonomy table in the EvoNAPS database.
+    Also, the alignments_taxonomy tables will be truncated.
+    '''
 
     qprint(f'Truncate alignment_taxonomy tables...', quiet=data.quiet)
     for seq_type in ['dna', 'aa']:
@@ -269,13 +299,23 @@ def delete_tax(data:Data) -> None:
 
     qprint(f'Delete deprecated tax_ids from the taxonomy table...', quiet=data.quiet)
     sub_df = data.merged_tax[data.merged_tax['TO_DO']=='delete']
-    for row in tqdm(sub_df.itertuples(index=True,name='Pandas'), disable=data.quiet):
+    for row in tqdm(sub_df.itertuples(index=True,name='Pandas'), total=len(sub_df), disable=data.quiet):
         old_id = row.TAX_ID
         query = f'DELETE FROM taxonomy where TAX_ID=%s;'
         params = (int(old_id),)
         run_query(data, query, params)
 
-def update_evonpas_taxonomy(data):
+def update_evonpas_taxonomy(data) -> None:
+    '''
+    Function to update the EvoNAPS taxonomy table.
+    The function will:
+    1. Compare the old and new database
+    2. Write rows to be inserted in a new file 
+    3. Insert new rows into the EvoNAPS database
+    4. Update the taxonomy table in the EvoNAPS database
+    5. Update the sequences tables in the EvoNAPS database
+    6. Delete entries from the taxonomy table in the EvoNAPS database
+    '''	
 
     # Comnpare current taxonomy to new one
     # Check how many entries need to be changed
@@ -311,14 +351,22 @@ def update_evonpas_taxonomy(data):
     delete_tax(data)
 
 def update_alignment_taxonomy(data:Data, db_credentials):
+    '''Function to update the alignments_taxonomy tables.'''
 
-    queries = update_alignment_taxonomy_tables(db_credentials, data.output, data.quiet)
+    queries = update_alignment_taxonomy_tables(db_credentials, data.output, data.table, data.quiet)
     for query in queries:
         run_query(data, query, None)
 
-def main():
+def check_files(file) -> None:
+    '''Function to check if a file exists.'''
+    
+    if os.path.exists(file) == False:
+        print(f'ERROR: Could not find file: {file}!')
+        sys.exit(2)
 
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+    return
+
+def main():
 
     parser = argparse.ArgumentParser(description='**Script to update the EvoNAPS taxonomy table.**')
     
@@ -337,11 +385,18 @@ def main():
     parser.add_argument('-db', '--db_credentials',
                         type = str,
                         action='store',
-                        required = True,
-                        default = f'{current_dir}/EvoNAPS_credentials.cnf',
+                        default = '../config/EvoNAPS_credentials.cnf',
                         help='Option to declare file that contains the credentials for the EvoNAPS database.\
-                            Per default script will look for file with name \'EvoNAPS_credentials.cnf\' in the same directory as \
-                            this Python script.')
+                            Per default script will look for file with name \'EvoNAPS_credentials.cnf\' in the \
+                            folder ../config.')
+    
+    parser.add_argument('-tbl', '--table',
+                        type = str,
+                        action = 'store',
+                        default = '../config/taxonomy_table.json',
+                        help='Option to declare the path to and name of the file holding the columns of the taxonomy table.\
+                            Per default script will look for file with name \'taxonomy_table.json\' in the \
+                            folder ../config.')
     
     parser.add_argument('-o', '--output',
                         type=str,
@@ -362,8 +417,12 @@ def main():
     if args.output is None:
         args.output = 'update_taxonomy'
 
+    # Check if files exist
+    for file in [args.db_credentials, args.table, args.merge, args.ncbi]:
+        check_files(file)
+
     # Read in all the data
-    data = Data(args.db_credentials, args.output, quiet = args.quiet)
+    data = Data(args.db_credentials, args.output, args.table, quiet = args.quiet)
     
     if not args.alignment_only:
         # Update the EvoNAPS taxonomy table

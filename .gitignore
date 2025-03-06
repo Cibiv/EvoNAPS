@@ -2,9 +2,9 @@
 *.tsv
 EvoNAPS_credentials.cnf
 .snakemake
-EvoNAPS_database/scripts
-EvoNAPS_workflow/test
-*.ipyp
+database/scripts
+test
+*.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

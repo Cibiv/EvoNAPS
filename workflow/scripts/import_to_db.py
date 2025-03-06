@@ -9,6 +9,7 @@ import logging
 from update_alignment_taxonomy import get_alignment_taxonomy
 
 class Data:
+    '''Class to hold all necessary information for the import process.'''
         
     def __init__(self, prefix, credentials, import_commands, tables,
                  info = None, pythia = None, 
@@ -31,6 +32,7 @@ class Data:
         self.cleanup_ali = f"DELETE FROM {self.seq_type.lower()}_alignments WHERE ALI_ID='{self.ali_id}'"
 
     def read_import_commands(self, file:pathlib.Path):
+        '''Reads in the import commands file and stores the commands in a dictionary.'''
 
         self.import_commands = {}
         if path.exists(file) == False:
@@ -77,6 +79,7 @@ class Data:
         }
 
     def read_info_file(self, file) -> dict:
+        '''Reads in the info file and returns a dictionary holding the information.'''
 
         info = {}
         if path.exists(file) == False:
@@ -92,6 +95,7 @@ class Data:
         return info
     
     def check_ali_type(self):
+        '''Reads in the alignment results file and determines the type of alignment (DNA or AA).'''	
 
         ali_para = pd.read_csv(self.file_dict['alignments'], sep='\t', encoding='utf-8')
 
@@ -99,6 +103,7 @@ class Data:
         self.ali_id = self.info['ALI_ID'] if 'ALI_ID' in self.info.keys() else ali_para.at[0, 'ALI_ID'].replace('.fasta', '')
 
     def check_files(self):
+        '''Check if all files are present and store the absolute path of each file.'''
         
         # Order is important! Will dictate in which order to insert into the databse
         # Alignment file needs to be first!
@@ -117,10 +122,12 @@ class Data:
                 self.file_dict[key] = path.abspath(item)
 
 def qprint(line, quiet = False):
+    '''Function to print a line if quiet mode is not activated.'''
     if quiet is False:
         print(line)
 
-def run_query(data:Data, query, params, cleanup = True):
+def run_query(data:Data, query, params, cleanup = False) -> int:
+    '''Function to run a query on the EvoNAPS database.'''
 
     duplicate_tmp = 0
 
@@ -135,11 +142,24 @@ def run_query(data:Data, query, params, cleanup = True):
         conn = mysql.connect(**data.db_config)
         cursor = conn.cursor()
 
-        # Enable local infile if needed
-        cursor.execute("SET GLOBAL local_infile = 1;")
+        # Check if local_infile is enabled
+        cursor.execute("SHOW VARIABLES LIKE 'local_infile';")
+        results = cursor.fetchall()
+        if results[0][1] == 'OFF':
+            try:
+                cursor.execute("SET GLOBAL local_infile = 1;")
+                conn.commit()
+            except mysql.Error as err:
+                log_msg = f"{err}"
+                logging.error(log_msg)
+                print(log_msg)
+                sys.exit(2)
 
         # Execute the query
-        cursor.execute(query, params)
+        if params:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
         
         # Fetch warnings
         cursor.execute("SHOW WARNINGS;")
@@ -176,7 +196,10 @@ def run_query(data:Data, query, params, cleanup = True):
 
     return duplicate_tmp
 
-def import_data(data:Data):
+def import_data(data:Data) -> int:
+    '''Function to import the new alignment into the EvoNAPS database.'''
+
+    print(data.ali_id)
 
     for key, file in data.file_dict.items():
         table = f'{data.seq_type.lower()}_{key}'
@@ -197,7 +220,10 @@ def import_data(data:Data):
                 w.write(f'{message}\n')
         
         # Run query
-        check_tmp = run_query(data, query, tuple(params))
+        if key == 'alignments':
+            check_tmp = run_query(data, query, tuple(params), cleanup=False)
+        else:
+            check_tmp = run_query(data, query, tuple(params), cleanup=True)
 
         # Check if there was a duplicate warning.
         # Stop inserts if there was and return.
@@ -213,7 +239,8 @@ the --info option. Use --help for more information.'
         
     return 0
 
-def update_data(data:Data):
+def update_data(data:Data) -> None:
+    '''Function to update the EvoNAPS database with additional information for the target alignment.'''
 
     # Update alignments table with Pythia score, delete alignment if not possible.
     if data.pythia:
@@ -282,8 +309,6 @@ def update_data(data:Data):
 
 def main():
 
-    current_dir = path.dirname(path.abspath(__file__))
-
     parser = argparse.ArgumentParser(description='**Script to import files into EvoNAPS database.**')
     
     parser.add_argument('-p', '--prefix',
@@ -295,27 +320,28 @@ def main():
     parser.add_argument('-db', '--db_credentials',
                         type=pathlib.Path,
                         action='store',
-                        default=f'{current_dir}/EvoNAPS_credentials.cnf',
+                        default=f'../../config/EvoNAPS_credentials.cnf',
                         help='Option to declare file that contains the credentials for the EvoNAPS database.\
-                            Per default script will look for file with name \'EvoNAPS_credentials.cnf\' in the same directory as \
-                            this Python script.')
+                            Per default script will look for file with name \'EvoNAPS_credentials.cnf\' in the \
+                            folder ../../config.')
     
     parser.add_argument('-t', '--tables',
                         type=pathlib.Path,
                         action='store',
-                        default=f'{current_dir}/taxonomy_table.json',
-                        help='Option to declare the path and name of the file containing the column names of the alignmebts_taxonomy tables.\
-                            Per default script will look for file with name \'taxonomy_table.json\' in the same directory as \
-                            this Python script.')
+                        default=f'../../config/taxonomy_table.json',
+                        help='Option to declare the path to and name of the file containing the column \
+                            names of the alignments_taxonomy tables.\
+                            Per default script will look for file with name \'taxonomy_table.json\' in the \
+                            folder ../../config.')
     
     parser.add_argument('-c', '--import_commands',
                         type=pathlib.Path,
                         action='store',
-                        default=f'{current_dir}/EvoNAPS_import_statements.sql',
+                        default=f'../../config/EvoNAPS_import_statements.sql',
                         help='Option to declare file that contains the import commands. \
                             Per default script will look for file with name \
-                            \'EvoNAPS_import_statements.sql\' in the same directory as \
-                            this Python script.')
+                            \'EvoNAPS_import_statements.sql\' in the \
+                            folder ../../config.')
     
     parser.add_argument('-o', '--output',
                         type=str, action='store',

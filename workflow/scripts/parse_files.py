@@ -78,7 +78,8 @@ def check_state_freqs(data:Data, results:Results):
 
 def parse_ali_parameters(data:Data, results:Results):
     '''
-    Function that gathers all information to be stored  
+    Function that parses out all relevent information from the iqtree file regarding the alignment.
+    Results are stored in the Results object and written into correspinding outut file. 
     '''    
 
     # Helper dictionary that will store "constants" such as the alignment ID (ALI_ID) or timestamp.

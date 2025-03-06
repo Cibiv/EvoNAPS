@@ -361,7 +361,11 @@ def write_branches_to_df(G, edge_dic, stats, len_external, rooted = False):
 
     return stats, branches_df
 
-def parse_tree(treefile, name_dic = None, rooted = False): 
+def parse_tree(treefile, name_dic = None, rooted = False) -> tuple:
+    '''
+    Function to parse internal and external branches from a phylogenetic tree given in Newick string format.
+    The function returns a dictionary with the statistics and a DataFrame with the branch parameters.
+    '''
 
     stats = {}
 

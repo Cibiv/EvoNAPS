@@ -8,6 +8,7 @@ import pandas as pd
 from classes import ConstantVariabels, Data, Results
 
 def qprint(message, quiet=False):
+    '''Prints a message if quiet is False.'''
     if not quiet:
         print(message)
 
@@ -73,7 +74,12 @@ def trans_datetime(timeStamp: str) -> datetime:
     '''Transforms the timestamp (input as string) into datetime format.'''
     return datetime.strptime(timeStamp, '%c')
 
-def parse_constant_stats_from_iqtree(iqtree): 
+def parse_constant_stats_from_iqtree(iqtree) -> tuple[str,str,str,datetime]:
+    '''
+    Function that parses the constant statistics from the IQ-Tree log file.
+    Input: The log file of the IQ-Tree run.
+    Returns: The IQ-Tree version, the alignment ID, the random number seed and the timestamp.
+    '''
 
     iqtree_version, ali_id, random_number_seed, timestamp = None, None, None, None
     iqtree_version = iqtree[0].split(' ')[1]
@@ -94,6 +100,11 @@ def parse_constant_stats_from_iqtree(iqtree):
     return iqtree_version, ali_id, random_number_seed, timestamp
 
 def check_duplicate_sequences(data:Data, results:Results, j:int, identical:int) -> int:
+    '''
+    Function that checks for duplicate sequences in the alignment.
+    Input: The data object, the results object, the index of the log file and the number of identical sequences.
+    Returns: The number of identical sequences.
+    '''
 
     results.seq_para.IDENTICAL_TO = results.seq_para.IDENTICAL_TO.astype(str)
     while data.log[j][:len('Checking for duplicate sequences: done in ')] != 'Checking for duplicate sequences: done in ':
@@ -114,6 +125,12 @@ def check_duplicate_sequences(data:Data, results:Results, j:int, identical:int) 
     return identical
 
 def check_removed_sequences(data:Data, results:Results, j:int, identical:int, excluded:int) -> tuple[int,int]:
+    '''
+    Function that checks for sequences that were removed from the alignment.
+    Input: The data object, the results object, the index of the log file, 
+    the number of identical sequences and the number of excluded sequences.
+    Returns: The number of identical sequences and the number of excluded sequences.
+    '''
 
     while data.log[j][:len('Alignment was printed to ')]!='Alignment was printed to ':
         if 'is ignored but added at the' in data.log[j]: 
@@ -134,7 +151,12 @@ def check_removed_sequences(data:Data, results:Results, j:int, identical:int, ex
 
     return identical, excluded
 
-def check_each_sequence(data:Data, results:Results, j:int):
+def check_each_sequence(data:Data, results:Results, j:int) -> None:
+    '''
+    Function that checks each sequence in the alignment.
+    Input: The data object, the results object and the index of the log file.
+    Returns: None.
+    '''
 
     while data.log[j][:len('****  TOTAL')] != '****  TOTAL':
         seq_line = list(filter(None, data.log[j].split(' ')))
@@ -176,6 +198,11 @@ def check_each_sequence(data:Data, results:Results, j:int):
         j+=1
 
 def parse_ali_parameters_log(data:Data, results:Results) -> tuple[int, int]:
+    '''
+    Function that parses the alignment parameters from the log file.
+    Input: The data object and the results object.
+    Returns: The number of identical sequences and the number of excluded sequences.
+    '''
 
     identical = 0
     excluded = 0
@@ -218,14 +245,25 @@ def parse_ali_parameters_log(data:Data, results:Results) -> tuple[int, int]:
 
     return identical, excluded
 
-def calculate_new_selection_criteria(logL:float, k:int, no_col:int): 
+def calculate_new_selection_criteria(logL:float, k:int, no_col:int) -> tuple[float,float]:
+    '''
+    Function that calculates the selection criteria (CAIC, ABIC) for given input.
+    Input: log Likelihood (logL), number of free parameters (k), number of columns (no_col)
+    Returns: CAIC, ABIC
+    ''' 
 
     CAIC = -2*logL + (math.log(no_col)+1)*k
     ABIC = -2*logL + (math.log((no_col+2)/24))*k
 
     return CAIC, ABIC
 
-def parse_model_from_string(model_name: str, seq_type:str, constant:ConstantVariabels):
+def parse_model_from_string(model_name: str, seq_type:str, constant:ConstantVariabels) -> dict:
+    '''
+    Function that parses the model name from the string.
+    Input: The model name as string, the sequence type (DNA or AA) and the constant variables.
+    Returns: A dictionary containing the model name, the frequency type, the base model, 
+    the rate heterogeneity and the number of rate categories.
+    '''
 
     base_model = model_name.split('+')[0]
     rate_het = 'uniform'
@@ -265,7 +303,14 @@ def parse_model_from_string(model_name: str, seq_type:str, constant:ConstantVari
 
     return {'base_model': base_model, 'freq': freq, 'rate_het': rate_het, 'model_num_para': model_num_para, 'number_rate': number_rate}
 
-def parse_model_performance(info_for_model:list, seq_type:str, freqs:dict, constant:ConstantVariabels): 
+def parse_model_performance(info_for_model:list, seq_type:str, freqs:dict, constant:ConstantVariabels) -> dict:
+    '''
+    Function that parses the model performance from the model information.
+    Input: The model information as list, the sequence type (DNA or AA), the frequency dictionary and the constant variables.
+    Returns: A dictionary containing the model, the frequency type, the base model, the rate heterogeneity,
+    the log likelihood, the AIC, the confidence in the AIC, the AIC weight, the AICC, the confidence in the AICC,
+    the AICC weight, the BIC, the confidence in the BIC, the BIC weight, the number of rate categories and the number of model parameters.
+    ''' 
 
     model = info_for_model[0]
     info_from_str = parse_model_from_string(model, seq_type, constant)
@@ -291,7 +336,13 @@ def parse_model_performance(info_for_model:list, seq_type:str, freqs:dict, const
 
     return temp_dic
 
-def parse_model_parameters_iqtree(params:list, model_para, constant_stats, constant:ConstantVariabels): 
+def parse_model_parameters_iqtree(params:list, model_para, constant_stats, constant:ConstantVariabels) -> None:
+    '''
+    Function that parses the model parameters from the IQ-Tree log file.
+    Input: The parameters, a model parameters DataFrame to temporarily store the results, 
+    a set of constant statistics, the constant variables object.
+    Returns: None.
+    ''' 
     
     # Unpack prameters, results
     iqtree = params['iqtree']
@@ -320,7 +371,12 @@ def parse_model_parameters_iqtree(params:list, model_para, constant_stats, const
                     model_para.loc[len(model_para)] = temp_dic           
                 j+=1
 
-def parse_model_parameters_check(check, model_para:pd.DataFrame, number_columns:int): 
+def parse_model_parameters_check(check, model_para:pd.DataFrame, number_columns:int) -> int:
+    '''
+    Function that parses the model parameters from the IQ-Tree checkpoint file.
+    Input: The check file, a model parameters DataFrame to temporarily store the results and the number of columns.
+    Returns: The number of branches in the tree.
+    ''' 
 
     # Read through model.gz (checkpoint) file. 
     # Check each line and parse out relevent information to be stored in model_para DataFrame.
@@ -382,7 +438,12 @@ def parse_model_parameters_check(check, model_para:pd.DataFrame, number_columns:
 
     return branch_number
 
-def parse_model_parameters_calculate_ics(model_para): 
+def parse_model_parameters_calculate_ics(model_para) -> None:
+    '''
+    Function that calculates information criteria scores.
+    Input: A model parameters DataFrame that temporarily stores results.
+    Returns: None.
+    '''
 
     #Calculate the wheighted CAIC and ABIC
     min_CAIC = min(model_para['CAIC'])
@@ -407,7 +468,12 @@ def parse_model_parameters_calculate_ics(model_para):
         else: 
             model_para.at[i, 'CONFIDENCE_ABIC'] = 0
 
-def parse_tree_parameters_iqtree(params, tree_stats:dict, constants:ConstantVariabels):
+def parse_tree_parameters_iqtree(params, tree_stats:dict, constants:ConstantVariabels) -> bool:
+    '''
+    Function that parses the tree parameters from the IQ-Tree log file.
+    Input: The parameters, a tree parameters dictionary to store the results and the constant variables object.
+    Returns: True if the tree is rooted, False otherwise.
+    '''
 
     iqtree = params['iqtree']
 
@@ -487,7 +553,12 @@ def parse_tree_parameters_iqtree(params, tree_stats:dict, constants:ConstantVari
 
     return root
     
-def parse_initial_tree_log(params, tree_stats, constants:ConstantVariabels):
+def parse_initial_tree_log(params, tree_stats, constants:ConstantVariabels) -> bool:
+    '''
+    Function that parses the initial tree from the IQ-Tree log file.
+    Input: The parameters, a tree parameters dictionary to store the results and the constant variables object.
+    Returns: True if the tree is rooted, False otherwise.
+    '''
 
     log = params['log']
 
@@ -582,7 +653,12 @@ def parse_initial_tree_log(params, tree_stats, constants:ConstantVariabels):
 
     return root
 
-def write_newick_file(newick, params, quiet = False):
+def write_newick_file(newick, params, quiet = False) -> str:
+    '''
+    Function that writes the parsed initial tree into a newick file.
+    Input: The newick string, the parameters and a boolean to suppress output.
+    Returns: The file name of the newick file.
+    '''
 
     file_name = f'{params['prefix']}-parsed_initialtree.treefile' if params['keep'] == 0 \
         else f'{params['prefix']}-keep_ident_parsed_initialtree.treefile'
