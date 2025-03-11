@@ -1,0 +1,11 @@
+name: evonaps_workflow
+channels:
+  - conda-forge
+dependencies:
+  - biopython==1.83
+  - networkx==3.2.1
+  - numpy==2.2.3
+  - pandas==2.2.3
+  - pip:
+    - argparse==1.4.0
+    - mysql-connector-python==9.2.0

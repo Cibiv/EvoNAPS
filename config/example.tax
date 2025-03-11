@@ -1,0 +1,22 @@
+# This is an example file of how a tax file used to provide taxon IDs for an alignment to be
+# imported into the EvoNAPS database should be formatted.
+#
+# The file should be formatted as a csv file. with the following columns:
+#   1. SEQ_NAME: The first column contains the name of the sequence EXACTLY as it appears 
+#        in the alignmnet file.
+#   2. TAX_ID: The second column holds the taxon ID of the sequence (according to NCBI taxonomy table).
+#   3. TAX_CHECK: The third column holds an integer indicating how the taxon ID was determined. 
+#       - 1 indicates that the TAX_ID was determined based on the sequence name only.
+#       - 2 suggests the information was taken from an (unchecked) external source.
+#       - 3 states that the information was checked manually (e.g., check publication). It is the DEFAULT value.
+#       - 4 indicates highest confidence in the rovided taxon ID. The source of seqeunces is known to uploadeer 
+#            or taxon ID was determined using an available accession number.
+#       The third column can stay blank (3 will be assumed in this case).
+#   4... Any further columns will be ignored.
+#
+# Lines starting with # will be ignored.
+# This file is expected to have no headline. If you wish to include one, comment it out.
+# SEQ_NAME,TAX_ID,TAX_CHECK,COMMENT
+Homo_sapiens_123,9606,2,This is a human sequence.
+Mus_musulus_987,10090,,This is a mouse sequence. The third column is blank (3 is assumed).
+NZ_JBAFXE010000000,7,4,This is a Azorhizobium caulinodans sequence. The taxon ID was determined using an accession number (which is also the name given to the sequence).

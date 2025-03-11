@@ -1,0 +1,31 @@
+# Example file of what a info file, which can be provided togther with the alignment to be imported
+# into the EvoNAPS database, should look like.
+# 
+# Lines starting with '#' will be ignored.
+# The options, which can be set are depicted in the lines, which are not commented out. 
+# They state the name of option that can be provided ('OPTION=') plus how such an option can look like.
+# Please be careful to comment out or delete all options that you do NOT want to be set
+# before using the info file in the worklow to avoid adding errenous data to the EvoNAPS database.
+# 
+# COMMENT: The alignment ID has to be unique to the EvoNAPS database. If not manually set here, 
+#          the name of the alignment file will be used.
+ALI_ID=unique_name_for_alignment
+#
+# COMMENT: If you want to provide a publication in which the alignmet has been published in, please provide:
+#          An ID of the study (a unique name/string), the year it was published, a link (URL) to the study, and the 
+#          citation in preferably APA format.
+STUDY_ID=unique_name_for_study
+YEAR=2025
+STUDY_URL=https://doi.org/what/a/cooldoi
+CITATION=Author, O. F. (2025). Some Study. Journal, page. https://doi.org/what/a/cooldoi
+#
+# COMMENT: The description can be any further information regarding the alignment (e.g, which protein the sequences code for).
+DESCRIPTION=This is a very nice alignment.
+#
+# COMMENT: You can provide a link to where you can find the alignment in an external source.
+DATA_URL=https://link_to_alignment.org
+#
+# COMMENT: The FROM_DATABASE feature can also be set manually, should a unique database source have already been added 
+#          to the EvoNAPS database and you wish to refer to it. In general it is, however, recommended to leave this 
+#          option unchanges (the DEFAULT is 'misc': miscallenous alignments of no particular source).
+FROM_DATABASE=misc

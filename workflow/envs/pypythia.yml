@@ -1,0 +1,6 @@
+name: pythia_new
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - pypythia=1.1.4
