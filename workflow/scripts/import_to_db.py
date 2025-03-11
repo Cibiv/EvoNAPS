@@ -254,7 +254,7 @@ def update_data(data:Data) -> None:
         _ = run_query(data, query, params, cleanup=True)
 
     # Update alignments table with data stored in the info table
-    if all(key in data.info.keys() for key in ["STUDY_ID", "STUDY_URL", "CITATION"]):
+    if all(key in data.info.keys() for key in ["STUDY_ID", "STUDY_URL", "CITATION", "YEAR"]):
         query = f"INSERT IGNORE INTO studies (STUDY_ID, STUDY_URL, YEAR, CITATION) VALUES (%s, %s, %s, %s);"
         params = (data.info['STUDY_ID'], data.info['STUDY_URL'], data.info['YEAR'], data.info['CITATION'])
 

@@ -8,21 +8,13 @@ system.
 Other than the MySQL database, the workflow includes all neccessary scripts, software, and *.yaml 
 files to run. 
 - Third-party software can be found in workflow/bin. 
-- The Python scipts can be found in workflow/scipts. 
+- Python scipts can be found in workflow/scipts. 
 - The instructions to create the neccessary conda environments (yaml files) can be found in workflow/envs. 
 - The Snakemake rules for this workflow are stored in workflow/rules.
 
 Setup
 -----
-This workflow requires an instance of Snakemake. A detailed installation guide can be found here:
-
-
-
-Note, that before running the workflow on an alignment, the config/EvoNAPS_credentials.cnf file
-needs to be created. This file includes all neccessary information to allow access to the target
-database. An example file is given in config/EvoNAPS_credentials_example.cnf. Exchange the names 
-of the credentials according to your database setup and rename the file to 
-config/EvoNAPS_credentials.cnf.
+Please refer to the README.md file for instructions on how to set up the EvoNAPS database.
 
 Usage 
 -----
@@ -43,8 +35,6 @@ sequence type with --config seq_type=[ DNA | AA ] from the command line.
 Also note, that the flag --use-conda is neccessary because different environments 
 are used for different rules, which requires access to conda. 
 
-Sources
--------
 """
 
 include: "workflow/rules/generate_data.smk"

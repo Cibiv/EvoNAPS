@@ -1,3 +1,25 @@
+-- MySQL dump 10.15  Distrib 10.0.13-MariaDB, for Linux (x86_64)
+--
+-- Database: EvoNAPS
+-- ------------------------------------------------------
+-- Server version	10.6.15-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `aa_alignments`
+--
+
+DROP TABLE IF EXISTS `aa_alignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `aa_alignments` (
@@ -22,6 +44,7 @@ CREATE TABLE `aa_alignments` (
   `DIST_MEAN` decimal(15,7) DEFAULT NULL,
   `DIST_MEDIAN` decimal(15,7) DEFAULT NULL,
   `DIST_VAR` decimal(15,7) DEFAULT NULL,
+  `PYTHIA_SCORE` decimal(15,9) DEFAULT NULL,
   PRIMARY KEY (`ALI_KEY`),
   UNIQUE KEY `ALI_ID` (`ALI_ID`),
   KEY `FROM_DATABASE` (`FROM_DATABASE`),
@@ -34,6 +57,12 @@ CREATE TABLE `aa_alignments` (
   CONSTRAINT `aa_study_constraint` FOREIGN KEY (`STUDY_ID`) REFERENCES `studies` (`STUDY_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21801 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The aa_alignments table holds general information and charac';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aa_alignments_taxonomy`
+--
+
+DROP TABLE IF EXISTS `aa_alignments_taxonomy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `aa_alignments_taxonomy` (
@@ -43,136 +72,101 @@ CREATE TABLE `aa_alignments_taxonomy` (
   `LCA_TAX_ID` int(11) NOT NULL,
   `LCA_RANK_NR` int(11) NOT NULL,
   `LCA_RANK_NAME` varchar(50) NOT NULL,
-  `1_superkingdom` int(11) DEFAULT NULL,
-  `2_kingdom` int(11) DEFAULT NULL,
-  `3_subkingdom` int(11) DEFAULT NULL,
-  `4_superphylum` int(11) DEFAULT NULL,
-  `5_phylum` int(11) DEFAULT NULL,
-  `6_subphylum` int(11) DEFAULT NULL,
-  `7_infraphylum` int(11) DEFAULT NULL,
-  `8_superclass` int(11) DEFAULT NULL,
-  `9_class` int(11) DEFAULT NULL,
-  `10_subclass` int(11) DEFAULT NULL,
-  `11_infraclass` int(11) DEFAULT NULL,
-  `12_cohort` int(11) DEFAULT NULL,
-  `13_subcohort` int(11) DEFAULT NULL,
-  `14_superorder` int(11) DEFAULT NULL,
-  `15_order` int(11) DEFAULT NULL,
-  `16_suborder` int(11) DEFAULT NULL,
-  `17_infraorder` int(11) DEFAULT NULL,
-  `18_parvorder` int(11) DEFAULT NULL,
-  `19_superfamily` int(11) DEFAULT NULL,
-  `20_family` int(11) DEFAULT NULL,
-  `21_subfamily` int(11) DEFAULT NULL,
-  `22_tribe` int(11) DEFAULT NULL,
-  `23_subtribe` int(11) DEFAULT NULL,
-  `24_genus` int(11) DEFAULT NULL,
-  `25_subgenus` int(11) DEFAULT NULL,
-  `26_section` int(11) DEFAULT NULL,
-  `27_subsection` int(11) DEFAULT NULL,
-  `28_series` int(11) DEFAULT NULL,
-  `29_subseries` int(11) DEFAULT NULL,
-  `30_species_group` int(11) DEFAULT NULL,
-  `31_species_subgroup` int(11) DEFAULT NULL,
-  `32_species` int(11) DEFAULT NULL,
-  `33_forma_specialis` int(11) DEFAULT NULL,
-  `34_subspecies` int(11) DEFAULT NULL,
-  `35_varietas` int(11) DEFAULT NULL,
-  `36_subvariety` int(11) DEFAULT NULL,
-  `37_forma` int(11) DEFAULT NULL,
-  `38_serogroup` int(11) DEFAULT NULL,
-  `39_serotype` int(11) DEFAULT NULL,
-  `40_strain` int(11) DEFAULT NULL,
-  `41_isolate` int(11) DEFAULT NULL,
+  `superkingdom` int(11) DEFAULT NULL,
+  `kingdom` int(11) DEFAULT NULL,
+  `subkingdom` int(11) DEFAULT NULL,
+  `superphylum` int(11) DEFAULT NULL,
+  `subphylum` int(11) DEFAULT NULL,
+  `phylum` int(11) DEFAULT NULL,
+  `superclass` int(11) DEFAULT NULL,
+  `class` int(11) DEFAULT NULL,
+  `subclass` int(11) DEFAULT NULL,
+  `infraclass` int(11) DEFAULT NULL,
+  `cohort` int(11) DEFAULT NULL,
+  `subcohort` int(11) DEFAULT NULL,
+  `superorder` int(11) DEFAULT NULL,
+  `order` int(11) DEFAULT NULL,
+  `suborder` int(11) DEFAULT NULL,
+  `infraorder` int(11) DEFAULT NULL,
+  `parvorder` int(11) DEFAULT NULL,
+  `superfamily` int(11) DEFAULT NULL,
+  `family` int(11) DEFAULT NULL,
+  `subfamily` int(11) DEFAULT NULL,
+  `genus` int(11) DEFAULT NULL,
+  `subgenus` int(11) DEFAULT NULL,
+  `species_group` int(11) DEFAULT NULL,
+  `species_subgroup` int(11) DEFAULT NULL,
+  `species` int(11) DEFAULT NULL,
+  `subspecies` int(11) DEFAULT NULL,
+  `tribe` int(11) DEFAULT NULL,
+  `subtribe` int(11) DEFAULT NULL,
+  `forma` int(11) DEFAULT NULL,
+  `varietas` int(11) DEFAULT NULL,
+  `strain` int(11) DEFAULT NULL,
+  `section` int(11) DEFAULT NULL,
+  `subsection` int(11) DEFAULT NULL,
+  `pathogroup` int(11) DEFAULT NULL,
+  `subvariety` int(11) DEFAULT NULL,
+  `genotype` int(11) DEFAULT NULL,
+  `serotype` int(11) DEFAULT NULL,
+  `isolate` int(11) DEFAULT NULL,
+  `morph` int(11) DEFAULT NULL,
+  `series` int(11) DEFAULT NULL,
+  `forma_specialis` int(11) DEFAULT NULL,
+  `serogroup` int(11) DEFAULT NULL,
+  `biotype` int(11) DEFAULT NULL,
   PRIMARY KEY (`ALI_TAX_KEY`),
   UNIQUE KEY `aa_ali_tax_constraint` (`ALI_ID`),
   KEY `aa_ali_tax_foreign_key_lca` (`LCA_TAX_ID`),
-  KEY `aa_ali_tax_foreign_1_superkingdom` (`1_superkingdom`),
-  KEY `aa_ali_tax_foreign_2_kingdom` (`2_kingdom`),
-  KEY `aa_ali_tax_foreign_3_subkingdom` (`3_subkingdom`),
-  KEY `aa_ali_tax_foreign_4_superphylum` (`4_superphylum`),
-  KEY `aa_ali_tax_foreign_5_phylum` (`5_phylum`),
-  KEY `aa_ali_tax_foreign_6_subphylum` (`6_subphylum`),
-  KEY `aa_ali_tax_foreign_7_infraphylum` (`7_infraphylum`),
-  KEY `aa_ali_tax_foreign_8_superclass` (`8_superclass`),
-  KEY `aa_ali_tax_foreign_9_class` (`9_class`),
-  KEY `aa_ali_tax_foreign_10_subclass` (`10_subclass`),
-  KEY `aa_ali_tax_foreign_11_infraclass` (`11_infraclass`),
-  KEY `aa_ali_tax_foreign_12_cohort` (`12_cohort`),
-  KEY `aa_ali_tax_foreign_13_subcohort` (`13_subcohort`),
-  KEY `aa_ali_tax_foreign_14_superorder` (`14_superorder`),
-  KEY `aa_ali_tax_foreign_15_order` (`15_order`),
-  KEY `aa_ali_tax_foreign_16_suborder` (`16_suborder`),
-  KEY `aa_ali_tax_foreign_17_infraorder` (`17_infraorder`),
-  KEY `aa_ali_tax_foreign_18_parvorder` (`18_parvorder`),
-  KEY `aa_ali_tax_foreign_19_superfamily` (`19_superfamily`),
-  KEY `aa_ali_tax_foreign_20_family` (`20_family`),
-  KEY `aa_ali_tax_foreign_21_subfamily` (`21_subfamily`),
-  KEY `aa_ali_tax_foreign_22_tribe` (`22_tribe`),
-  KEY `aa_ali_tax_foreign_23_subtribe` (`23_subtribe`),
-  KEY `aa_ali_tax_foreign_24_genus` (`24_genus`),
-  KEY `aa_ali_tax_foreign_25_subgenus` (`25_subgenus`),
-  KEY `aa_ali_tax_foreign_26_section` (`26_section`),
-  KEY `aa_ali_tax_foreign_27_subsection` (`27_subsection`),
-  KEY `aa_ali_tax_foreign_28_series` (`28_series`),
-  KEY `aa_ali_tax_foreign_29_subseries` (`29_subseries`),
-  KEY `aa_ali_tax_foreign_30_species_group` (`30_species_group`),
-  KEY `aa_ali_tax_foreign_31_species_subgroup` (`31_species_subgroup`),
-  KEY `aa_ali_tax_foreign_32_species` (`32_species`),
-  KEY `aa_ali_tax_foreign_33_forma_specialis` (`33_forma_specialis`),
-  KEY `aa_ali_tax_foreign_34_subspecies` (`34_subspecies`),
-  KEY `aa_ali_tax_foreign_35_varietas` (`35_varietas`),
-  KEY `aa_ali_tax_foreign_36_subvariety` (`36_subvariety`),
-  KEY `aa_ali_tax_foreign_37_forma` (`37_forma`),
-  KEY `aa_ali_tax_foreign_38_serogroup` (`38_serogroup`),
-  KEY `aa_ali_tax_foreign_39_serotype` (`39_serotype`),
-  KEY `aa_ali_tax_foreign_40_strain` (`40_strain`),
-  KEY `aa_ali_tax_foreign_41_isolate` (`41_isolate`),
-  CONSTRAINT `aa_ali_tax_foreign_10_subclass` FOREIGN KEY (`10_subclass`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_11_infraclass` FOREIGN KEY (`11_infraclass`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_12_cohort` FOREIGN KEY (`12_cohort`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_13_subcohort` FOREIGN KEY (`13_subcohort`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_14_superorder` FOREIGN KEY (`14_superorder`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_15_order` FOREIGN KEY (`15_order`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_16_suborder` FOREIGN KEY (`16_suborder`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_17_infraorder` FOREIGN KEY (`17_infraorder`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_18_parvorder` FOREIGN KEY (`18_parvorder`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_19_superfamily` FOREIGN KEY (`19_superfamily`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_1_superkingdom` FOREIGN KEY (`1_superkingdom`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_20_family` FOREIGN KEY (`20_family`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_21_subfamily` FOREIGN KEY (`21_subfamily`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_22_tribe` FOREIGN KEY (`22_tribe`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_23_subtribe` FOREIGN KEY (`23_subtribe`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_24_genus` FOREIGN KEY (`24_genus`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_25_subgenus` FOREIGN KEY (`25_subgenus`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_26_section` FOREIGN KEY (`26_section`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_27_subsection` FOREIGN KEY (`27_subsection`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_28_series` FOREIGN KEY (`28_series`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_29_subseries` FOREIGN KEY (`29_subseries`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_2_kingdom` FOREIGN KEY (`2_kingdom`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_30_species_group` FOREIGN KEY (`30_species_group`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_31_species_subgroup` FOREIGN KEY (`31_species_subgroup`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_32_species` FOREIGN KEY (`32_species`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_33_forma_specialis` FOREIGN KEY (`33_forma_specialis`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_34_subspecies` FOREIGN KEY (`34_subspecies`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_35_varietas` FOREIGN KEY (`35_varietas`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_36_subvariety` FOREIGN KEY (`36_subvariety`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_37_forma` FOREIGN KEY (`37_forma`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_38_serogroup` FOREIGN KEY (`38_serogroup`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_39_serotype` FOREIGN KEY (`39_serotype`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_3_subkingdom` FOREIGN KEY (`3_subkingdom`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_40_strain` FOREIGN KEY (`40_strain`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_41_isolate` FOREIGN KEY (`41_isolate`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_4_superphylum` FOREIGN KEY (`4_superphylum`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_5_phylum` FOREIGN KEY (`5_phylum`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_6_subphylum` FOREIGN KEY (`6_subphylum`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_7_infraphylum` FOREIGN KEY (`7_infraphylum`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_8_superclass` FOREIGN KEY (`8_superclass`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `aa_ali_tax_foreign_9_class` FOREIGN KEY (`9_class`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
+  KEY `aa_ali_tax_foreign_1_superkingdom` (`superkingdom`),
+  KEY `aa_ali_tax_foreign_2_kingdom` (`kingdom`),
+  KEY `aa_ali_tax_foreign_3_subkingdom` (`subkingdom`),
+  KEY `aa_ali_tax_foreign_4_superphylum` (`superphylum`),
+  KEY `aa_ali_tax_foreign_5_phylum` (`phylum`),
+  KEY `aa_ali_tax_foreign_6_subphylum` (`subphylum`),
+  KEY `aa_ali_tax_foreign_8_superclass` (`superclass`),
+  KEY `aa_ali_tax_foreign_9_class` (`class`),
+  KEY `aa_ali_tax_foreign_10_subclass` (`subclass`),
+  KEY `aa_ali_tax_foreign_11_infraclass` (`infraclass`),
+  KEY `aa_ali_tax_foreign_12_cohort` (`cohort`),
+  KEY `aa_ali_tax_foreign_13_subcohort` (`subcohort`),
+  KEY `aa_ali_tax_foreign_14_superorder` (`superorder`),
+  KEY `aa_ali_tax_foreign_15_order` (`order`),
+  KEY `aa_ali_tax_foreign_16_suborder` (`suborder`),
+  KEY `aa_ali_tax_foreign_17_infraorder` (`infraorder`),
+  KEY `aa_ali_tax_foreign_18_parvorder` (`parvorder`),
+  KEY `aa_ali_tax_foreign_19_superfamily` (`superfamily`),
+  KEY `aa_ali_tax_foreign_20_family` (`family`),
+  KEY `aa_ali_tax_foreign_21_subfamily` (`subfamily`),
+  KEY `aa_ali_tax_foreign_22_tribe` (`tribe`),
+  KEY `aa_ali_tax_foreign_23_subtribe` (`subtribe`),
+  KEY `aa_ali_tax_foreign_24_genus` (`genus`),
+  KEY `aa_ali_tax_foreign_25_subgenus` (`subgenus`),
+  KEY `aa_ali_tax_foreign_26_section` (`section`),
+  KEY `aa_ali_tax_foreign_27_subsection` (`subsection`),
+  KEY `aa_ali_tax_foreign_28_series` (`series`),
+  KEY `aa_ali_tax_foreign_30_species_group` (`species_group`),
+  KEY `aa_ali_tax_foreign_31_species_subgroup` (`species_subgroup`),
+  KEY `aa_ali_tax_foreign_32_species` (`species`),
+  KEY `aa_ali_tax_foreign_33_forma_specialis` (`forma_specialis`),
+  KEY `aa_ali_tax_foreign_34_subspecies` (`subspecies`),
+  KEY `aa_ali_tax_foreign_35_varietas` (`varietas`),
+  KEY `aa_ali_tax_foreign_36_subvariety` (`subvariety`),
+  KEY `aa_ali_tax_foreign_37_forma` (`forma`),
+  KEY `aa_ali_tax_foreign_38_serogroup` (`serogroup`),
+  KEY `aa_ali_tax_foreign_39_serotype` (`serotype`),
+  KEY `aa_ali_tax_foreign_40_strain` (`strain`),
+  KEY `aa_ali_tax_foreign_41_isolate` (`isolate`),
   CONSTRAINT `aa_ali_tax_foreign_key` FOREIGN KEY (`ALI_ID`) REFERENCES `aa_alignments` (`ALI_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `aa_ali_tax_foreign_key_lca` FOREIGN KEY (`LCA_TAX_ID`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21794 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32768 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aa_branches`
+--
+
+DROP TABLE IF EXISTS `aa_branches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `aa_branches` (
@@ -198,6 +192,12 @@ CREATE TABLE `aa_branches` (
   CONSTRAINT `AA_Branches_ibfk_1` FOREIGN KEY (`ALI_ID`, `TIME_STAMP`, `TREE_TYPE`) REFERENCES `aa_trees` (`ALI_ID`, `TIME_STAMP`, `TREE_TYPE`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10245619 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aa_modelparameters`
+--
+
+DROP TABLE IF EXISTS `aa_modelparameters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `aa_modelparameters` (
@@ -287,6 +287,12 @@ CREATE TABLE `aa_modelparameters` (
   CONSTRAINT `AA_ModelParameters_ibfk_2` FOREIGN KEY (`BASE_MODEL`) REFERENCES `aa_models` (`MODEL_NAME`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=12196812 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The dna_modelparameters table holds the results of model eva';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aa_models`
+--
+
+DROP TABLE IF EXISTS `aa_models`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `aa_models` (
@@ -509,6 +515,12 @@ CREATE TABLE `aa_models` (
   UNIQUE KEY `aa_model_constraint` (`MODEL_NAME`)
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The aa_models table depicts the assumed substitution rates a';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aa_sequences`
+--
+
+DROP TABLE IF EXISTS `aa_sequences`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `aa_sequences` (
@@ -552,6 +564,28 @@ CREATE TABLE `aa_sequences` (
   CONSTRAINT `aa_taxonomy_key` FOREIGN KEY (`TAX_ID`) REFERENCES `taxonomy` (`TAX_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1754211 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The aa_sequences table holds the sequences of each protein a';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aa_tmp_pythia`
+--
+
+DROP TABLE IF EXISTS `aa_tmp_pythia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `aa_tmp_pythia` (
+  `TMP_KEY` int(11) NOT NULL AUTO_INCREMENT,
+  `ALI_ID` varchar(250) NOT NULL,
+  `PYTHIA_SCORE` decimal(15,9) NOT NULL,
+  PRIMARY KEY (`TMP_KEY`),
+  UNIQUE KEY `DATABASE_ID` (`ALI_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21743 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aa_trees`
+--
+
+DROP TABLE IF EXISTS `aa_trees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `aa_trees` (
@@ -666,6 +700,12 @@ CREATE TABLE `aa_trees` (
   CONSTRAINT `AA_Trees_ibfk_1` FOREIGN KEY (`ALI_ID`) REFERENCES `aa_alignments` (`ALI_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=62025 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dataorigin`
+--
+
+DROP TABLE IF EXISTS `dataorigin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dataorigin` (
@@ -681,8 +721,14 @@ CREATE TABLE `dataorigin` (
   UNIQUE KEY `DATABASE_ID` (`DATABASE_ID`),
   KEY `dataorigin_study_constraint` (`STUDY_ID`),
   CONSTRAINT `dataorigin_study_constraint` FOREIGN KEY (`STUDY_ID`) REFERENCES `studies` (`STUDY_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The dataorigin table holds information regarding the origina';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The dataorigin table holds information regarding the origina';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dna_alignments`
+--
+
+DROP TABLE IF EXISTS `dna_alignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dna_alignments` (
@@ -707,6 +753,7 @@ CREATE TABLE `dna_alignments` (
   `DIST_MEAN` decimal(15,7) DEFAULT NULL,
   `DIST_MEDIAN` decimal(15,7) DEFAULT NULL,
   `DIST_VAR` decimal(15,7) DEFAULT NULL,
+  `PYTHIA_SCORE` decimal(15,9) DEFAULT NULL,
   PRIMARY KEY (`ALI_KEY`),
   UNIQUE KEY `ALI_ID` (`ALI_ID`),
   KEY `FROM_DATABASE` (`FROM_DATABASE`),
@@ -719,6 +766,12 @@ CREATE TABLE `dna_alignments` (
   CONSTRAINT `dna_study_constraint` FOREIGN KEY (`STUDY_ID`) REFERENCES `studies` (`STUDY_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=48707 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The dna_alignments table holds general information and chara';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dna_alignments_taxonomy`
+--
+
+DROP TABLE IF EXISTS `dna_alignments_taxonomy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dna_alignments_taxonomy` (
@@ -728,136 +781,101 @@ CREATE TABLE `dna_alignments_taxonomy` (
   `LCA_TAX_ID` int(11) NOT NULL,
   `LCA_RANK_NR` int(11) NOT NULL,
   `LCA_RANK_NAME` varchar(50) NOT NULL,
-  `1_superkingdom` int(11) DEFAULT NULL,
-  `2_kingdom` int(11) DEFAULT NULL,
-  `3_subkingdom` int(11) DEFAULT NULL,
-  `4_superphylum` int(11) DEFAULT NULL,
-  `5_phylum` int(11) DEFAULT NULL,
-  `6_subphylum` int(11) DEFAULT NULL,
-  `7_infraphylum` int(11) DEFAULT NULL,
-  `8_superclass` int(11) DEFAULT NULL,
-  `9_class` int(11) DEFAULT NULL,
-  `10_subclass` int(11) DEFAULT NULL,
-  `11_infraclass` int(11) DEFAULT NULL,
-  `12_cohort` int(11) DEFAULT NULL,
-  `13_subcohort` int(11) DEFAULT NULL,
-  `14_superorder` int(11) DEFAULT NULL,
-  `15_order` int(11) DEFAULT NULL,
-  `16_suborder` int(11) DEFAULT NULL,
-  `17_infraorder` int(11) DEFAULT NULL,
-  `18_parvorder` int(11) DEFAULT NULL,
-  `19_superfamily` int(11) DEFAULT NULL,
-  `20_family` int(11) DEFAULT NULL,
-  `21_subfamily` int(11) DEFAULT NULL,
-  `22_tribe` int(11) DEFAULT NULL,
-  `23_subtribe` int(11) DEFAULT NULL,
-  `24_genus` int(11) DEFAULT NULL,
-  `25_subgenus` int(11) DEFAULT NULL,
-  `26_section` int(11) DEFAULT NULL,
-  `27_subsection` int(11) DEFAULT NULL,
-  `28_series` int(11) DEFAULT NULL,
-  `29_subseries` int(11) DEFAULT NULL,
-  `30_species_group` int(11) DEFAULT NULL,
-  `31_species_subgroup` int(11) DEFAULT NULL,
-  `32_species` int(11) DEFAULT NULL,
-  `33_forma_specialis` int(11) DEFAULT NULL,
-  `34_subspecies` int(11) DEFAULT NULL,
-  `35_varietas` int(11) DEFAULT NULL,
-  `36_subvariety` int(11) DEFAULT NULL,
-  `37_forma` int(11) DEFAULT NULL,
-  `38_serogroup` int(11) DEFAULT NULL,
-  `39_serotype` int(11) DEFAULT NULL,
-  `40_strain` int(11) DEFAULT NULL,
-  `41_isolate` int(11) DEFAULT NULL,
+  `superkingdom` int(11) DEFAULT NULL,
+  `kingdom` int(11) DEFAULT NULL,
+  `subkingdom` int(11) DEFAULT NULL,
+  `superphylum` int(11) DEFAULT NULL,
+  `subphylum` int(11) DEFAULT NULL,
+  `phylum` int(11) DEFAULT NULL,
+  `superclass` int(11) DEFAULT NULL,
+  `class` int(11) DEFAULT NULL,
+  `subclass` int(11) DEFAULT NULL,
+  `infraclass` int(11) DEFAULT NULL,
+  `cohort` int(11) DEFAULT NULL,
+  `subcohort` int(11) DEFAULT NULL,
+  `superorder` int(11) DEFAULT NULL,
+  `order` int(11) DEFAULT NULL,
+  `suborder` int(11) DEFAULT NULL,
+  `infraorder` int(11) DEFAULT NULL,
+  `parvorder` int(11) DEFAULT NULL,
+  `superfamily` int(11) DEFAULT NULL,
+  `family` int(11) DEFAULT NULL,
+  `subfamily` int(11) DEFAULT NULL,
+  `genus` int(11) DEFAULT NULL,
+  `subgenus` int(11) DEFAULT NULL,
+  `species_group` int(11) DEFAULT NULL,
+  `species_subgroup` int(11) DEFAULT NULL,
+  `species` int(11) DEFAULT NULL,
+  `subspecies` int(11) DEFAULT NULL,
+  `tribe` int(11) DEFAULT NULL,
+  `subtribe` int(11) DEFAULT NULL,
+  `forma` int(11) DEFAULT NULL,
+  `varietas` int(11) DEFAULT NULL,
+  `strain` int(11) DEFAULT NULL,
+  `section` int(11) DEFAULT NULL,
+  `subsection` int(11) DEFAULT NULL,
+  `pathogroup` int(11) DEFAULT NULL,
+  `subvariety` int(11) DEFAULT NULL,
+  `genotype` int(11) DEFAULT NULL,
+  `serotype` int(11) DEFAULT NULL,
+  `isolate` int(11) DEFAULT NULL,
+  `morph` int(11) DEFAULT NULL,
+  `series` int(11) DEFAULT NULL,
+  `forma_specialis` int(11) DEFAULT NULL,
+  `serogroup` int(11) DEFAULT NULL,
+  `biotype` int(11) DEFAULT NULL,
   PRIMARY KEY (`ALI_TAX_KEY`),
   UNIQUE KEY `dna_ali_tax_constraint` (`ALI_ID`),
   KEY `dna_ali_tax_foreign_key_lca` (`LCA_TAX_ID`),
-  KEY `dna_ali_tax_foreign_1_superkingdom` (`1_superkingdom`),
-  KEY `dna_ali_tax_foreign_2_kingdom` (`2_kingdom`),
-  KEY `dna_ali_tax_foreign_3_subkingdom` (`3_subkingdom`),
-  KEY `dna_ali_tax_foreign_4_superphylum` (`4_superphylum`),
-  KEY `dna_ali_tax_foreign_5_phylum` (`5_phylum`),
-  KEY `dna_ali_tax_foreign_6_subphylum` (`6_subphylum`),
-  KEY `dna_ali_tax_foreign_7_infraphylum` (`7_infraphylum`),
-  KEY `dna_ali_tax_foreign_8_superclass` (`8_superclass`),
-  KEY `dna_ali_tax_foreign_9_class` (`9_class`),
-  KEY `dna_ali_tax_foreign_10_subclass` (`10_subclass`),
-  KEY `dna_ali_tax_foreign_11_infraclass` (`11_infraclass`),
-  KEY `dna_ali_tax_foreign_12_cohort` (`12_cohort`),
-  KEY `dna_ali_tax_foreign_13_subcohort` (`13_subcohort`),
-  KEY `dna_ali_tax_foreign_14_superorder` (`14_superorder`),
-  KEY `dna_ali_tax_foreign_15_order` (`15_order`),
-  KEY `dna_ali_tax_foreign_16_suborder` (`16_suborder`),
-  KEY `dna_ali_tax_foreign_17_infraorder` (`17_infraorder`),
-  KEY `dna_ali_tax_foreign_18_parvorder` (`18_parvorder`),
-  KEY `dna_ali_tax_foreign_19_superfamily` (`19_superfamily`),
-  KEY `dna_ali_tax_foreign_20_family` (`20_family`),
-  KEY `dna_ali_tax_foreign_21_subfamily` (`21_subfamily`),
-  KEY `dna_ali_tax_foreign_22_tribe` (`22_tribe`),
-  KEY `dna_ali_tax_foreign_23_subtribe` (`23_subtribe`),
-  KEY `dna_ali_tax_foreign_24_genus` (`24_genus`),
-  KEY `dna_ali_tax_foreign_25_subgenus` (`25_subgenus`),
-  KEY `dna_ali_tax_foreign_26_section` (`26_section`),
-  KEY `dna_ali_tax_foreign_27_subsection` (`27_subsection`),
-  KEY `dna_ali_tax_foreign_28_series` (`28_series`),
-  KEY `dna_ali_tax_foreign_29_subseries` (`29_subseries`),
-  KEY `dna_ali_tax_foreign_30_species_group` (`30_species_group`),
-  KEY `dna_ali_tax_foreign_31_species_subgroup` (`31_species_subgroup`),
-  KEY `dna_ali_tax_foreign_32_species` (`32_species`),
-  KEY `dna_ali_tax_foreign_33_forma_specialis` (`33_forma_specialis`),
-  KEY `dna_ali_tax_foreign_34_subspecies` (`34_subspecies`),
-  KEY `dna_ali_tax_foreign_35_varietas` (`35_varietas`),
-  KEY `dna_ali_tax_foreign_36_subvariety` (`36_subvariety`),
-  KEY `dna_ali_tax_foreign_37_forma` (`37_forma`),
-  KEY `dna_ali_tax_foreign_38_serogroup` (`38_serogroup`),
-  KEY `dna_ali_tax_foreign_39_serotype` (`39_serotype`),
-  KEY `dna_ali_tax_foreign_40_strain` (`40_strain`),
-  KEY `dna_ali_tax_foreign_41_isolate` (`41_isolate`),
-  CONSTRAINT `dna_ali_tax_foreign_10_subclass` FOREIGN KEY (`10_subclass`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_11_infraclass` FOREIGN KEY (`11_infraclass`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_12_cohort` FOREIGN KEY (`12_cohort`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_13_subcohort` FOREIGN KEY (`13_subcohort`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_14_superorder` FOREIGN KEY (`14_superorder`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_15_order` FOREIGN KEY (`15_order`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_16_suborder` FOREIGN KEY (`16_suborder`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_17_infraorder` FOREIGN KEY (`17_infraorder`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_18_parvorder` FOREIGN KEY (`18_parvorder`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_19_superfamily` FOREIGN KEY (`19_superfamily`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_1_superkingdom` FOREIGN KEY (`1_superkingdom`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_20_family` FOREIGN KEY (`20_family`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_21_subfamily` FOREIGN KEY (`21_subfamily`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_22_tribe` FOREIGN KEY (`22_tribe`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_23_subtribe` FOREIGN KEY (`23_subtribe`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_24_genus` FOREIGN KEY (`24_genus`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_25_subgenus` FOREIGN KEY (`25_subgenus`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_26_section` FOREIGN KEY (`26_section`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_27_subsection` FOREIGN KEY (`27_subsection`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_28_series` FOREIGN KEY (`28_series`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_29_subseries` FOREIGN KEY (`29_subseries`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_2_kingdom` FOREIGN KEY (`2_kingdom`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_30_species_group` FOREIGN KEY (`30_species_group`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_31_species_subgroup` FOREIGN KEY (`31_species_subgroup`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_32_species` FOREIGN KEY (`32_species`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_33_forma_specialis` FOREIGN KEY (`33_forma_specialis`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_34_subspecies` FOREIGN KEY (`34_subspecies`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_35_varietas` FOREIGN KEY (`35_varietas`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_36_subvariety` FOREIGN KEY (`36_subvariety`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_37_forma` FOREIGN KEY (`37_forma`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_38_serogroup` FOREIGN KEY (`38_serogroup`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_39_serotype` FOREIGN KEY (`39_serotype`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_3_subkingdom` FOREIGN KEY (`3_subkingdom`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_40_strain` FOREIGN KEY (`40_strain`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_41_isolate` FOREIGN KEY (`41_isolate`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_4_superphylum` FOREIGN KEY (`4_superphylum`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_5_phylum` FOREIGN KEY (`5_phylum`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_6_subphylum` FOREIGN KEY (`6_subphylum`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_7_infraphylum` FOREIGN KEY (`7_infraphylum`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_8_superclass` FOREIGN KEY (`8_superclass`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `dna_ali_tax_foreign_9_class` FOREIGN KEY (`9_class`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE,
+  KEY `dna_ali_tax_foreign_1_superkingdom` (`superkingdom`),
+  KEY `dna_ali_tax_foreign_2_kingdom` (`kingdom`),
+  KEY `dna_ali_tax_foreign_3_subkingdom` (`subkingdom`),
+  KEY `dna_ali_tax_foreign_4_superphylum` (`superphylum`),
+  KEY `dna_ali_tax_foreign_5_phylum` (`phylum`),
+  KEY `dna_ali_tax_foreign_6_subphylum` (`subphylum`),
+  KEY `dna_ali_tax_foreign_8_superclass` (`superclass`),
+  KEY `dna_ali_tax_foreign_9_class` (`class`),
+  KEY `dna_ali_tax_foreign_10_subclass` (`subclass`),
+  KEY `dna_ali_tax_foreign_11_infraclass` (`infraclass`),
+  KEY `dna_ali_tax_foreign_12_cohort` (`cohort`),
+  KEY `dna_ali_tax_foreign_13_subcohort` (`subcohort`),
+  KEY `dna_ali_tax_foreign_14_superorder` (`superorder`),
+  KEY `dna_ali_tax_foreign_15_order` (`order`),
+  KEY `dna_ali_tax_foreign_16_suborder` (`suborder`),
+  KEY `dna_ali_tax_foreign_17_infraorder` (`infraorder`),
+  KEY `dna_ali_tax_foreign_18_parvorder` (`parvorder`),
+  KEY `dna_ali_tax_foreign_19_superfamily` (`superfamily`),
+  KEY `dna_ali_tax_foreign_20_family` (`family`),
+  KEY `dna_ali_tax_foreign_21_subfamily` (`subfamily`),
+  KEY `dna_ali_tax_foreign_22_tribe` (`tribe`),
+  KEY `dna_ali_tax_foreign_23_subtribe` (`subtribe`),
+  KEY `dna_ali_tax_foreign_24_genus` (`genus`),
+  KEY `dna_ali_tax_foreign_25_subgenus` (`subgenus`),
+  KEY `dna_ali_tax_foreign_26_section` (`section`),
+  KEY `dna_ali_tax_foreign_27_subsection` (`subsection`),
+  KEY `dna_ali_tax_foreign_28_series` (`series`),
+  KEY `dna_ali_tax_foreign_30_species_group` (`species_group`),
+  KEY `dna_ali_tax_foreign_31_species_subgroup` (`species_subgroup`),
+  KEY `dna_ali_tax_foreign_32_species` (`species`),
+  KEY `dna_ali_tax_foreign_33_forma_specialis` (`forma_specialis`),
+  KEY `dna_ali_tax_foreign_34_subspecies` (`subspecies`),
+  KEY `dna_ali_tax_foreign_35_varietas` (`varietas`),
+  KEY `dna_ali_tax_foreign_36_subvariety` (`subvariety`),
+  KEY `dna_ali_tax_foreign_37_forma` (`forma`),
+  KEY `dna_ali_tax_foreign_38_serogroup` (`serogroup`),
+  KEY `dna_ali_tax_foreign_39_serotype` (`serotype`),
+  KEY `dna_ali_tax_foreign_40_strain` (`strain`),
+  KEY `dna_ali_tax_foreign_41_isolate` (`isolate`),
   CONSTRAINT `dna_ali_tax_foreign_key` FOREIGN KEY (`ALI_ID`) REFERENCES `dna_alignments` (`ALI_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `dna_ali_tax_foreign_key_lca` FOREIGN KEY (`LCA_TAX_ID`) REFERENCES `taxonomy` (`TAX_ID`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=48700 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65536 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dna_branches`
+--
+
+DROP TABLE IF EXISTS `dna_branches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dna_branches` (
@@ -883,6 +901,12 @@ CREATE TABLE `dna_branches` (
   CONSTRAINT `DNA_Branches_ibfk_1` FOREIGN KEY (`ALI_ID`, `TIME_STAMP`, `TREE_TYPE`) REFERENCES `dna_trees` (`ALI_ID`, `TIME_STAMP`, `TREE_TYPE`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=27004199 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dna_modelparameters`
+--
+
+DROP TABLE IF EXISTS `dna_modelparameters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dna_modelparameters` (
@@ -969,6 +993,12 @@ CREATE TABLE `dna_modelparameters` (
   CONSTRAINT `DNA_ModelParameters_ibfk_2` FOREIGN KEY (`BASE_MODEL`) REFERENCES `dna_models` (`MODEL_NAME`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10193141 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The dna_modelparameters table holds the results of model eva';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dna_models`
+--
+
+DROP TABLE IF EXISTS `dna_models`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dna_models` (
@@ -983,6 +1013,12 @@ CREATE TABLE `dna_models` (
   UNIQUE KEY `dna_model_constraint` (`MODEL_NAME`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The dna_models table gives an overview of the different DNA ';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dna_sequences`
+--
+
+DROP TABLE IF EXISTS `dna_sequences`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dna_sequences` (
@@ -1010,6 +1046,28 @@ CREATE TABLE `dna_sequences` (
   CONSTRAINT `dna_sequences_ibfk_1` FOREIGN KEY (`TAX_ID`) REFERENCES `taxonomy` (`TAX_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5640336 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='The dna_sequences table holds the sequences of each DNA alig';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dna_tmp_pythia`
+--
+
+DROP TABLE IF EXISTS `dna_tmp_pythia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dna_tmp_pythia` (
+  `TMP_KEY` int(11) NOT NULL AUTO_INCREMENT,
+  `ALI_ID` varchar(250) NOT NULL,
+  `PYTHIA_SCORE` decimal(15,9) NOT NULL,
+  PRIMARY KEY (`TMP_KEY`),
+  UNIQUE KEY `DATABASE_ID` (`ALI_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=48613 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dna_trees`
+--
+
+DROP TABLE IF EXISTS `dna_trees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dna_trees` (
@@ -1120,17 +1178,30 @@ CREATE TABLE `dna_trees` (
   CONSTRAINT `DNA_Trees_ibfk_1` FOREIGN KEY (`ALI_ID`) REFERENCES `dna_alignments` (`ALI_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=129782 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `studies`
+--
+
+DROP TABLE IF EXISTS `studies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `studies` (
   `STUDY_KEY` int(11) NOT NULL AUTO_INCREMENT,
   `STUDY_ID` varchar(250) NOT NULL,
   `STUDY_URL` varchar(500) DEFAULT NULL,
+  `YEAR` int(11) DEFAULT NULL,
   `CITATION` text DEFAULT NULL,
   PRIMARY KEY (`STUDY_KEY`),
   UNIQUE KEY `study_unique_key` (`STUDY_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5304 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `taxonomy`
+--
+
+DROP TABLE IF EXISTS `taxonomy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `taxonomy` (
@@ -1139,10 +1210,21 @@ CREATE TABLE `taxonomy` (
   `PARENT_TAX_ID` int(11) DEFAULT NULL,
   `TAX_NAME` varchar(250) DEFAULT NULL,
   `TAX_RANK` varchar(50) DEFAULT NULL,
+  `RED_RANK` varchar(50) DEFAULT NULL,
+  `RED_RANK_NUM` int(11) DEFAULT NULL,
+  `RED_RANK_NAME` varchar(250) DEFAULT NULL,
+  `RED_TAX_ID` int(11) DEFAULT NULL,
   PRIMARY KEY (`TAX_KEY`),
-  UNIQUE KEY `TAX_ID` (`TAX_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2507791 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='Taxonomy table';
+  UNIQUE KEY `TAX_ID` (`TAX_ID`),
+  KEY `tax_name_index` (`TAX_NAME`)
+) ENGINE=InnoDB AUTO_INCREMENT=2704396 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='Taxonomy table';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tmp_studies`
+--
+
+DROP TABLE IF EXISTS `tmp_studies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tmp_studies` (
@@ -1154,3 +1236,14 @@ CREATE TABLE `tmp_studies` (
   UNIQUE KEY `tmp_ali` (`ALI_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11521 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-03-07 15:37:21

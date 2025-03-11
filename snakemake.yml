@@ -1,0 +1,14 @@
+name: snakemake-env
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.12.9
+  - snakemake=8.28.0
+  - pandas=2.2.3
+  - numpy=2.2.3
+  - requests=2.32.3
+  - pyyaml=6.0.2
+  - pip=25.0.1
+  - pip:
+      - mysql-connector-python==9.2.0
