@@ -30,7 +30,7 @@ def main():
                         action='store',
                         help='Provide csv file with taxon IDs for the names in the alignment file. \
                         The taxon file should include the name EXACTLY as it apears in the alignemnt file \
-                        in column 1 and it corresponding taxon ID in column 2. Column three should state \
+                        in column 1 and its corresponding taxon ID in column 2. Column three should state \
                         the taxon check (how was the taxon ID determined). If this column is \
                         left empty a taxon check of 3 will be assumed (manual checking) \
                         Lines starting with \'#\' will be ignored (including the header line). \

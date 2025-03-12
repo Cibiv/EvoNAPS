@@ -177,18 +177,19 @@ def check_each_sequence(data:Data, results:Results, j:int) -> None:
                 # If there is a hit, add info to DataFrame
                 if len(row) >= 1:
                     # Set taxon ID for sequence
-                    results.seq_para.at[index, 'TAX_ID'] = int(data.tax_file.at[row[0], 'TAX_ID'])
-                    # If TAX_CHECK and/or ACC_NR is non-empty, set it to corresponding number, 3 or None otherwise.
-                    if pd.isna(data.tax_file.at[row[0], 'TAX_CHECK']):
-                        results.seq_para.at[index, 'TAX_CHECK'] = 3
-                    else:
-                        results.seq_para.at[index, 'TAX_CHECK'] = int(data.tax_file.at[row[0], 'TAX_CHECK'])
+                    if pd.isna(data.tax_file.at[row[0], 'TAX_ID']):
+                        results.seq_para.at[index, 'TAX_ID'] = int(data.tax_file.at[row[0], 'TAX_ID'])
+                        # If TAX_CHECK is non-empty, set it to corresponding number, or 3 otherwise.
+                        if pd.isna(data.tax_file.at[row[0], 'TAX_CHECK']):
+                            results.seq_para.at[index, 'TAX_CHECK'] = 3
+                        else:
+                            results.seq_para.at[index, 'TAX_CHECK'] = int(data.tax_file.at[row[0], 'TAX_CHECK'])
+                    else: 
+                        results.seq_para.at[index, 'TAX_ID'] = int(1)
+                        results.seq_para.at[index, 'TAX_CHECK'] = int(0)
+                    # If TAX_CHECK is non-empty, set it accordingly.
                     if not pd.isna(data.tax_file.at[row[0], 'ACC_NR']):
                         results.seq_para.at[index, 'TAX_CHECK'] = data.tax_file.at[row[0], 'ACC_NR']
-                else: 
-                    results.seq_para.at[index, 'TAX_ID'] = int(1)
-                    results.seq_para.at[index, 'TAX_CHECK'] = int(0)
-
             else: 
                 results.seq_para.at[index, 'TAX_ID'] = int(1)
                 results.seq_para.at[index, 'TAX_CHECK'] = int(0)
