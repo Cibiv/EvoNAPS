@@ -139,7 +139,7 @@ def parse_model_parameters(data:Data, results:Results, constant:ConstantVariabel
         check = data.check
 
     elif keep_ident_boolean == 1:
-        params.update({'iqtree': data.iqtree, 'freq_stats': results.freq_stats_unique, 
+        params.update({'iqtree': data.iqtree, 'freq_stats': results.freq_stats, 
                   'original': 1})
         check = data.check_keep
     
@@ -263,7 +263,7 @@ def parse_tree_parameters(data:Data, results:Results, constants:ConstantVariabel
     if keep_ident_boolean == 0:
         file_name = f'{results.prefix}.treefile'
     else:
-        file_name = f'{results.prefix}-keep_ident.treefile'
+        file_name = f'{results.prefix}.keep_ident.treefile'
 
     return tree_stats, root, file_name
 
@@ -278,7 +278,12 @@ def parse_all_tree_parameters(data:Data, results:Results, constants:ConstantVari
     for keep in keep_lst:
         for tree_type in ['initial', 'ml']:
             tree_stats, root, file_name = parse_tree_parameters(data, results, constants, tree_type = tree_type, keep_ident_boolean=keep)
-            name_dict = results.name_dic_unique if keep == 0 else results.name_dic
+            
+            # Declare dictionary with names and corresponding sequence index. 
+            # With initial tree and default run (no keep ident) the reduced names dict is neccessary!
+            name_dict = results.name_dic_unique if keep == 0 and tree_type == 'initial' else results.name_dic
+
+            # Get branch parameters for each tree and write out tree and branch parameters into corresponding files.
             branch_stats, branch_df = parse_tree(file_name, name_dict, rooted=root)
 
             branch_df = branch_df.drop('SPLIT', axis=1)

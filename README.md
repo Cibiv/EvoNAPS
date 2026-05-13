@@ -56,7 +56,7 @@ Next import the MySQL dump (only holding the create statements):
 $ mysql -u your_user -p --database=evonaps < evonaps_create_statements.sql
 ```
 
-You can verify if the tables were corretly created by typing: 
+You can verify if the tables were correctly created by typing: 
 
 ```bash
 $ mysql -u your_user -p -e "USE evonaps; SHOW TABLES;"
@@ -72,12 +72,12 @@ The workflow requires a [Snakemake](https://github.com/snakemake/snakemake) inst
 
 Should you not have conda installed on your computer, here is a full guide on how to install [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install). 
 
-Once conda is set up on your computer, you can create a new environment using the yml file provided in this repository in [snakemake.yml](snakemake.yml). Each library in the .yml file comes with a specific version, which are the versions that were used to test the workflow. The environment includes a Snakemake instance. 
+Once conda is set up on your computer, you can create a new environment using the yaml file provided in this repository in [snakemake.yml](snakemake.yml). Each library in the .yml file comes with a specific version, which are the versions that were used to test the workflow. The environment includes a Snakemake instance. 
 
 ```bash
 $ conda activate base
 $ conda env create -f snakemake.yml
-$ conda activate skamekamke-env
+$ conda activate snakemake-env
 ```
 
 The workflow requires external software, namely [IQTree2](https://github.com/iqtree/iqtree2) (Minh, 2020), [RAxML-NG](https://github.com/amkozlov/raxml-ng) (Kozlov,2019), and the lightweight Python module [PyPythia](https://github.com/tschuelia/PyPythia) (Haag, 2022). For both IQTree2 and RAxML-NG a binary file is already included in [bin](workflow/bin). IQTree2 (v. 2.2.0.5) was modified to output additional parameters and information. The modified source code can be found at [FranziskaReden/iqtree2](https://github.com/FranziskaReden/iqtree2). The RAxML-NG version used in this workflow is 1.2.1, and the Pythia version is 1.1.4 (also see [pypythia.yaml](workflow/env/pyoythia.yml) for more details).

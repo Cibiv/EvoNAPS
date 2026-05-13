@@ -4,6 +4,8 @@ EvoNAPS_credentials.cnf
 .snakemake
 database/scripts
 test
+test_fasta
+folder_small
 *.ipynb
 data
 database/*.html

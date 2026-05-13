@@ -662,7 +662,7 @@ def write_newick_file(newick, params, quiet = False) -> str:
     '''
 
     file_name = f'{params['prefix']}-parsed_initialtree.treefile' if params['keep'] == 0 \
-        else f'{params['prefix']}-keep_ident_parsed_initialtree.treefile'
+        else f'{params['prefix']}.keep_ident_parsed_initialtree.treefile'
         
     with open (file_name, 'w', encoding='utf-8') as w:
         w.write(newick)

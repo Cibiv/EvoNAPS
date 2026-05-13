@@ -64,7 +64,7 @@ def main():
     # Initialize all objects to store data and results.
     constants = ConstantVariabels(args.config)
     results = Results(args.prefix, args.output, args.config, quiet=args.quiet)
-    data = Data(args.prefix, args.quiet, args.ali_file, args.tax)
+    data = Data(prefix=args.prefix, quiet=args.quiet, ali_file=args.ali_file, tax_file=args.tax)
 
     # Don't mess with the order of things! 
     # Each steps filters out info that will be needed later!

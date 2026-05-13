@@ -352,7 +352,7 @@ class Data:
             qprint(f'...file {self.prefix}.uniqueseq.phy has been detected', quiet = self.quiet)
             self.unique = True
 
-            for file in ['-keep_ident.iqtree', '-keep_ident.log', '-keep_ident.mldist', '-keep_ident.model.gz', '-keep_ident.treefile']: 
+            for file in ['.keep_ident.iqtree', '.keep_ident.log', '.keep_ident.mldist', '.keep_ident.model.gz', '.keep_ident.treefile']: 
 
                 if path.exists(self.prefix+file) == False:
                     print(f'WARNING: Could not find file {self.prefix+file}.') 
@@ -389,22 +389,25 @@ class Data:
                 self.initial_iqtree = t.readlines()
 
         if self.unique is True and self.unique_ctrl is True:
-            with open(self.prefix+'-keep_ident.iqtree', encoding="utf-8") as t:
+            with open(self.prefix+'.keep_ident.iqtree', encoding="utf-8") as t:
                 self.iqtree_keep = t.readlines()
 
-            with open(self.prefix+'-keep_ident.log', encoding="utf-8") as t:
+            with open(self.prefix+'.keep_ident.log', encoding="utf-8") as t:
                 self.log_keep = t.readlines()
 
-            self.mldist_keep = pd.read_csv(self.prefix+'-keep_ident.mldist', encoding="utf-8", sep=' ', \
+            self.mldist_keep = pd.read_csv(self.prefix+'.keep_ident.mldist', encoding="utf-8", sep=' ', \
                                            skipinitialspace = True, skiprows = 1, header = None)
             self.mldist_keep.pop(self.mldist_keep.columns[-1])
 
-            with gzip.open(self.prefix+'-keep_ident.model.gz') as t:
+            with gzip.open(self.prefix+'.keep_ident.model.gz') as t:
                 self.check_keep = [x.decode('utf8').strip() for x in t.readlines()]
         
         if self.tax_file is not None:
-            self.tax_file = pd.read_csv(self.tax_file, encoding='utf-8', usecols=[0,1,2,3], \
-                                    comment="#", header=None, names=['SEQ_NAME', 'TAX_ID', 'TAX_CHECK', 'ACC_NR'])
+            df = pd.read_csv(self.tax_file, encoding='utf-8', comment="#", header=None)
+            while df.shape[1] < 4:
+                df[df.shape[1]] = ''  # add empty column at the end
+            df.columns = ['SEQ_NAME', 'TAX_ID', 'TAX_CHECK', 'ACC_NR']
+            self.tax_file = df
 
     def check_ali_type(self) -> str:
         '''

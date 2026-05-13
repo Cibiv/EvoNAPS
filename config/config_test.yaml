@@ -1,0 +1,17 @@
+
+# Name of the alignment file (default is none, but can be set in command line or here in config.yaml)
+# The name is mandatory! If none is provided the workflow will not run and will throw an error.
+# ali_ids: null
+
+# Default configurations
+seq_type: "AA"
+credentials: "config/EvoNAPS_credentials.cnf"
+import_commands: "config/EvoNAPS_import_statements.sql"
+tables: "config/taxonomy_table.json"
+config_dir: "config/"
+
+# Metadata files (default paths will be ignored if not overwritten in command line)
+info: test/orthomam_v12a.info
+tax: test/orthomam_v12a.tax
+
+ali_ids: ['test_fasta/100423062_NT_AL_AA.fasta', 'test_fasta/1043_NT_AL_AA.fasta', 'test_fasta/105378952_NT_AL_AA.fasta', 'test_fasta/10816_NT_AL_AA.fasta', 'test_fasta/132332_NT_AL_AA.fasta', 'test_fasta/140453_NT_AL_AA.fasta', 'test_fasta/245932_NT_AL_AA.fasta', 'test_fasta/245938_NT_AL_AA.fasta', 'test_fasta/2652_NT_AL_AA.fasta', 'test_fasta/284254_NT_AL_AA.fasta', 'test_fasta/347273_NT_AL_AA.fasta', 'test_fasta/3562_NT_AL_AA.fasta', 'test_fasta/359787_NT_AL_AA.fasta', 'test_fasta/4184_NT_AL_AA.fasta', 'test_fasta/4589_NT_AL_AA.fasta', 'test_fasta/54742_NT_AL_AA.fasta', 'test_fasta/56137_NT_AL_AA.fasta', 'test_fasta/56138_NT_AL_AA.fasta', 'test_fasta/56141_NT_AL_AA.fasta', 'test_fasta/56143_NT_AL_AA.fasta', 'test_fasta/56144_NT_AL_AA.fasta', 'test_fasta/56145_NT_AL_AA.fasta', 'test_fasta/56147_NT_AL_AA.fasta', 'test_fasta/5620_NT_AL_AA.fasta', 'test_fasta/570_NT_AL_AA.fasta', 'test_fasta/79549_NT_AL_AA.fasta', 'test_fasta/81623_NT_AL_AA.fasta']

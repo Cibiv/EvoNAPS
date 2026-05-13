@@ -1,0 +1,15 @@
+
+# Name of the alignment file (default is none, but can be set in command line or here in config.yaml)
+# The name is mandatory! If none is provided the workflow will not run and will throw an error.
+ali_ids: null
+
+# Default configurations
+seq_type: "DNA"
+credentials: "config/EvoNAPS_credentials.cnf"
+import_commands: "config/EvoNAPS_import_statements.sql"
+tables: "config/taxonomy_table.json"
+config_dir: "config/"
+
+# Metadata files (default paths will be ignored if not overwritten in command line)
+info: null
+tax: null

@@ -140,11 +140,16 @@ def run_query(data:Data, query, params, cleanup = False) -> int:
 
     duplicate_tmp = 0
 
+    # Debugging output
+    #print(f'Running query: {query}')
+    #print(f'With parameters: {params}')
+
     # Configure logging
     logging.basicConfig(filename=data.log_file, level=logging.INFO, 
                         format="%(asctime)s - %(levelname)s - %(message)s")
     
-    logging.info(query)
+    logging.info(f'Running query: {query}')
+    logging.info(f'With parameters: {params}')
 
     # MySQL connection
     try:

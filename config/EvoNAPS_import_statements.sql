@@ -276,6 +276,7 @@ PROP_CAT_9 = NULLIF(@vpropCat_9, ''),
 REL_RATE_CAT_10 = NULLIF(@vrelRateCat_10, ''),
 PROP_CAT_10 = NULLIF(@vpropCat_10, '')
 ;
+
 /*Loading data into the aa_trees table from the corresponding tree_parameters-file.*/
 --aa_trees
 LOAD DATA LOCAL INFILE 'FILE_NAME' 
@@ -358,6 +359,7 @@ EBL_MEAN = NULLIF(@EBL_MEAN, ''),
 EBL_MEDIAN = NULLIF(@EBL_MEDIAN, ''),
 EBL_VAR = NULLIF(@EBL_VAR, '') 
 ;
+
 /*Loading data into the aa_branches table from the corresponding branch_parameters-file.*/
 --aa_branches
 LOAD DATA LOCAL INFILE 'FILE_NAME' 
@@ -365,5 +367,5 @@ IGNORE INTO TABLE aa_branches FIELDS TERMINATED BY '\t' OPTIONALLY ENCLOSED BY '
 (@ALI_ID, @IQTREE_VERSION, @RANDOM_SEED_NUM, TIME_STAMP, TREE_TYPE, BRANCH_INDEX, BRANCH_TYPE, BL, SPLIT_SIZE, 
 MEAN_PATH_1, MEDIAN_PATH_1, MIN_PATH_1, MAX_PATH_1, MEAN_PATH_2, MEDIAN_PATH_2, MIN_PATH_2, MAX_PATH_2)
 SET
-ALI_ID='custom_ali_id',
+ALI_ID='custom_ali_id'
 ;
