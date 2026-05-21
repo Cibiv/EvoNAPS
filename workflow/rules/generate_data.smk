@@ -6,7 +6,9 @@ rule test_models_and_tree_search:
         iqtree_file = "{ali_id}.iqtree",
         treefile = "{ali_id}.treefile",
         checkpoint_file = "{ali_id}.ckp.gz",
-        log_file = "{ali_id}.log"
+        log_file = "{ali_id}.log",
+        mldist="{ali_id}.mldist",
+        model_file="{ali_id}.model.gz"
     input:
         seq = "{ali_id}"
     params:
@@ -44,7 +46,10 @@ rule parse_parameters:
         seq="{ali_id}",
         treefile="{ali_id}.treefile",
         iqtree_file="{ali_id}.iqtree",
-        checkpoint_file = "{ali_id}.ckp.gz"
+        checkpoint_file = "{ali_id}.ckp.gz",
+        log_file = "{ali_id}.log",
+        mldist = "{ali_id}.mldist",
+        model_file = "{ali_id}.model.gz"
     output:
         "{ali_id}_ali_parameters.tsv",
         "{ali_id}_seq_parameters.tsv",
