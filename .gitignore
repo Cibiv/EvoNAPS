@@ -11,6 +11,8 @@ data
 database/*.html
 database/evonaps_alignments.py
 database/import_new_tax_ids.py
+test_CAIC_error
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

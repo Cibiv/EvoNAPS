@@ -139,7 +139,7 @@ def parse_model_parameters(data:Data, results:Results, constant:ConstantVariabel
         check = data.check
 
     elif keep_ident_boolean == 1:
-        params.update({'iqtree': data.iqtree, 'freq_stats': results.freq_stats, 
+        params.update({'iqtree': data.iqtree_keep, 'freq_stats': results.freq_stats, 
                   'original': 1})
         check = data.check_keep
     
@@ -171,6 +171,9 @@ def parse_all_model_parameters(data:Data, results:Results, constant:ConstantVari
     Results are stored in Results object and written into correspinding outut file.
     '''
 
+    # Check if keep-ident option was enabled. 
+    # If not, only parse out model parameters for the default run. 
+    # If yes, parse out model parameters for both runs.
     keep_lst = [0] if data.unique is False else [0,1]
     for keep in keep_lst:
         model_para = parse_model_parameters(data, results, constant, keep_ident_boolean=keep)

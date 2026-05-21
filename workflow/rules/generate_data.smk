@@ -43,7 +43,8 @@ rule parse_parameters:
     input:
         seq="{ali_id}",
         treefile="{ali_id}.treefile",
-        iqtree_file="{ali_id}.iqtree"
+        iqtree_file="{ali_id}.iqtree",
+        checkpoint_file = "{ali_id}.ckp.gz"
     output:
         "{ali_id}_ali_parameters.tsv",
         "{ali_id}_seq_parameters.tsv",
@@ -58,7 +59,6 @@ rule parse_parameters:
     conda:
         "../envs/evonaps_env.yaml"
     shell: """
-        echo {params.extra}
         python workflow/scripts/parse_parameters.py \
             -p {input.seq} \
             -o {input.seq} \
