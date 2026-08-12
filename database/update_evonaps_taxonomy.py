@@ -8,10 +8,26 @@ import logging
 import numpy as np
 from tqdm import tqdm
 
-sys.path.append('../workflow/scripts')
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent
+sys.path.append(str(REPO_ROOT / 'workflow' / 'scripts'))
 
 from update_alignment_taxonomy import get_taxonomy, taxonomic_hierarchy_per_sequence
 from update_all_alignments_taxonomy import update_alignment_taxonomy_tables
+from update_reduced_taxonomy import (
+    DEFAULT_UPDATES_FILE,
+    UPDATE_COLUMNS,
+    add_missing_columns,
+    allowed_rank_keys,
+    build_updates,
+    fetch_columns,
+    fetch_taxonomy,
+    read_rank_table,
+    summarize,
+    summarize_updates_file,
+    update_database as update_reduced_taxonomy_table,
+    write_updates_file,
+)
 
 class Data:
     '''Class to hold all the data needed for the update.'''
@@ -320,10 +336,10 @@ def update_evonpas_taxonomy(data) -> None:
     # Comnpare current taxonomy to new one
     # Check how many entries need to be changed
     data.compare()
-    print(f'Unchanged: {len(data.merged_tax[data.merged_tax['TO_DO']=='nothing'])}')
-    print(f'To be inserted: {len(data.merged_tax[data.merged_tax['TO_DO']=='insert'])}')
-    print(f'To be updated: {len(data.merged_tax[data.merged_tax['TO_DO']=='update'])}')
-    print(f'To be deleted: {len(data.merged_tax[data.merged_tax['TO_DO']=='delete'])}')
+    print(f"Unchanged: {len(data.merged_tax[data.merged_tax['TO_DO']=='nothing'])}")
+    print(f"To be inserted: {len(data.merged_tax[data.merged_tax['TO_DO']=='insert'])}")
+    print(f"To be updated: {len(data.merged_tax[data.merged_tax['TO_DO']=='update'])}")
+    print(f"To be deleted: {len(data.merged_tax[data.merged_tax['TO_DO']=='delete'])}")
     
     # Write rows to be inserted in a new file
     new_data = data.merged_tax[data.merged_tax['TO_DO']=='insert']
@@ -332,10 +348,10 @@ def update_evonpas_taxonomy(data) -> None:
         with open(insert_file, 'w') as w:
             w.write('TAX_ID\tPARENT_TAX_ID\tTAX_NAME\tTAX_RANK\n')
             for idx in new_data.index:
-                w.write(f'{new_data.at[idx, 'TAX_ID']}\t')
-                w.write(f'{new_data.at[idx, 'PARENT_TAX_ID_new']}\t')
-                w.write(f'{new_data.at[idx, 'TAX_NAME_new']}\t')
-                w.write(f'{new_data.at[idx, 'TAX_RANK_new']}\n')
+                w.write(f"{new_data.at[idx, 'TAX_ID']}\t")
+                w.write(f"{new_data.at[idx, 'PARENT_TAX_ID_new']}\t")
+                w.write(f"{new_data.at[idx, 'TAX_NAME_new']}\t")
+                w.write(f"{new_data.at[idx, 'TAX_RANK_new']}\n")
 
         # Insert file into the EvoNAPS database
         insert_new(data, os.path.join(data.folder, insert_file))
@@ -356,6 +372,43 @@ def update_alignment_taxonomy(data:Data, db_credentials):
     queries = update_alignment_taxonomy_tables(db_credentials, data.output, data.table, data.quiet)
     for query in queries:
         run_query(data, query, None)
+
+def update_reduced_taxonomy(data:Data, updates_file:pathlib.Path, update_window:int,
+                            min_update_window:int, lock_wait_timeout:int,
+                            add_columns:bool = False, force_recompute:bool = True) -> None:
+    '''Function to update reduced taxonomy columns after the taxonomy table was updated.'''
+
+    qprint(f'Updating reduced taxonomy columns...', quiet=data.quiet)
+    conn = mysql.connect(**data.db_config)
+    try:
+        columns = fetch_columns(conn)
+        if add_columns:
+            columns = add_missing_columns(conn, columns)
+
+        updates_file = pathlib.Path(updates_file)
+        if updates_file.exists() and not force_recompute:
+            qprint(f'Reusing reduced taxonomy file: {updates_file}', quiet=data.quiet)
+            summarize_updates_file(updates_file)
+        else:
+            qprint(f'Retrieving current taxonomy table...', quiet=data.quiet)
+            taxonomy = fetch_taxonomy(conn)
+            qprint(f'Calculating reduced taxonomy values...', quiet=data.quiet)
+            allowed_ranks = allowed_rank_keys(read_rank_table(pathlib.Path(data.table)))
+            updates = build_updates(taxonomy, allowed_ranks)
+            qprint(f'Writing reduced taxonomy file: {updates_file}', quiet=data.quiet)
+            write_updates_file(updates, UPDATE_COLUMNS, updates_file)
+            summarize(updates)
+
+        update_reduced_taxonomy_table(
+            conn,
+            columns,
+            updates_file,
+            update_window,
+            min_update_window,
+            lock_wait_timeout,
+        )
+    finally:
+        conn.close()
 
 def check_files(file) -> None:
     '''Function to check if a file exists.'''
@@ -411,11 +464,53 @@ def main():
     parser.add_argument('-a', '--alignment_only',
                         action='store_true',
                         help='Enable this option if you wish to only update the alignments_taxonomy tables.')
+
+    parser.add_argument('--skip_reduced_taxonomy',
+                        action='store_true',
+                        help='Skip updating RED_TAX_ID, RED_TAX_NAME, and RED_RANK after the taxonomy update.')
+
+    parser.add_argument('--reuse_reduced_updates',
+                        action='store_true',
+                        help='Reuse an existing reduced taxonomy TSV instead of recomputing it.')
+
+    parser.add_argument('--reduced_updates_file',
+                        type=pathlib.Path,
+                        default=DEFAULT_UPDATES_FILE,
+                        help=f'Path to reusable reduced taxonomy TSV. Default: {DEFAULT_UPDATES_FILE}')
+
+    parser.add_argument('--add_reduced_columns',
+                        action='store_true',
+                        help='Add missing RED_TAX_ID, RED_TAX_NAME, and RED_RANK columns before updating them.')
+
+    parser.add_argument('--reduced_update_window',
+                        type=int,
+                        default=50000,
+                        help='TAX_ID range size for each committed reduced-taxonomy UPDATE window.')
+
+    parser.add_argument('--reduced_min_update_window',
+                        type=int,
+                        default=1000,
+                        help='Smallest TAX_ID range to use when splitting locked reduced-taxonomy UPDATE windows.')
+
+    parser.add_argument('--reduced_lock_wait_timeout',
+                        type=int,
+                        default=120,
+                        help='MySQL session innodb_lock_wait_timeout value in seconds for reduced-taxonomy updates.')
     
     args = parser.parse_args()
 
     if args.output is None:
         args.output = 'update_taxonomy'
+
+    if args.reduced_update_window < 1:
+        print('ERROR: --reduced_update_window must be at least 1.')
+        sys.exit(2)
+    if args.reduced_min_update_window < 1:
+        print('ERROR: --reduced_min_update_window must be at least 1.')
+        sys.exit(2)
+    if args.reduced_lock_wait_timeout < 1:
+        print('ERROR: --reduced_lock_wait_timeout must be at least 1.')
+        sys.exit(2)
 
     # Check if files exist
     for file in [args.db_credentials, args.table, args.merge, args.ncbi]:
@@ -431,6 +526,17 @@ def main():
         update_evonpas_taxonomy(data)
 
     update_alignment_taxonomy(data, args.db_credentials)
+
+    if not args.alignment_only and not args.skip_reduced_taxonomy:
+        update_reduced_taxonomy(
+            data,
+            args.reduced_updates_file,
+            args.reduced_update_window,
+            args.reduced_min_update_window,
+            args.reduced_lock_wait_timeout,
+            add_columns=args.add_reduced_columns,
+            force_recompute=not args.reuse_reduced_updates,
+        )
     return 0
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ data
 database/*.html
 database/evonaps_alignments.py
 database/import_new_tax_ids.py
+database/reduced_taxonomy_updates.tsv.tmp
 test_CAIC_error
 .vscode
 
